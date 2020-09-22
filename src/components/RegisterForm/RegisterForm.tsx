@@ -24,9 +24,11 @@ const validationSchema = yupObject().shape({
     .email(strings.invalidEmailFormat)
     .required(strings.emailRequired),
   password: yupString()
-    .min(8, strings.passwordMinLength)
     .required(strings.passwordRequired)
-    .matches(/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$/),
+    .matches(
+      /^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$/,
+      strings.passwordMinLength,
+    ),
 });
 
 class RegisterForm extends Component<Props, object> {
@@ -69,7 +71,7 @@ class RegisterForm extends Component<Props, object> {
         </Text>
         <Input
           placeholder={strings.name}
-          autoCapitalize="none"
+          autoCapitalize="words"
           value={values.name}
           onChangeText={(value) => setFieldValue('name', value)}
           onBlur={() => setFieldTouched('name')}

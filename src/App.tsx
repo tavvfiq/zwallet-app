@@ -16,6 +16,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import LoginScreen from './screens/Authentication/LoginScreen';
 import RegisterScreen from './screens/Authentication/RegisterScreen';
+import PinInputScreen from './screens/Authentication/PinInputScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,10 +32,9 @@ const App = () => {
         <Stack.Navigator initialRouteName="Login" headerMode="none">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={RegisterScreen} />
+          <Stack.Screen name="PinInput" component={PinInputScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-
-      {/* <LoginScreen navigation={props.navigation} /> */}
     </>
   );
 };

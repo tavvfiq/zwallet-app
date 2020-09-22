@@ -4,16 +4,14 @@ const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F9FBFE',
     width,
   },
   header: {
-    flex: 1,
     height: 0.2 * height,
     width,
     paddingTop: '15%',
@@ -31,7 +29,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     elevation: 8,
-    paddingTop: 40,
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 59,
@@ -40,6 +37,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     alignSelf: 'center',
+    marginTop: 40,
     marginBottom: 20,
   },
   subTitleText: {
@@ -65,12 +63,19 @@ const styles = StyleSheet.create({
   forgotPasswordButton: {
     alignSelf: 'flex-end',
   },
-  loginButton: {
+  confirmButton: {
     height: 57,
     borderRadius: 12,
     backgroundColor: '#6379F4',
-    marginTop: 27,
-    marginBottom: 30,
+    marginTop: 233,
+    marginBottom: 64,
+  },
+  LoginButton: {
+    height: 57,
+    borderRadius: 12,
+    backgroundColor: '#6379F4',
+    marginTop: 70,
+    marginBottom: 64,
   },
   footerContainer: {
     display: 'flex',
@@ -97,6 +102,41 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: '#FF5B37',
+  },
+  pinContainerStyle: {
+    alignSelf: 'center',
+  },
+  pinCell: {
+    width: 47,
+    height: 58,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(169, 169, 169, 0.6)',
+  },
+  pinCellFocused: {
+    width: 47,
+    height: 58,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#6379F4',
+  },
+  pinText: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#3A3D42',
+  },
+  pinTextFocused: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#3A3D42',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(169, 169, 169, 0.4)',
+  },
+  checklistIcon: {
+    width: 70,
+    height: 70,
+    alignSelf: 'center',
+    marginTop: 40,
   },
 });
 

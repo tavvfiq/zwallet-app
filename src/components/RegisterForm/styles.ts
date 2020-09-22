@@ -4,14 +4,16 @@ const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
+    // display: 'flex',
+    // flexDirection: 'column',
+    flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#FAFCFF',
+    backgroundColor: '#F9FBFE',
     width,
   },
   header: {
+    flex: 1,
     height: 0.2 * height,
     width,
     paddingTop: '15%',

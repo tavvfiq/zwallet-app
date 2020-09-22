@@ -21,10 +21,7 @@ const validationSchema = yupObject().shape({
   email: yupString()
     .email(strings.invalidEmailFormat)
     .required(strings.emailRequired),
-  password: yupString()
-    .min(8, strings.passwordMinLength)
-    .required(strings.passwordRequired)
-    .matches(/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$/),
+  password: yupString().required(strings.passwordRequired),
 });
 
 class LoginForm extends Component<Props, object> {
