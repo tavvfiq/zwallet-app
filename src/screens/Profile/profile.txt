@@ -1,0 +1,6 @@
+profile
+personal information
+edit profile (with image)
+change PIN
+add phone number
+notification

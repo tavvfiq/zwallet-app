@@ -1,0 +1,4 @@
+login
+signup
+create pin
+reset password

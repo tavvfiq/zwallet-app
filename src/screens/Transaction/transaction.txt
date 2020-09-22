@@ -1,0 +1,8 @@
+transaction detail
+transaction history
+search receiver
+amount input blank/filled
+confirmation
+pin confirmation
+success/failed
+topup
