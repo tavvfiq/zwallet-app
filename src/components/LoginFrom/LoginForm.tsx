@@ -73,6 +73,7 @@ class LoginForm extends Component<Props, object> {
           onChangeText={(value) => setFieldValue('email', value)}
           onBlur={() => setFieldTouched('email')}
           editable={!isSubmitting}
+          errorStyle={styles.errorMessage}
           errorMessage={
             touched.email && errors.email ? errors.email : undefined
           }
@@ -88,6 +89,7 @@ class LoginForm extends Component<Props, object> {
           onChangeText={(value) => setFieldValue('password', value)}
           onBlur={() => setFieldTouched('password')}
           editable={!isSubmitting}
+          errorStyle={styles.errorMessage}
           errorMessage={
             touched.password && errors.password ? errors.password : undefined
           }

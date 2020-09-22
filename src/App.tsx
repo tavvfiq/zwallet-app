@@ -23,7 +23,7 @@ interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
 
-const App = (props: Props) => {
+const App = () => {
   return (
     <>
       <StatusBar />

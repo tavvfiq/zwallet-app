@@ -74,6 +74,7 @@ class RegisterForm extends Component<Props, object> {
           onChangeText={(value) => setFieldValue('name', value)}
           onBlur={() => setFieldTouched('name')}
           editable={!isSubmitting}
+          errorStyle={styles.errorMessage}
           errorMessage={touched.name && errors.name ? errors.name : undefined}
           leftIcon={<Icon name="user" color="#6379F4" size={20} />}
           inputContainerStyle={styles.inputContainerStyle}
@@ -87,6 +88,7 @@ class RegisterForm extends Component<Props, object> {
           onChangeText={(value) => setFieldValue('email', value)}
           onBlur={() => setFieldTouched('email')}
           editable={!isSubmitting}
+          errorStyle={styles.errorMessage}
           errorMessage={
             touched.email && errors.email ? errors.email : undefined
           }
@@ -102,6 +104,7 @@ class RegisterForm extends Component<Props, object> {
           onChangeText={(value) => setFieldValue('password', value)}
           onBlur={() => setFieldTouched('password')}
           editable={!isSubmitting}
+          errorStyle={styles.errorMessage}
           errorMessage={
             touched.password && errors.password ? errors.password : undefined
           }

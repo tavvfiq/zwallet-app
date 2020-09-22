@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  errorMessage: {
+    color: '#FF5B37',
+  },
 });
 
 export default styles;
