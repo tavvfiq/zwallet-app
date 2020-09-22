@@ -8,32 +8,32 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StatusBar} from 'react-native';
 
-import GlobalFont from 'react-native-global-font';
-
-import UserCard from './src/components/UserCard/UserCard';
+import {setCustomText, setCustomTextInput} from 'react-native-global-props';
+import LoginScreen from './src/screens/Authentication/LoginScreen';
+import {NavigationScreenProp} from 'react-navigation';
 
 declare const global: {HermesInternal: null | {}};
 
-const cardProps = {
-  name: 'Taufiq Widi',
-  image_path: '',
-  transaction_name: 'Transfer',
-  transaction_type: 'in',
-  amount: 1150000,
-};
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
 
-const App = () => {
-  useEffect(() => {
-    let defaultFont = 'NunintoSans';
-    GlobalFont.applyGlobal(defaultFont);
-  }, []);
+const App = (props: Props) => {
+  const customTextProps = {
+    style: {
+      fontFamily: 'NunitoSans-Regular',
+    },
+  };
+
+  setCustomText(customTextProps);
+  setCustomTextInput(customTextProps);
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <UserCard {...cardProps} />
+      <StatusBar />
+      <LoginScreen navigation={props.navigation} />
     </>
   );
 };
