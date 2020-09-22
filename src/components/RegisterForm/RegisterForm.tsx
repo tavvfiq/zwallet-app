@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {NavigationScreenProp} from 'react-navigation';
 
 type FormValues = {
+  name: string;
   email: string;
   password: string;
 };
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const validationSchema = yupObject().shape({
+  name: yupString().required(strings.nameRequired),
   email: yupString()
     .email(strings.invalidEmailFormat)
     .required(strings.emailRequired),
@@ -27,19 +29,19 @@ const validationSchema = yupObject().shape({
     .matches(/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$/),
 });
 
-class LoginForm extends Component<Props, object> {
+class RegisterForm extends Component<Props, object> {
   state = {
     showPassword: false,
-  };
-
-  toSignUpScreen = () => {
-    this.props.navigation.navigate('SignUp');
   };
 
   toggleShowPassword = () => {
     this.setState({
       showPassword: !this.state.showPassword,
     });
+  };
+
+  toLoginScreen = () => {
+    this.props.navigation.navigate('Login');
   };
 
   handleSubmit = (values: FormValues, formikBag: FormikHelpers<FormValues>) => {
@@ -61,10 +63,22 @@ class LoginForm extends Component<Props, object> {
         <Text style={styles.headerText}>Zwallet</Text>
       </View>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText}>Login</Text>
+        <Text style={styles.titleText}>Sign Up</Text>
         <Text style={styles.subTitleText}>
-          Login to your existing account to access all the features in Zwallet.
+          Create your account to access Zwallet.
         </Text>
+        <Input
+          placeholder={strings.name}
+          autoCapitalize="none"
+          value={values.name}
+          onChangeText={(value) => setFieldValue('name', value)}
+          onBlur={() => setFieldTouched('name')}
+          editable={!isSubmitting}
+          errorMessage={touched.name && errors.name ? errors.name : undefined}
+          leftIcon={<Icon name="user" color="#6379F4" size={20} />}
+          inputContainerStyle={styles.inputContainerStyle}
+          inputStyle={styles.inputStyle}
+        />
         <Input
           placeholder={strings.emailAddress}
           keyboardType="email-address"
@@ -104,24 +118,17 @@ class LoginForm extends Component<Props, object> {
           inputStyle={styles.inputStyle}
         />
         <Button
-          type="clear"
-          title="Forgot password?"
-          titleStyle={styles.forgotPassword}
-          containerStyle={styles.forgotPasswordButton}
-        />
-        <Text style={styles.errorMessageText}></Text>
-        <Button
           onPress={handleSubmit}
           disabled={isSubmitting || !isValid}
           loading={isSubmitting}
           loadingProps={{size: 'large', color: 'white'}}
-          buttonStyle={styles.loginButton}
-          title="Login"
+          buttonStyle={styles.registerButton}
+          title="Sign Up"
         />
         <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Don’t have an account? Let’s </Text>
-          <Pressable onPress={this.toSignUpScreen}>
-            <Text style={styles.signUpButton}>Sign Up</Text>
+          <Text style={styles.footerText}>Already have an account? Let’s </Text>
+          <Pressable onPress={this.toLoginScreen}>
+            <Text style={styles.loginButton}>Login</Text>
           </Pressable>
         </View>
       </View>
@@ -131,7 +138,7 @@ class LoginForm extends Component<Props, object> {
   render() {
     return (
       <Formik
-        initialValues={{email: '', password: ''}}
+        initialValues={{name: '', email: '', password: ''}}
         validationSchema={validationSchema}
         onSubmit={(values: FormValues, formikBag: FormikHelpers<FormValues>) =>
           this.handleSubmit(values, formikBag)
@@ -142,4 +149,4 @@ class LoginForm extends Component<Props, object> {
   }
 }
 
-export default LoginForm;
+export default RegisterForm;

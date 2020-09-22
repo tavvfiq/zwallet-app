@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'rgba(58, 61, 66, 0.6)',
     textAlign: 'center',
-    marginBottom: 50,
+    marginBottom: 53,
     marginLeft: 20,
     marginRight: 20,
   },
@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
   forgotPasswordButton: {
     alignSelf: 'flex-end',
   },
-  loginButton: {
+  registerButton: {
     height: 57,
     borderRadius: 12,
     backgroundColor: '#6379F4',
-    marginTop: 27,
+    marginTop: 42,
     marginBottom: 30,
   },
   footerContainer: {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
   },
-  signUpButton: {
+  loginButton: {
     fontSize: 16,
     fontWeight: '700',
     color: '#6379F4',
