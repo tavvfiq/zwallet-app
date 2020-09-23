@@ -2,6 +2,14 @@ import {CardProps} from '../../components/UserCard/propsType';
 
 type CardPropsList = CardProps[];
 
+type User = {
+  id: number;
+  name: string;
+  image_path: string;
+  phone_number: number;
+  balance: number;
+};
+
 export const dummyData: CardPropsList = [
   {
     id: 12345,

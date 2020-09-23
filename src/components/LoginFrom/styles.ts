@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#6379F4',
     alignSelf: 'center',
+    fontFamily: 'NunitoSans-Regular.ttf',
   },
   formContainer: {
     height: 0.8 * height,

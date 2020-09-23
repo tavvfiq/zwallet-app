@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: 48,
+    paddingTop: 46,
     backgroundColor: '#FAFCFF',
   },
   profileImage: {
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   nameText: {
+    fontFamily: 'NunitoSans-Regular.ttf',
     fontWeight: '700',
     fontSize: 18,
   },

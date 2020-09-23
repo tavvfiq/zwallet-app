@@ -30,7 +30,7 @@ const App = () => {
     <>
       <StatusBar />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home" headerMode="none">
+        <Stack.Navigator initialRouteName="Login" headerMode="none">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={RegisterScreen} />
           <Stack.Screen name="CreatePinScreen" component={CreatePinScreen} />
