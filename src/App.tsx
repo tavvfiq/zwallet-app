@@ -16,7 +16,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import LoginScreen from './screens/Authentication/LoginScreen';
 import RegisterScreen from './screens/Authentication/RegisterScreen';
-import PinInputScreen from './screens/Authentication/PinInputScreen';
+import CreatePinScreen from './screens/Authentication/CreatePinScreen';
+import Home from './screens/Home/Home';
 
 const Stack = createStackNavigator();
 
@@ -29,10 +30,11 @@ const App = () => {
     <>
       <StatusBar />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" headerMode="none">
+        <Stack.Navigator initialRouteName="Home" headerMode="none">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={RegisterScreen} />
-          <Stack.Screen name="PinInput" component={PinInputScreen} />
+          <Stack.Screen name="CreatePinScreen" component={CreatePinScreen} />
+          <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

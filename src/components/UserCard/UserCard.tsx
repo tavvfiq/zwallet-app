@@ -3,15 +3,7 @@ import {View, Text} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
 import userIcon from '../../assets/img/user.jpg';
-
-type CardProps = {
-  name: string;
-  image_path: string;
-  transaction_name?: string;
-  transaction_type?: string;
-  phone_number?: number;
-  amount?: number;
-};
+import {CardProps} from './propsType';
 
 const UserCard = (props: CardProps) => {
   return (

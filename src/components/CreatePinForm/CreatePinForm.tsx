@@ -16,7 +16,7 @@ type Props = {
   navigation: NavigationScreenProp<any, any>;
 };
 
-class PinInputForm extends React.Component<Props, State> {
+class CreatePinForm extends React.Component<Props, State> {
   state: Readonly<State> = {
     pinValue: '',
     isPinCreated: false,
@@ -90,4 +90,4 @@ class PinInputForm extends React.Component<Props, State> {
   }
 }
 
-export default PinInputForm;
+export default CreatePinForm;

@@ -13,6 +13,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
+    "@types/react-redux": "^7.1.9",
     "@types/yup": "^0.29.7",
     "babel-plugin-module-resolver": "^4.0.0",
     "formik": "^2.1.5",
@@ -31,6 +32,10 @@
     "react-native-smooth-pincode-input": "^1.0.9",
     "react-native-vector-icons": "^7.1.0",
     "react-navigation": "^4.4.0",
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
     "yup": "^0.29.3"
   },
   "devDependencies": {
