@@ -1,4 +1,4 @@
-import {CardProps} from '../../components/UserCard/propsType';
+import {CardProps} from '../components/UserCard/propsType';
 
 type CardPropsList = CardProps[];
 
@@ -10,7 +10,7 @@ type User = {
   balance: number;
 };
 
-export const dummyData: CardPropsList = [
+export const UserTransactionData: CardPropsList = [
   {
     id: 12345,
     name: 'Taufiq Widi',

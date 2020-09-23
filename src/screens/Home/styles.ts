@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: 46,
+    paddingTop: 42,
     backgroundColor: '#FAFCFF',
   },
   profileImage: {

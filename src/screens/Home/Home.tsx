@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 import userIcon from '../../assets/img/user.jpg';
 import UserCard from '../../components/UserCard/UserCard';
 import styles from './styles';
-import {dummyData} from './dummyData';
+import {UserTransactionData} from '../../utils/dummyData';
 
 const Home = () => {
   return (
@@ -56,7 +56,7 @@ const Home = () => {
         contentContainerStyle={styles.transactionHistoryList}
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}>
-        {dummyData.map((item) => {
+        {UserTransactionData.map((item) => {
           return <UserCard key={item.id} {...item} />;
         })}
       </ScrollView>

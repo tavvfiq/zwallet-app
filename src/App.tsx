@@ -18,6 +18,8 @@ import LoginScreen from './screens/Authentication/LoginScreen';
 import RegisterScreen from './screens/Authentication/RegisterScreen';
 import CreatePinScreen from './screens/Authentication/CreatePinScreen';
 import Home from './screens/Home/Home';
+import TransactionHistory from './screens/Transaction/TransactionHistory';
+import SearchReceiver from './screens/Transaction/SearchReceiver';
 
 const Stack = createStackNavigator();
 
@@ -28,13 +30,18 @@ interface Props {
 const App = () => {
   return (
     <>
-      <StatusBar />
+      {/* <StatusBar /> */}
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" headerMode="none">
+        <Stack.Navigator initialRouteName="SearchReceiver" headerMode="none">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={RegisterScreen} />
           <Stack.Screen name="CreatePinScreen" component={CreatePinScreen} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen
+            name="TransactionHistory"
+            component={TransactionHistory}
+          />
+          <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
