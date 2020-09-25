@@ -1,20 +1,10 @@
 import {CardProps} from '../components/UserCard/propsType';
 
-type CardPropsList = CardProps[];
-
-type User = {
-  id: number;
-  name: string;
-  image_path: string;
-  phone_number: number;
-  balance: number;
-};
-
-export const UserTransactionData: CardPropsList = [
+export const UserTransactionData: CardProps[] = [
   {
     id: 12345,
     name: 'Taufiq Widi',
-    image_path: '',
+    image: '',
     transaction_name: 'Transfer',
     transaction_type: 'in',
     amount: 1500000,
@@ -22,7 +12,7 @@ export const UserTransactionData: CardPropsList = [
   {
     id: 18972,
     name: 'Netflix',
-    image_path: '',
+    image: '',
     transaction_name: 'Subscription',
     transaction_type: 'out',
     amount: 50000,
@@ -30,7 +20,7 @@ export const UserTransactionData: CardPropsList = [
   {
     id: 13542,
     name: 'Spotify',
-    image_path: '',
+    image: '',
     transaction_name: 'Subscription',
     transaction_type: 'out',
     amount: 49000,
@@ -38,7 +28,7 @@ export const UserTransactionData: CardPropsList = [
   {
     id: 19982,
     name: 'Samuel Suhi',
-    image_path: '',
+    image: '',
     transaction_name: 'Transfer',
     transaction_type: 'in',
     amount: 100000,

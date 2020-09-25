@@ -1,7 +1,7 @@
 export type CardProps = {
   id?: number;
   name: string;
-  image_path: string;
+  image: string;
   date?: string;
   transaction_name?: string;
   transaction_type?: string;

@@ -12,9 +12,7 @@ const UserCard = (props: CardProps) => {
         <View style={styles.imageAndName}>
           <FastImage
             style={styles.image}
-            source={
-              props.image_path !== '' ? {uri: props.image_path} : userIcon
-            }
+            source={props.image !== '' ? {uri: props.image} : userIcon}
             {...{resizeMode: 'cover'}}
           />
           <View style={styles.textContainer}>
