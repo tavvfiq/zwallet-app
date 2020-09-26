@@ -3,23 +3,43 @@ import styles from './styles';
 import React, {Component} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {Button, Input} from 'react-native-elements';
-import {Formik, FormikProps, FormikHelpers} from 'formik';
+import {Formik, FormikProps} from 'formik';
 import {object as yupObject, string as yupString} from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
 import {NavigationScreenProp} from 'react-navigation';
+import {connect, ConnectedProps} from 'react-redux';
+import {RootState} from '../../store';
+import {AppThunkDispatch} from '../../store/thunk';
+import {register} from '../../store/user/actions';
+import {registerType} from '../../utils/types';
+
+//connecting state and dispatch
+const mapState = (state: RootState) => ({
+  user: state.user,
+});
+
+const mapDispatch = (dispatch: AppThunkDispatch) => {
+  return {
+    register: (data: registerType) => dispatch(register(data)),
+  };
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
+  navigation: NavigationScreenProp<any, any>;
+};
 
 type FormValues = {
-  name: string;
+  username: string;
   email: string;
   password: string;
 };
 
-type Props = {
-  navigation: NavigationScreenProp<any, any>;
-};
-
 const validationSchema = yupObject().shape({
-  name: yupString().required(strings.nameRequired),
+  username: yupString().required(strings.nameRequired),
   email: yupString()
     .email(strings.invalidEmailFormat)
     .required(strings.emailRequired),
@@ -46,8 +66,8 @@ class RegisterForm extends Component<Props, object> {
     this.props.navigation.navigate('Login');
   };
 
-  handleSubmit = (values: FormValues, formikBag: FormikHelpers<FormValues>) => {
-    formikBag.setSubmitting(true);
+  handleSubmit = (values: FormValues) => {
+    this.props.register(values);
   };
 
   renderForm = ({
@@ -57,7 +77,6 @@ class RegisterForm extends Component<Props, object> {
     touched,
     errors,
     setFieldTouched,
-    isSubmitting,
     isValid,
   }: FormikProps<FormValues>) => (
     <View style={styles.container}>
@@ -72,12 +91,14 @@ class RegisterForm extends Component<Props, object> {
         <Input
           placeholder={strings.name}
           autoCapitalize="words"
-          value={values.name}
-          onChangeText={(value) => setFieldValue('name', value)}
-          onBlur={() => setFieldTouched('name')}
-          editable={!isSubmitting}
+          value={values.username}
+          onChangeText={(value) => setFieldValue('username', value)}
+          onBlur={() => setFieldTouched('username')}
+          editable={!this.props.user.status.loading}
           errorStyle={styles.errorMessage}
-          errorMessage={touched.name && errors.name ? errors.name : undefined}
+          errorMessage={
+            touched.username && errors.username ? errors.username : undefined
+          }
           leftIcon={<Icon name="user" color="#6379F4" size={20} />}
           inputContainerStyle={styles.inputContainerStyle}
           inputStyle={styles.inputStyle}
@@ -89,7 +110,7 @@ class RegisterForm extends Component<Props, object> {
           value={values.email}
           onChangeText={(value) => setFieldValue('email', value)}
           onBlur={() => setFieldTouched('email')}
-          editable={!isSubmitting}
+          editable={!this.props.user.status.loading}
           errorStyle={styles.errorMessage}
           errorMessage={
             touched.email && errors.email ? errors.email : undefined
@@ -105,7 +126,7 @@ class RegisterForm extends Component<Props, object> {
           value={values.password}
           onChangeText={(value) => setFieldValue('password', value)}
           onBlur={() => setFieldTouched('password')}
-          editable={!isSubmitting}
+          editable={!this.props.user.status.loading}
           errorStyle={styles.errorMessage}
           errorMessage={
             touched.password && errors.password ? errors.password : undefined
@@ -124,8 +145,8 @@ class RegisterForm extends Component<Props, object> {
         />
         <Button
           onPress={handleSubmit}
-          disabled={isSubmitting || !isValid}
-          loading={isSubmitting}
+          disabled={this.props.user.status.loading || !isValid}
+          loading={this.props.user.status.loading}
           loadingProps={{size: 'large', color: 'white'}}
           buttonStyle={styles.registerButton}
           title="Sign Up"
@@ -141,17 +162,19 @@ class RegisterForm extends Component<Props, object> {
   );
 
   render() {
+    const {user} = this.props.user;
+    if (user.credentials.token !== '') {
+      this.props.navigation.navigate('CreatePinScreen');
+    }
     return (
       <Formik
-        initialValues={{name: '', email: '', password: ''}}
+        initialValues={{username: '', email: '', password: ''}}
         validationSchema={validationSchema}
-        onSubmit={(values: FormValues, formikBag: FormikHelpers<FormValues>) =>
-          this.handleSubmit(values, formikBag)
-        }>
+        onSubmit={(values: FormValues) => this.handleSubmit(values)}>
         {(formikBag: FormikProps<FormValues>) => this.renderForm(formikBag)}
       </Formik>
     );
   }
 }
 
-export default RegisterForm;
+export default connector(RegisterForm);

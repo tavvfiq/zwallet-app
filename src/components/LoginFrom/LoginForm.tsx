@@ -3,18 +3,38 @@ import styles from './styles';
 import React, {Component} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {Button, Input} from 'react-native-elements';
-import {Formik, FormikProps, FormikHelpers} from 'formik';
+import {Formik, FormikProps} from 'formik';
 import {object as yupObject, string as yupString} from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
 import {NavigationScreenProp} from 'react-navigation';
+import {connect, ConnectedProps} from 'react-redux';
+import {RootState} from '../../store';
+import {AppThunkDispatch} from '../../store/thunk';
+import {login} from '../../store/user/actions';
+import {loginType} from '../../utils/types';
+
+//connecting state and dispatch
+const mapState = (state: RootState) => ({
+  user: state.user,
+});
+
+const mapDispatch = (dispatch: AppThunkDispatch) => {
+  return {
+    login: (data: loginType) => dispatch(login(data)),
+  };
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
+  navigation: NavigationScreenProp<any, any>;
+};
 
 type FormValues = {
   email: string;
   password: string;
-};
-
-type Props = {
-  navigation: NavigationScreenProp<any, any>;
 };
 
 const validationSchema = yupObject().shape({
@@ -39,8 +59,8 @@ class LoginForm extends Component<Props, object> {
     });
   };
 
-  handleSubmit = (values: FormValues, formikBag: FormikHelpers<FormValues>) => {
-    formikBag.setSubmitting(true);
+  handleSubmit = (values: FormValues) => {
+    this.props.login(values);
   };
 
   renderForm = ({
@@ -50,7 +70,6 @@ class LoginForm extends Component<Props, object> {
     touched,
     errors,
     setFieldTouched,
-    isSubmitting,
     isValid,
   }: FormikProps<FormValues>) => (
     <View style={styles.container}>
@@ -69,7 +88,7 @@ class LoginForm extends Component<Props, object> {
           value={values.email}
           onChangeText={(value) => setFieldValue('email', value)}
           onBlur={() => setFieldTouched('email')}
-          editable={!isSubmitting}
+          editable={!this.props.user.status.loading}
           errorStyle={styles.errorMessage}
           errorMessage={
             touched.email && errors.email ? errors.email : undefined
@@ -85,7 +104,7 @@ class LoginForm extends Component<Props, object> {
           value={values.password}
           onChangeText={(value) => setFieldValue('password', value)}
           onBlur={() => setFieldTouched('password')}
-          editable={!isSubmitting}
+          editable={!this.props.user.status.loading}
           errorStyle={styles.errorMessage}
           errorMessage={
             touched.password && errors.password ? errors.password : undefined
@@ -108,11 +127,13 @@ class LoginForm extends Component<Props, object> {
           titleStyle={styles.forgotPassword}
           containerStyle={styles.forgotPasswordButton}
         />
-        <Text style={styles.errorMessageText}></Text>
+        <Text style={styles.errorMessageText}>
+          {this.props.user.status.error ? this.props.user.status.msg : ''}
+        </Text>
         <Button
           onPress={handleSubmit}
-          disabled={isSubmitting || !isValid}
-          loading={isSubmitting}
+          disabled={this.props.user.status.loading || !isValid}
+          loading={this.props.user.status.loading}
           loadingProps={{size: 'large', color: 'white'}}
           buttonStyle={styles.loginButton}
           title="Login"
@@ -128,17 +149,19 @@ class LoginForm extends Component<Props, object> {
   );
 
   render() {
+    const {user} = this.props.user;
+    if (user.credentials.token !== '') {
+      this.props.navigation.navigate('CreatePinScreen');
+    }
     return (
       <Formik
         initialValues={{email: '', password: ''}}
         validationSchema={validationSchema}
-        onSubmit={(values: FormValues, formikBag: FormikHelpers<FormValues>) =>
-          this.handleSubmit(values, formikBag)
-        }>
+        onSubmit={(values: FormValues) => this.handleSubmit(values)}>
         {(formikBag: FormikProps<FormValues>) => this.renderForm(formikBag)}
       </Formik>
     );
   }
 }
 
-export default LoginForm;
+export default connector(LoginForm);

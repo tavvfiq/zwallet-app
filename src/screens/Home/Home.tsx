@@ -7,8 +7,13 @@ import userIcon from '../../assets/img/user.jpg';
 import UserCard from '../../components/UserCard/UserCard';
 import styles from './styles';
 import {UserTransactionData} from '../../utils/dummyData';
+import {RootState} from '../../store';
+import {useSelector} from 'react-redux';
+
+const selectUser = (state: RootState) => state.user.user;
 
 const Home = () => {
+  const user = useSelector(selectUser);
   return (
     <>
       <View style={styles.homeContainer}>
@@ -16,20 +21,26 @@ const Home = () => {
           <View style={styles.textAndImage}>
             <FastImage
               style={styles.profileImage}
-              source={userIcon}
+              source={user.details.image ? {uri: user.details.image} : userIcon}
               {...{resizeMode: 'cover'}}
             />
             <View style={styles.textContainer}>
               <Text style={styles.helloText}>Hello,</Text>
-              <Text style={styles.nameText}>Taufiq Widi</Text>
+              <Text style={styles.nameText}>{user.credentials.username}</Text>
             </View>
           </View>
           <Icon name="bell" size={21} style={styles.icon} />
         </View>
         <View style={styles.cardBalanceContainer}>
           <Text style={styles.childText}>Balance</Text>
-          <Text style={styles.balanceText}>Rp120.000</Text>
-          <Text style={styles.childText}>+62 812 8454 4654</Text>
+          <Text style={styles.balanceText}>
+            Rp{user.details.balance.toLocaleString('id-ID')}
+          </Text>
+          <Text style={styles.childText}>
+            {user.details.phoneNumber
+              ? user.details.phoneNumber
+              : 'No Phone Number'}
+          </Text>
         </View>
         <View style={styles.buttonContainer}>
           <Button

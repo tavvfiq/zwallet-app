@@ -14,7 +14,7 @@ export function changeStatusbarTheme(
   };
 }
 
-export function checkSession(sessionIsValid: boolean): SystemActionTypes {
+export function validateSession(sessionIsValid: boolean): SystemActionTypes {
   return {
     type: VALIDATE_TOKEN,
     payload: sessionIsValid,

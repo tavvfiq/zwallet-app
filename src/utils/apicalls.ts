@@ -26,7 +26,7 @@ class zwalletAPI {
 
   private _handleResponse = ({data}: AxiosResponse) => data;
 
-  protected _handleError = (error: any) => Promise.reject(error);
+  protected _handleError = (error: any) => error;
 }
 
 class unprotectedAPI extends zwalletAPI {
@@ -69,4 +69,7 @@ class protectedAPI extends zwalletAPI {
   public getContact = (endpoint: string) => this.instance.get(endpoint);
 }
 
-export {unprotectedAPI, protectedAPI};
+const authAPI = new unprotectedAPI();
+const mainAPI = new protectedAPI();
+
+export {authAPI, mainAPI};

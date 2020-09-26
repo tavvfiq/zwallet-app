@@ -10,14 +10,14 @@ export interface SystemState {
 export const CHANGE_STATUSBAR_THEME = 'CHANGE_STATUSBAR_THEME';
 export const VALIDATE_TOKEN = 'VALIDATE_TOKEN';
 
-interface ChangeStatusbarTheme {
+export interface ChangeStatusbarTheme {
   type: typeof CHANGE_STATUSBAR_THEME;
   payload: StatusbarTheme;
 }
 
-interface CheckSession {
+export interface validateSession {
   type: typeof VALIDATE_TOKEN;
   payload: boolean;
 }
 
-export type SystemActionTypes = CheckSession | ChangeStatusbarTheme;
+export type SystemActionTypes = validateSession | ChangeStatusbarTheme;
