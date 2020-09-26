@@ -4,13 +4,20 @@ export type StatusbarTheme = {
 
 export interface SystemState {
   statusbarTheme: StatusbarTheme;
+  sessionIsValid: boolean;
 }
 
 export const CHANGE_STATUSBAR_THEME = 'CHANGE_STATUSBAR_THEME';
+export const VALIDATE_TOKEN = 'VALIDATE_TOKEN';
 
 interface ChangeStatusbarTheme {
   type: typeof CHANGE_STATUSBAR_THEME;
   payload: StatusbarTheme;
 }
 
-export type SystemActionTypes = ChangeStatusbarTheme;
+interface CheckSession {
+  type: typeof VALIDATE_TOKEN;
+  payload: boolean;
+}
+
+export type SystemActionTypes = CheckSession | ChangeStatusbarTheme;

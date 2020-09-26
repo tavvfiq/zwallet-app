@@ -1,6 +1,7 @@
 import {
   StatusbarTheme,
   CHANGE_STATUSBAR_THEME,
+  VALIDATE_TOKEN,
   SystemActionTypes,
 } from './types';
 
@@ -10,5 +11,12 @@ export function changeStatusbarTheme(
   return {
     type: CHANGE_STATUSBAR_THEME,
     payload: statusbarTheme,
+  };
+}
+
+export function checkSession(sessionIsValid: boolean): SystemActionTypes {
+  return {
+    type: VALIDATE_TOKEN,
+    payload: sessionIsValid,
   };
 }
