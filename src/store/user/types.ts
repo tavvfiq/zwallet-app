@@ -1,18 +1,18 @@
 import {AsyncActionStatus} from '../asyncActionStatus';
 
 type UserCredentials = {
-  id?: number;
+  id: number;
   username: string;
   email?: string;
   password?: string;
-  pin?: number;
+  pin?: string;
   token?: string;
 };
 
 type UserDetails = {
   image?: string;
   phoneNumber?: string;
-  balance: number;
+  balance?: number;
   numOfContact?: number;
 };
 

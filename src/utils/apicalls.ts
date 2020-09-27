@@ -1,6 +1,11 @@
 import axios, {AxiosInstance, AxiosResponse, AxiosRequestConfig} from 'axios';
 import {BASE_URL} from './environment';
-import {loginType, registerType, transactionType} from './types';
+import {
+  loginType,
+  registerType,
+  transactionType,
+  updateUserType,
+} from './types';
 
 declare module 'axios' {
   interface AxiosResponse<T = any> extends Promise<T> {}
@@ -40,6 +45,7 @@ class unprotectedAPI extends zwalletAPI {
 }
 
 class protectedAPI extends zwalletAPI {
+  token = '';
   public constructor() {
     super(BASE_URL);
     this._initializeRequestInterceptor();
@@ -52,11 +58,16 @@ class protectedAPI extends zwalletAPI {
     );
   };
 
+  public setToken = (token: string) => {
+    this.token = token;
+  };
+
   private _handleRequest = (config: AxiosRequestConfig) => {
-    config.headers['x-access-token'] = 'Bearer ...';
+    config.headers['x-access-token'] = `Bearer ${this.token}`;
 
     return config;
   };
+
   public getTransactionHistory = (id: number) =>
     this.instance.get(`/transaction/${id}`);
   public doTransaction = (body: transactionType) =>
@@ -67,6 +78,8 @@ class protectedAPI extends zwalletAPI {
   public addContact = (body: {user_id: string; contact_id: string}) =>
     this.instance.post('/user/contact', body);
   public getContact = (endpoint: string) => this.instance.get(endpoint);
+  public updateUser = (id: number, body: updateUserType) =>
+    this.instance.patch(`/user/${id}`, body);
 }
 
 const authAPI = new unprotectedAPI();

@@ -4,38 +4,66 @@ import {Button} from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import {NavigationScreenProp} from 'react-navigation';
+import {connect, ConnectedProps} from 'react-redux';
+import {RootState} from '../../store';
+import {AppThunkDispatch} from '../../store/thunk';
+import {updateUser} from '../../store/user/actions';
+import {updateUserType} from '../../utils/types';
 import checkIcon from '../../assets/img/check.png';
 import styles from './styles';
 
+//connecting state and dispatch
+const mapState = (state: RootState) => ({
+  user: state.user,
+});
+
+const mapDispatch = (dispatch: AppThunkDispatch) => {
+  return {
+    updateUser: (id: number, data: updateUserType) =>
+      dispatch(updateUser(id, data)),
+  };
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
 type State = {
-  pinValue: string;
+  pin: string;
   isPinCreated: boolean;
 };
 
-type Props = {
+type Props = PropsFromRedux & {
   navigation: NavigationScreenProp<any, any>;
 };
 
 class CreatePinForm extends React.Component<Props, State> {
   state: Readonly<State> = {
-    pinValue: '',
+    pin: '',
     isPinCreated: false,
   };
 
   pinInputRef = React.createRef<SmoothPinCodeInput>();
 
   backSpacePressed = () => {
-    this.pinInputRef.current.shake();
+    this.pinInputRef.current?.shake();
   };
 
   onSubmit = () => {
+    const {id} = this.props.user.user.credentials;
     if (!this.state.isPinCreated) {
       this.setState({isPinCreated: true});
+      this.props.updateUser(id, {
+        pin: this.state.pin,
+      });
+    } else {
+      this.props.navigation.navigate('Home');
     }
   };
 
   render() {
-    const {pinValue, isPinCreated} = this.state;
+    const {pin, isPinCreated} = this.state;
+    const {status} = this.props.user;
     return (
       <>
         <View style={styles.container}>
@@ -63,10 +91,8 @@ class CreatePinForm extends React.Component<Props, State> {
             {isPinCreated ? null : (
               <SmoothPinCodeInput
                 ref={this.pinInputRef}
-                value={pinValue}
-                onTextChange={(value: string) =>
-                  this.setState({pinValue: value})
-                }
+                value={pin}
+                onTextChange={(value: string) => this.setState({pin: value})}
                 codeLength={6}
                 containerStyle={styles.pinContainerStyle}
                 cellStyle={styles.pinCell}
@@ -80,8 +106,9 @@ class CreatePinForm extends React.Component<Props, State> {
               buttonStyle={
                 isPinCreated ? styles.LoginButton : styles.confirmButton
               }
+              loading={status.loading}
               title={isPinCreated ? 'Login Now' : 'Confirm'}
-              disabled={pinValue.length < 6}
+              disabled={pin.length < 6}
             />
           </View>
         </View>
@@ -90,4 +117,4 @@ class CreatePinForm extends React.Component<Props, State> {
   }
 }
 
-export default CreatePinForm;
+export default connector(CreatePinForm);

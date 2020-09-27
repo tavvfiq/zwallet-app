@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 const TransactionHistory = () => {
-  const [dateNow, setDateNow] = useState<Date | undefined>();
+  // const [dateNow, setDateNow] = useState<Date | undefined>();
   return (
     <>
       <View style={styles.container}>

@@ -3,7 +3,7 @@ import {View, Text, Pressable, ScrollView} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import FastImage from 'react-native-fast-image';
-import userIcon from '../../assets/img/user.jpg';
+import userIcon from '../../assets/img/user.png';
 import UserCard from '../../components/UserCard/UserCard';
 import styles from './styles';
 import {UserTransactionData} from '../../utils/dummyData';
@@ -34,7 +34,7 @@ const Home = () => {
         <View style={styles.cardBalanceContainer}>
           <Text style={styles.childText}>Balance</Text>
           <Text style={styles.balanceText}>
-            Rp{user.details.balance.toLocaleString('id-ID')}
+            Rp{user.details.balance?.toLocaleString('id-ID')}
           </Text>
           <Text style={styles.childText}>
             {user.details.phoneNumber

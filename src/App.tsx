@@ -22,6 +22,7 @@ import CreatePinScreen from './screens/Authentication/CreatePinScreen';
 import Home from './screens/Home/Home';
 import TransactionHistory from './screens/Transaction/TransactionHistory';
 import SearchReceiver from './screens/Transaction/SearchReceiver';
+import Transfer from './screens/Transaction/Transfer';
 
 import {store} from './store';
 
@@ -37,7 +38,7 @@ const App = () => {
       <Provider store={store}>
         {/* <StatusBar /> */}
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login" headerMode="none">
+          <Stack.Navigator initialRouteName="Transfer" headerMode="none">
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={RegisterScreen} />
             <Stack.Screen name="CreatePinScreen" component={CreatePinScreen} />
@@ -47,6 +48,7 @@ const App = () => {
               component={TransactionHistory}
             />
             <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
+            <Stack.Screen name="Transfer" component={Transfer} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

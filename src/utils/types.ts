@@ -15,4 +15,15 @@ export interface transactionType {
   transaction_name: 'Transfer' | 'Subscription' | 'Top Up';
   transaction_type: 'in' | 'out';
   amount: number;
+  notes?: string;
+}
+
+export interface updateUserType {
+  username?: string;
+  email?: string;
+  password?: string;
+  pin?: string;
+  image?: any;
+  phoneNumber?: number;
+  numOfContact?: number;
 }

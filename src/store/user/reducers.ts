@@ -8,6 +8,9 @@ import {
   REGISTER_FULFILLED,
   REGISTER_PENDING,
   REGISTER_REJECTED,
+  UPDATE_USER_FULFILLED,
+  UPDATE_USER_PENDING,
+  UPDATE_USER_REJECTED,
   UserActionTypes,
   UserState,
 } from './types';
@@ -15,6 +18,7 @@ import {
 const initialState: UserState = {
   user: {
     credentials: {
+      id: 0,
       username: 'Unknown',
       token: '',
       pin: 0,
@@ -86,6 +90,46 @@ export function userReducer(
         },
       };
     case REGISTER_REJECTED:
+      return {
+        ...state,
+        status: {
+          loading: false,
+          error: true,
+          msg: action.payload as string,
+        },
+      };
+    case UPDATE_USER_PENDING:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: true,
+        },
+      };
+    case UPDATE_USER_FULFILLED:
+      const {credentials, details} = action.payload as User;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          credentials: {
+            ...state.user.credentials,
+            username: credentials.username,
+            pin: credentials.pin,
+          },
+          details: {
+            ...state.user.details,
+            image: details.image,
+            phoneNumber: details.phoneNumber,
+          },
+        },
+        status: {
+          loading: false,
+          error: false,
+          msg: 'Profile updated',
+        },
+      };
+    case UPDATE_USER_REJECTED:
       return {
         ...state,
         status: {
