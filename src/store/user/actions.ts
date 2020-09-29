@@ -1,17 +1,13 @@
 import {AppThunk} from '../thunk';
 import {authAPI, mainAPI} from '../../utils/apicalls';
-import {
-  loginType,
-  registerType,
-  transactionType,
-  updateUserType,
-} from '../../utils/types';
+import {loginType, registerType, updateUserType} from '../../utils/types';
 import {validateSession} from '../system/actions';
 
 import {
+  UserCredentials,
   User,
-  RequestStatus,
   PageInfo,
+  ContactDetail,
   LOGIN_FULFILLED,
   LOGIN_PENDING,
   LOGIN_REJECTED,
@@ -21,6 +17,12 @@ import {
   REGISTER_FULFILLED,
   REGISTER_PENDING,
   REGISTER_REJECTED,
+  GET_CONTACT_PENDING,
+  GET_CONTACT_FULFILLED,
+  GET_CONTACT_REJECTED,
+  UPDATE_BALANCE_PENDING,
+  UPDATE_BALANCE_FULFILLED,
+  UPDATE_BALANCE_REJECTED,
   UserActionTypes,
 } from './types';
 
@@ -84,6 +86,59 @@ function updateUserRejected(msg: string): UserActionTypes {
   };
 }
 
+function getContactPending(): UserActionTypes {
+  return {
+    type: GET_CONTACT_PENDING,
+  };
+}
+
+function getContactFulfilled(
+  contacts: ContactDetail[],
+  pageInfo: PageInfo,
+): UserActionTypes {
+  return {
+    type: GET_CONTACT_FULFILLED,
+    payload: {contacts, pageInfo},
+  };
+}
+
+function getContactRejected(msg: string): UserActionTypes {
+  return {
+    type: GET_CONTACT_REJECTED,
+    payload: msg,
+  };
+}
+
+export function updateBalanceFulFilled(balance: string): UserActionTypes {
+  return {
+    type: UPDATE_BALANCE_FULFILLED,
+    payload: balance,
+  };
+}
+
+// function getUserFulfilled(credentials: UserCredentials): UserActionTypes {
+//   return {
+//     type: UPDATE_BALANCE_FULFILLED,
+//     payload: credentials,
+//   };
+// }
+
+// function getUserRejected(): UserActionTypes {
+//   return {
+//     type: UPDATE_BALANCE_REJECTED,
+//   };
+// }
+
+// export const getUser = (id: number): AppThunk => (dispatch) => {
+//   dispatch(getUserPending());
+//   mainAPI.getUserByid(id).then((res)=>{
+//     const {isSuccess} = res;
+//     if(isSuccess){
+//       const {balan}
+//     }
+//   })
+// };
+
 export const register = (body: registerType): AppThunk => (dispatch) => {
   dispatch(registerPending());
   authAPI
@@ -97,12 +152,13 @@ export const register = (body: registerType): AppThunk => (dispatch) => {
           pin,
           image,
           phone_number: phoneNumber,
+          num_of_contact: numOfContact,
           balance,
           token,
         } = data;
         mainAPI.setToken(token);
         const credentials = {id, username, pin, token};
-        const details = {image, phoneNumber, balance};
+        const details = {image, phoneNumber, numOfContact, balance};
         dispatch(validateSession(true));
         dispatch(registerFulfilled({credentials, details}));
       } else {
@@ -130,12 +186,13 @@ export const login = (body: loginType): AppThunk => (dispatch) => {
           pin,
           image,
           phone_number: phoneNumber,
+          num_of_contact: numOfContact,
           balance,
           token,
         } = data;
         mainAPI.setToken(token);
         const credentials = {id, username, pin, token};
-        const details = {image, phoneNumber, balance};
+        const details = {image, phoneNumber, numOfContact, balance};
         dispatch(validateSession(true));
         dispatch(loginFulfilled({credentials, details}));
       } else {
@@ -157,7 +214,6 @@ export const updateUser = (id: number, body: updateUserType): AppThunk => (
   mainAPI
     .updateUser(id, body)
     .then((res: any) => {
-      console.log(res);
       const {isSuccess, isTokenValid, data} = res;
       if (isSuccess && isTokenValid) {
         const {username, pin, image, phone_number: phoneNumber} = data;
@@ -173,5 +229,25 @@ export const updateUser = (id: number, body: updateUserType): AppThunk => (
     .catch((err) => {
       console.log(err);
       dispatch(updateUserRejected(err));
+    });
+};
+
+export const getContact = (endpoint: string): AppThunk => (dispatch) => {
+  dispatch(getContactPending());
+  mainAPI
+    .getContact(endpoint)
+    .then((res: any) => {
+      const {isSuccess, isTokenValid} = res;
+      if (isSuccess && isTokenValid) {
+        const {contacts, pageInfo} = res;
+        dispatch(validateSession(true));
+        dispatch(getContactFulfilled(contacts, pageInfo));
+      } else {
+        dispatch(validateSession(false));
+        dispatch(getContactRejected('Failed to get contact list.'));
+      }
+    })
+    .catch((err) => {
+      dispatch(getContactRejected(err));
     });
 };

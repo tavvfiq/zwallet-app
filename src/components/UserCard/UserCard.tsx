@@ -1,26 +1,41 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styles from './styles';
-import userIcon from '../../assets/img/user.jpg';
-import {CardProps} from './propsType';
+import userIcon from '../../assets/img/user.png';
+// import {CardProps} from './propsType';
+import {ContactDetail} from '../../store/user/types';
+import {transactionDetail} from '../../store/transaction/types';
+
+type CardProps = ContactDetail &
+  transactionDetail & {
+    onClick?: (id: number) => void;
+  };
 
 const UserCard = (props: CardProps) => {
   return (
     <>
-      <View style={styles.cardContainer}>
+      <Pressable
+        onPress={() => {
+          if (props.onClick) {
+            props.onClick(props.id);
+          }
+        }}
+        style={styles.cardContainer}>
         <View style={styles.imageAndName}>
           <FastImage
             style={styles.image}
-            source={props.image !== '' ? {uri: props.image} : userIcon}
+            source={props.image !== null ? {uri: props.image} : userIcon}
             {...{resizeMode: 'cover'}}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.nameText}>{props.name}</Text>
+            <Text style={styles.nameText}>{props.username}</Text>
             <Text style={styles.childText}>
               {props.transaction_name
                 ? props.transaction_name
-                : props.phone_number}
+                : props.phoneNumber
+                ? props.phoneNumber
+                : 'No Phone Number'}
             </Text>
           </View>
         </View>
@@ -31,12 +46,12 @@ const UserCard = (props: CardProps) => {
               : styles.amountTextOut
           }>
           {props.amount
-            ? `${
-                props.transaction_type === 'in' ? '+' : '-'
-              }Rp${props.amount.toLocaleString('id-ID')}`
+            ? `${props.transaction_type === 'in' ? '+' : '-'}Rp${Number(
+                props.amount,
+              ).toLocaleString('id-ID')}`
             : ''}
         </Text>
-      </View>
+      </Pressable>
     </>
   );
 };

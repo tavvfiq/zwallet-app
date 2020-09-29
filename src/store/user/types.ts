@@ -1,7 +1,7 @@
 import {AsyncActionStatus} from '../asyncActionStatus';
 
-type UserCredentials = {
-  id: number;
+export type UserCredentials = {
+  id?: number;
   username: string;
   email?: string;
   password?: string;
@@ -16,11 +16,14 @@ type UserDetails = {
   numOfContact?: number;
 };
 
-type ContactDetail = {
+export type ContactDetail = {
+  id: number;
   username: string;
   image: string;
-  phoneNumber: string;
+  phoneNumber?: string;
 };
+
+export type ContactList = ContactDetail[];
 
 //for pagination
 export type PageInfo = {
@@ -43,6 +46,13 @@ const REGISTER = 'REGISTER';
 export const REGISTER_PENDING = REGISTER + AsyncActionStatus.PENDING;
 export const REGISTER_FULFILLED = REGISTER + AsyncActionStatus.FULFILLED;
 export const REGISTER_REJECTED = REGISTER + AsyncActionStatus.REJECTED;
+const UPDATE_BALANCE = 'UPDATE_BALANCE';
+export const UPDATE_BALANCE_PENDING =
+  UPDATE_BALANCE + AsyncActionStatus.PENDING;
+export const UPDATE_BALANCE_FULFILLED =
+  UPDATE_BALANCE + AsyncActionStatus.FULFILLED;
+export const UPDATE_BALANCE_REJECTED =
+  UPDATE_BALANCE + AsyncActionStatus.REJECTED;
 const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_USER_PENDING = UPDATE_USER + AsyncActionStatus.PENDING;
 export const UPDATE_USER_FULFILLED = UPDATE_USER + AsyncActionStatus.FULFILLED;
@@ -63,7 +73,7 @@ export interface User {
 
 export interface UserState {
   user: User;
-  contact?: ContactDetail[];
+  contacts?: ContactList;
   status: RequestStatus;
   pageInfo: PageInfo;
 }
@@ -102,7 +112,15 @@ export interface getContact {
     | typeof GET_CONTACT_PENDING
     | typeof GET_CONTACT_FULFILLED
     | typeof GET_CONTACT_REJECTED;
-  payload?: ContactDetail[] | PageInfo;
+  payload?: {contacts: ContactDetail[]; pageInfo: PageInfo} | string;
+}
+
+export interface updateBalance {
+  type:
+    | typeof UPDATE_BALANCE_PENDING
+    | typeof UPDATE_BALANCE_FULFILLED
+    | typeof UPDATE_BALANCE_REJECTED;
+  payload: string;
 }
 
 export type UserActionTypes =
@@ -110,4 +128,5 @@ export type UserActionTypes =
   | register
   | updateUser
   | addContact
-  | getContact;
+  | getContact
+  | updateBalance;

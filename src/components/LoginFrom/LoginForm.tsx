@@ -6,7 +6,8 @@ import {Button, Input} from 'react-native-elements';
 import {Formik, FormikProps} from 'formik';
 import {object as yupObject, string as yupString} from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../../store';
 import {AppThunkDispatch} from '../../store/thunk';
@@ -15,6 +16,7 @@ import {loginType} from '../../utils/types';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
+  system: state.system,
   user: state.user,
 });
 
@@ -29,7 +31,8 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
+  route: RouteProp<any, any>;
 };
 
 type FormValues = {
@@ -59,8 +62,23 @@ class LoginForm extends Component<Props, object> {
     });
   };
 
+  async waitLogin() {
+    return await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (this.props.system.sessionIsValid) {
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      }, 1000);
+    });
+  }
+
   handleSubmit = (values: FormValues) => {
     this.props.login(values);
+    this.waitLogin().then(() => {
+      this.props.navigation.navigate('CreatePinScreen');
+    });
   };
 
   renderForm = ({
@@ -149,10 +167,6 @@ class LoginForm extends Component<Props, object> {
   );
 
   render() {
-    const {user} = this.props.user;
-    if (user.credentials.token !== '') {
-      this.props.navigation.navigate('CreatePinScreen');
-    }
     return (
       <Formik
         initialValues={{email: '', password: ''}}

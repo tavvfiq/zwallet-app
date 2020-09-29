@@ -9,7 +9,7 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {NavigationScreenProp} from 'react-navigation';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -23,6 +23,9 @@ import Home from './screens/Home/Home';
 import TransactionHistory from './screens/Transaction/TransactionHistory';
 import SearchReceiver from './screens/Transaction/SearchReceiver';
 import Transfer from './screens/Transaction/Transfer';
+import PinConfirmation from './screens/Transaction/PinConfirmation';
+import TransactionInfo from './screens/Transaction/TransactionInfo';
+import SplashScreen from './screens/SplashScreen/SplashScreen';
 
 import {store} from './store';
 
@@ -32,13 +35,18 @@ interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
 
+// LogBox.ignoreLogs([
+//   'Non-serializable values were found in the navigation state',
+// ]);
+
 const App = () => {
   return (
     <>
       <Provider store={store}>
         {/* <StatusBar /> */}
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Transfer" headerMode="none">
+          <Stack.Navigator initialRouteName="SplashScreen" headerMode="none">
+            <Stack.Screen name="SplashScreen" component={SplashScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={RegisterScreen} />
             <Stack.Screen name="CreatePinScreen" component={CreatePinScreen} />
@@ -49,6 +57,8 @@ const App = () => {
             />
             <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
             <Stack.Screen name="Transfer" component={Transfer} />
+            <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
+            <Stack.Screen name="TransactionInfo" component={TransactionInfo} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

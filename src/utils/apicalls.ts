@@ -68,8 +68,8 @@ class protectedAPI extends zwalletAPI {
     return config;
   };
 
-  public getTransactionHistory = (id: number) =>
-    this.instance.get(`/transaction/${id}`);
+  public getTransactionHistory = (endpoint: string) =>
+    this.instance.get(endpoint);
   public doTransaction = (body: transactionType) =>
     this.instance.post('/transaction/send', body);
   public topUp = (body: transactionType) => {
@@ -80,6 +80,7 @@ class protectedAPI extends zwalletAPI {
   public getContact = (endpoint: string) => this.instance.get(endpoint);
   public updateUser = (id: number, body: updateUserType) =>
     this.instance.patch(`/user/${id}`, body);
+  public getUserByid = (id: number) => this.instance.get(`/user/${id}`);
 }
 
 const authAPI = new unprotectedAPI();

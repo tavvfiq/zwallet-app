@@ -53,7 +53,7 @@ class CreatePinForm extends React.Component<Props, State> {
     const {id} = this.props.user.user.credentials;
     if (!this.state.isPinCreated) {
       this.setState({isPinCreated: true});
-      this.props.updateUser(id, {
+      this.props.updateUser(id as number, {
         pin: this.state.pin,
       });
     } else {
@@ -99,6 +99,7 @@ class CreatePinForm extends React.Component<Props, State> {
                 cellStyleFocused={styles.pinCellFocused}
                 textStyle={styles.pinTextFocused}
                 onBackspace={this.backSpacePressed}
+                restrictToNumbers={true}
               />
             )}
             <Button

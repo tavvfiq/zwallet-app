@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingTop: 42,
     backgroundColor: '#FAFCFF',
+    // height,
   },
   profileImage: {
     width: 52,

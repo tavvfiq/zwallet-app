@@ -1,15 +1,28 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {NavigationScreenProp} from 'react-navigation';
+import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import userIcon from '../../assets/img/user.png';
 import {styles} from './transactionStyle';
 import {DateTime} from 'luxon';
+import {RootState} from '../../store';
+import {connect, ConnectedProps} from 'react-redux';
+import {transactionType} from '../../utils/types';
 
-type Props = {
+//connecting state and dispatch
+const mapState = (state: RootState) => ({
+  user: state.user,
+});
+
+const connector = connect(mapState, {});
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
   navigation: NavigationScreenProp<any, any>;
+  route: NavigationRoute;
 };
 
 type State = {
@@ -37,17 +50,45 @@ class Transfer extends React.Component<Props, State> {
   onConfirm = () => {
     if (!this.state.confirmed) {
       this.setState({confirmed: true});
+    } else {
+      const transactionData: transactionType = {
+        sender_id: this.props.user.user.credentials.id,
+        receiver_id: this.props.route.params?.id,
+        transaction_name: 'Transfer',
+        transaction_type: 'out',
+        amount: Number(this.state.value),
+        notes: this.state.notes,
+      };
+      this.props.navigation.navigate('PinConfirmation', {
+        pin: this.props.user.user.credentials.pin,
+        transactionData,
+        date: this.state.datetime,
+      });
     }
   };
 
   render() {
     const {confirmed, isBlur} = this.state;
+    const {contacts, user: currUser} = this.props.user;
+    const idx =
+      contacts?.findIndex((contact) => {
+        return contact.id === this.props.route.params?.id;
+      }) || 0;
+    const user = contacts[idx];
+    const balanceLeft = currUser.details.balance - Number(this.state.value);
     return (
       <>
         <View style={styles.container}>
           <View style={styles.header}>
             <View style={styles.headerSection}>
-              <Icon name="arrow-left" color="white" size={26} />
+              <Icon
+                onPress={() => {
+                  this.props.navigation.goBack();
+                }}
+                name="arrow-left"
+                color="white"
+                size={26}
+              />
               <Text style={styles.headerText}>
                 {confirmed ? 'Confirmation' : 'Transfer'}
               </Text>
@@ -55,12 +96,14 @@ class Transfer extends React.Component<Props, State> {
             <View style={styles.headerCard}>
               <FastImage
                 style={styles.cardImage}
-                source={userIcon}
+                source={user.image ? {uri: user.image} : userIcon}
                 {...{resizeMode: 'cover'}}
               />
               <View style={styles.headerCardText}>
-                <Text style={styles.nameText}>Taufiq Widi</Text>
-                <Text style={styles.phoneNumberText}>081284544654</Text>
+                <Text style={styles.nameText}>{user.username}</Text>
+                <Text style={styles.phoneNumberText}>
+                  {user.phoneNumber ? user.phoneNumber : 'No Phone Number'}
+                </Text>
               </View>
             </View>
           </View>
@@ -75,10 +118,13 @@ class Transfer extends React.Component<Props, State> {
                   style={styles.textInputStyle}
                   keyboardType="numeric"
                   onChange={this.handleOnChange}
-                  // value={value}
+                  value={this.state.value}
                 />
               </View>
-              <Text style={styles.balanceText}>Rp120.000 Available</Text>
+              <Text style={styles.balanceText}>
+                Rp{Number(currUser.details.balance).toLocaleString('id-ID')}{' '}
+                Available
+              </Text>
               <Input
                 leftIcon={
                   <Icon
@@ -121,20 +167,22 @@ class Transfer extends React.Component<Props, State> {
                 </View>
                 <View style={styles.cell}>
                   <Text style={styles.cellTitleText}>Balance Left</Text>
-                  <Text style={styles.cellChildText}>Rp20.000</Text>
+                  <Text style={styles.cellChildText}>
+                    Rp{Number(balanceLeft).toLocaleString('id-ID')}
+                  </Text>
                 </View>
               </View>
               <View style={styles.confirmationContainer}>
                 <View style={styles.cell}>
                   <Text style={styles.cellTitleText}>Date</Text>
                   <Text style={styles.cellChildText}>
-                    {this.state.datetime?.toISODate()}
+                    {this.state.datetime?.toFormat('LLL dd, yyyy')}
                   </Text>
                 </View>
                 <View style={styles.cell}>
                   <Text style={styles.cellTitleText}>Time</Text>
                   <Text style={styles.cellChildText}>
-                    {this.state.datetime?.toISOTime()}
+                    {this.state.datetime?.toFormat('HH.mm')}
                   </Text>
                 </View>
               </View>
@@ -156,4 +204,4 @@ class Transfer extends React.Component<Props, State> {
   }
 }
 
-export default Transfer;
+export default connector(Transfer);

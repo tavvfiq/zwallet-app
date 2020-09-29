@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect} from 'react';
 import {View, Text, Pressable, ScrollView} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
@@ -6,14 +7,27 @@ import FastImage from 'react-native-fast-image';
 import userIcon from '../../assets/img/user.png';
 import UserCard from '../../components/UserCard/UserCard';
 import styles from './styles';
-import {UserTransactionData} from '../../utils/dummyData';
 import {RootState} from '../../store';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {NavigationScreenProp} from 'react-navigation';
+import {getTransaction} from '../../store/transaction/actions';
+import {isEmpty} from 'underscore';
 
-const selectUser = (state: RootState) => state.user.user;
+type Props = {
+  navigation: NavigationScreenProp<any, any>;
+};
 
-const Home = () => {
-  const user = useSelector(selectUser);
+const selector = (state: RootState) => state;
+
+const Home = (props: Props) => {
+  const {user, transaction} = useSelector(selector);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    //TODO: store the recent transaction on local state and update when there is new transaction
+    dispatch(
+      getTransaction(`/transaction/${user.user.credentials.id}?page=1&limit=3`),
+    );
+  }, [dispatch, user.user.details.balance, user.user.credentials.id]);
   return (
     <>
       <View style={styles.homeContainer}>
@@ -21,12 +35,18 @@ const Home = () => {
           <View style={styles.textAndImage}>
             <FastImage
               style={styles.profileImage}
-              source={user.details.image ? {uri: user.details.image} : userIcon}
+              source={
+                user.user.details.image
+                  ? {uri: user.user.details.image}
+                  : userIcon
+              }
               {...{resizeMode: 'cover'}}
             />
             <View style={styles.textContainer}>
               <Text style={styles.helloText}>Hello,</Text>
-              <Text style={styles.nameText}>{user.credentials.username}</Text>
+              <Text style={styles.nameText}>
+                {user.user.credentials.username}
+              </Text>
             </View>
           </View>
           <Icon name="bell" size={21} style={styles.icon} />
@@ -34,11 +54,11 @@ const Home = () => {
         <View style={styles.cardBalanceContainer}>
           <Text style={styles.childText}>Balance</Text>
           <Text style={styles.balanceText}>
-            Rp{user.details.balance?.toLocaleString('id-ID')}
+            Rp{user.user.details.balance?.toLocaleString('id-ID')}
           </Text>
           <Text style={styles.childText}>
-            {user.details.phoneNumber
-              ? user.details.phoneNumber
+            {user.user.details.phoneNumber
+              ? user.user.details.phoneNumber
               : 'No Phone Number'}
           </Text>
         </View>
@@ -48,6 +68,9 @@ const Home = () => {
             title="Transfer"
             titleStyle={styles.buttonText}
             buttonStyle={styles.buttonStyle}
+            onPress={() => {
+              props.navigation.navigate('SearchReceiver');
+            }}
           />
           <Button
             icon={<Icon name="plus" color="#608DE2" size={28} />}
@@ -58,19 +81,39 @@ const Home = () => {
         </View>
         <View style={styles.subSectionContainer}>
           <Text style={styles.subSectionText}>Transaction History</Text>
-          <Pressable style={styles.seeAllButton}>
+          <Pressable
+            onPress={() => {
+              props.navigation.navigate('TransactionHistory');
+            }}
+            style={styles.seeAllButton}>
             <Text style={styles.seeAllButtonText}>See all</Text>
           </Pressable>
         </View>
+        {isEmpty(transaction.transactions) ? (
+          <Text
+            style={[
+              styles.subSectionText,
+              {
+                alignSelf: 'center',
+                marginTop: 10,
+                color: 'rgba(169, 169, 169, 0.8)',
+                height: '100%',
+              },
+            ]}>
+            No Transaction History
+          </Text>
+        ) : null}
       </View>
-      <ScrollView
-        contentContainerStyle={styles.transactionHistoryList}
-        contentInsetAdjustmentBehavior="automatic"
-        showsVerticalScrollIndicator={false}>
-        {UserTransactionData.map((item) => {
-          return <UserCard key={item.id} {...item} />;
-        })}
-      </ScrollView>
+      {!isEmpty(transaction.transactions) ? (
+        <ScrollView
+          contentContainerStyle={styles.transactionHistoryList}
+          contentInsetAdjustmentBehavior="automatic"
+          showsVerticalScrollIndicator={false}>
+          {transaction.transactions.map((item, index) => {
+            return <UserCard key={index} {...item} />;
+          })}
+        </ScrollView>
+      ) : null}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import {
   User,
-  RequestStatus,
   PageInfo,
+  ContactDetail,
   LOGIN_FULFILLED,
   LOGIN_PENDING,
   LOGIN_REJECTED,
@@ -11,8 +11,12 @@ import {
   UPDATE_USER_FULFILLED,
   UPDATE_USER_PENDING,
   UPDATE_USER_REJECTED,
+  GET_CONTACT_PENDING,
+  GET_CONTACT_FULFILLED,
+  GET_CONTACT_REJECTED,
   UserActionTypes,
   UserState,
+  UPDATE_BALANCE_FULFILLED,
 } from './types';
 
 const initialState: UserState = {
@@ -21,12 +25,14 @@ const initialState: UserState = {
       id: 0,
       username: 'Unknown',
       token: '',
-      pin: 0,
+      pin: '',
     },
     details: {
+      numOfContact: 0,
       balance: 0,
     },
   },
+  contacts: [],
   status: {
     loading: false,
     error: false,
@@ -136,6 +142,107 @@ export function userReducer(
           loading: false,
           error: true,
           msg: action.payload as string,
+        },
+      };
+    case GET_CONTACT_PENDING:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: true,
+        },
+      };
+    case GET_CONTACT_FULFILLED:
+      const {contacts, pageInfo} = action.payload as {
+        contacts: ContactDetail[];
+        pageInfo: PageInfo;
+      };
+      if (pageInfo.prevPage === '') {
+        if (contacts.length !== 0) {
+          return {
+            ...state,
+            contacts: [...contacts],
+            status: {...state.status, loading: false, error: false},
+            pageInfo: {
+              prevPage: pageInfo.prevPage,
+              page: Number(pageInfo.page),
+              nextPage: pageInfo.nextPage,
+            },
+          };
+        } else {
+          // if (pageInfo.nextPage !== '') {
+          return {
+            ...state,
+            status: {...state.status, loading: false, error: false},
+            pageInfo: {
+              prevPage: pageInfo.prevPage,
+              page: Number(pageInfo.page) + 1,
+              nextPage: pageInfo.nextPage,
+            },
+          };
+          // } else {
+          //   return {
+          //     ...state,
+          //     contacts: [],
+          //     status: {...state.status, loading: false, error: false},
+          //     pageInfo: {
+          //       prevPage: pageInfo.prevPage,
+          //       page: Number(pageInfo.page) + 1,
+          //       nextPage: pageInfo.nextPage,
+          //     },
+          //   };
+          // }
+        }
+      }
+      if (pageInfo.nextPage !== '') {
+        let _contacts = state.contacts || [];
+        const newArr = [..._contacts];
+        newArr.push(...contacts);
+        return {
+          ...state,
+          contacts: [...newArr],
+          status: {...state.status, loading: false, error: false},
+          pageInfo: {
+            prevPage: pageInfo.prevPage,
+            page: Number(pageInfo.page) + 1,
+            nextPage: pageInfo.nextPage,
+          },
+        };
+      } else {
+        let _contacts = state.contacts || [];
+        const newArr = [..._contacts];
+        newArr.push(...contacts);
+        return {
+          ...state,
+          contacts: [...newArr],
+          status: {...state.status, loading: false, error: false},
+          pageInfo: {
+            prevPage: pageInfo.prevPage,
+            nextPage: pageInfo.nextPage,
+            page: 1,
+          },
+        };
+      }
+    case GET_CONTACT_REJECTED:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: false,
+          error: true,
+          msg: action.payload as string,
+        },
+      };
+    case UPDATE_BALANCE_FULFILLED:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          details: {
+            ...state.user.details,
+            balance:
+              state.user.details.balance - Number(action.payload as string),
+          },
         },
       };
     default:

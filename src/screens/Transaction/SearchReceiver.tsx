@@ -1,64 +1,64 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, FlatList} from 'react-native';
 import {SearchBar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../store';
+import {getContact} from '../../store/user/actions';
+import {styles} from './searchReceiverStyle';
+import UserCard from '../../components/UserCard/UserCard';
+import {NavigationScreenProp} from 'react-navigation';
 
-const {width, height} = Dimensions.get('window');
+type Props = {
+  navigation: NavigationScreenProp<any, any>;
+};
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#FAFCFF',
-    height,
-  },
-  headerContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    paddingLeft: 22,
-    paddingRight: 22,
-    paddingTop: 42,
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#4D4B57',
-    marginLeft: 26,
-  },
-  searchContainer: {
-    backgroundColor: '#FAFCFF',
-    borderWidth: 0,
-    paddingLeft: 16,
-    paddingRight: 16,
-    marginTop: 25,
-  },
-  searchInput: {
-    backgroundColor: 'rgba(58, 61, 66, 0.1)',
-    borderRadius: 12,
-    paddingLeft: 12,
-  },
-  input: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#4D4B57',
-  },
-  subTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#4D4B57',
-    marginTop: 25,
-    marginLeft: 16,
-  },
-});
+const selectUser = (state: RootState) => state.user;
 
-const SearchReceiver = () => {
+const SearchReceiver = (props: Props) => {
   const [value, setValue] = useState('');
+  const state = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const trigGetContactWithSearch = () => {
+    dispatch(
+      getContact(
+        `/user/contact/${state.user.credentials.id}?search=${value}&page=1&limit=5`,
+      ),
+    );
+  };
+  const trigGetContact = () => {
+    if (
+      state.pageInfo.nextPage !== '' &&
+      state.pageInfo.nextPage !== undefined &&
+      !state.status.loading
+    ) {
+      dispatch(getContact(state.pageInfo.nextPage));
+    }
+  };
+  useEffect(() => {
+    dispatch(
+      getContact(
+        `/user/contact/${state.user.credentials.id}?search=${value}&page=1&limit=5`,
+      ),
+    );
+  }, []);
+
+  const onClickHandler = (id: number) => {
+    props.navigation.navigate('Transfer', {id});
+  };
+
   return (
     <>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Icon name="arrow-left" color="#4D4B57" size={26} />
+          <Icon
+            name="arrow-left"
+            color="#4D4B57"
+            size={26}
+            onPress={() => {
+              props.navigation.goBack();
+            }}
+          />
           <Text style={styles.headerText}>Find Receiver</Text>
         </View>
         <SearchBar
@@ -70,8 +70,25 @@ const SearchReceiver = () => {
           onChangeText={(text) => setValue(text)}
           placeholder="Search receiver here"
           underlineColorAndroid="transparent"
+          onSubmitEditing={trigGetContactWithSearch}
+          onCancel={trigGetContactWithSearch}
         />
         <Text style={styles.subTitle}>Quick Access</Text>
+        <Text style={styles.subTitle}>All Contacts</Text>
+        <Text style={styles.childText}>
+          {state.user.details.numOfContact} Contact(s) Found
+        </Text>
+        <FlatList
+          data={state.contacts}
+          renderItem={({item}) => (
+            <UserCard key={item.id} {...item} onClick={onClickHandler} />
+          )}
+          keyExtractor={(item) => String(item.id)}
+          onEndReached={trigGetContact}
+          contentContainerStyle={styles.listStyle}
+          showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={0.1}
+        />
       </View>
     </>
   );
