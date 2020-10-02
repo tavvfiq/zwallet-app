@@ -11,7 +11,9 @@ import {RootState} from '../../store';
 import {useSelector, useDispatch} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
 import {getTransaction} from '../../store/transaction/actions';
+import {transactionDetail} from '../../store/transaction/types';
 import {isEmpty} from 'underscore';
+// import NotifService from '../../utils/NotificationService';
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
@@ -28,20 +30,27 @@ const Home = (props: Props) => {
       getTransaction(`/transaction/${user.user.credentials.id}?page=1&limit=3`),
     );
   }, [dispatch, user.user.details.balance, user.user.credentials.id]);
+
   return (
     <>
       <View style={styles.homeContainer}>
         <View style={styles.headerContainer}>
           <View style={styles.textAndImage}>
-            <FastImage
-              style={styles.profileImage}
-              source={
-                user.user.details.image
-                  ? {uri: user.user.details.image}
-                  : userIcon
-              }
-              {...{resizeMode: 'cover'}}
-            />
+            <Pressable
+              onPress={() => {
+                props.navigation.navigate('Profile');
+              }}>
+              <FastImage
+                style={styles.profileImage}
+                source={
+                  user.user.details.image
+                    ? {uri: user.user.details.image}
+                    : userIcon
+                }
+                {...{resizeMode: 'cover'}}
+              />
+            </Pressable>
+
             <View style={styles.textContainer}>
               <Text style={styles.helloText}>Hello,</Text>
               <Text style={styles.nameText}>
@@ -83,7 +92,9 @@ const Home = (props: Props) => {
           <Text style={styles.subSectionText}>Transaction History</Text>
           <Pressable
             onPress={() => {
-              props.navigation.navigate('TransactionHistory');
+              props.navigation.navigate('TransactionHistory', {
+                id: user.user.credentials.id,
+              });
             }}
             style={styles.seeAllButton}>
             <Text style={styles.seeAllButtonText}>See all</Text>
@@ -97,23 +108,21 @@ const Home = (props: Props) => {
                 alignSelf: 'center',
                 marginTop: 10,
                 color: 'rgba(169, 169, 169, 0.8)',
-                height: '100%',
               },
             ]}>
             No Transaction History
           </Text>
-        ) : null}
+        ) : (
+          <ScrollView
+            contentContainerStyle={styles.transactionHistoryList}
+            contentInsetAdjustmentBehavior="automatic"
+            showsVerticalScrollIndicator={false}>
+            {transaction.transactions.map((item, index) => {
+              return <UserCard key={index} {...item} />;
+            })}
+          </ScrollView>
+        )}
       </View>
-      {!isEmpty(transaction.transactions) ? (
-        <ScrollView
-          contentContainerStyle={styles.transactionHistoryList}
-          contentInsetAdjustmentBehavior="automatic"
-          showsVerticalScrollIndicator={false}>
-          {transaction.transactions.map((item, index) => {
-            return <UserCard key={index} {...item} />;
-          })}
-        </ScrollView>
-      ) : null}
     </>
   );
 };

@@ -234,14 +234,15 @@ export function userReducer(
         },
       };
     case UPDATE_BALANCE_FULFILLED:
+      const newBalance =
+        state.user.details.balance - Number(action.payload as string);
       return {
         ...state,
         user: {
           ...state.user,
           details: {
             ...state.user.details,
-            balance:
-              state.user.details.balance - Number(action.payload as string),
+            balance: newBalance,
           },
         },
       };

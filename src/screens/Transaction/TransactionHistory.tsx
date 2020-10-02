@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Dimensions, SectionList} from 'react-native';
-import {NavigationScreenProp} from 'react-navigation';
+import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Feather';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store/index';
@@ -9,6 +9,7 @@ import {DateTime} from 'luxon';
 import {getTransaction} from '../../store/transaction/actions';
 import {Button} from 'react-native-elements';
 import UserCard from '../../components/UserCard/UserCard';
+import {isEmpty} from 'underscore';
 
 const {width, height} = Dimensions.get('window');
 
@@ -90,6 +91,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
+  route: NavigationRoute;
 };
 
 type sectionListData = {
@@ -97,11 +99,25 @@ type sectionListData = {
   data: transactionDetail[];
 };
 
-const compare = (transaction: transactionDetail, sort: string): number => {
-  if (transaction.transaction_type !== sort) {
-    return 1;
+const compare = (
+  a: transactionDetail,
+  b: transactionDetail,
+  sort: string,
+): number => {
+  if (sort === 'in') {
+    if (a.transaction_type < b.transaction_type) {
+      return 1;
+    } else {
+      return -1;
+    }
+  } else if (sort === 'out') {
+    if (a.transaction_type > b.transaction_type) {
+      return 1;
+    } else {
+      return -1;
+    }
   } else {
-    return -1;
+    return 0;
   }
 };
 
@@ -109,7 +125,6 @@ const sortTransactions = (
   transactions: transactionDetail[],
   sort: string,
 ): sectionListData[] => {
-  let sectionData = [...transactions];
   const startOfTheWeek = DateTime.local().startOf('week').toISODate();
   const endOfTheWeek = DateTime.local()
     .startOf('week')
@@ -121,14 +136,14 @@ const sortTransactions = (
     .plus({days: 30})
     .toISODate();
 
-  const thisWeek = sectionData.filter((transaction) => {
+  const thisWeek = transactions.filter((transaction) => {
     return (
       DateTime.fromISO(transaction.date as string).toISODate() >=
         startOfTheWeek &&
       DateTime.fromISO(transaction.date as string).toISODate() <= endOfTheWeek
     );
   });
-  const thisMonth = sectionData.filter((transaction) => {
+  const thisMonth = transactions.filter((transaction) => {
     return (
       !thisWeek.includes(transaction) &&
       DateTime.fromISO(transaction.date as string).toISODate() >=
@@ -136,41 +151,65 @@ const sortTransactions = (
       DateTime.fromISO(transaction.date as string).toISODate() <= endOfTheMonth
     );
   });
-  const remainingTransaction = sectionData.filter((transaction) => {
+  const remainingTransaction = transactions.filter((transaction) => {
     return !thisWeek.includes(transaction) && !thisMonth.includes(transaction);
   });
-
-  return [
+  let sectionData: sectionListData[];
+  //TODO: sort the transaction by type hang the program
+  // try {
+  //   sectionData = [
+  //     {
+  //       title: 'This Week',
+  //       data: sort === '' ? thisWeek : thisWeek.sort((a) => compare(a, sort)),
+  //     },
+  //     {
+  //       title: 'This Month',
+  //       data: sort === '' ? thisMonth : thisMonth.sort((a) => compare(a, sort)),
+  //     },
+  //     {
+  //       title: 'All History',
+  //       data:
+  //         sort === ''
+  //           ? remainingTransaction
+  //           : remainingTransaction.sort((a) => compare(a, sort)),
+  //     },
+  //   ];
+  // } catch (err) {
+  // console.log(err);
+  // console.log(
+  //   isEmpty(thisWeek),
+  //   isEmpty(thisMonth),
+  //   isEmpty(remainingTransaction),
+  // );
+  // console.log(thisWeek.sort((a, b) => compare(a, b, sort)));
+  sectionData = [
     {
       title: 'This Week',
-      data: sort === '' ? thisWeek : thisWeek.sort((a) => compare(a, sort)),
+      data: thisWeek,
     },
     {
       title: 'This Month',
-      data: sort === '' ? thisMonth : thisMonth.sort((a) => compare(a, sort)),
+      data: thisMonth,
     },
     {
       title: 'All History',
-      data:
-        sort === ''
-          ? remainingTransaction
-          : remainingTransaction.sort((a) => compare(a, sort)),
+      data: remainingTransaction,
     },
   ];
+  // }
+  return sectionData;
 };
 
-const buttonStateInit: {[key: string]: boolean} = {
+const buttonStateInit: {[key: string]: any} = {
   out: false,
   in: false,
+  sort: '',
 };
 
-const userSelector = (state: RootState) => state.user;
 const transactionSelector = (state: RootState) => state;
 
 const TransactionHistory = (props: Props) => {
-  const {user} = useSelector(userSelector);
   const {transaction} = useSelector(transactionSelector);
-  const [sort, setSort] = useState('');
   const [buttonState, setButtonState] = useState(buttonStateInit);
   const dispatch = useDispatch();
   const toggleButton = (buttonKey: string) => {
@@ -178,7 +217,12 @@ const TransactionHistory = (props: Props) => {
     for (const key in buttonState) {
       if (key === buttonKey) {
         newState[key] = !buttonState[key];
-      } else {
+        if (newState.sort === buttonKey) {
+          newState.sort = '';
+        } else {
+          newState.sort = buttonKey;
+        }
+      } else if (key !== 'sort') {
         newState[key] = false;
       }
     }
@@ -195,10 +239,13 @@ const TransactionHistory = (props: Props) => {
   };
   useEffect(() => {
     dispatch(
-      getTransaction(`/transaction/${user.credentials.id}?page=1&limit=5`),
+      getTransaction(`/transaction/${props.route.params?.id}?page=1&limit=10`),
     );
-  }, [dispatch, user.credentials.id]);
-  const sectionData = sortTransactions(transaction.transactions, sort);
+  }, [dispatch]);
+  const sectionData = sortTransactions(
+    transaction.transactions,
+    buttonState.sort,
+  );
   return (
     <>
       <View style={styles.container}>
@@ -242,11 +289,6 @@ const TransactionHistory = (props: Props) => {
             }
             onPress={() => {
               toggleButton('out');
-              if (sort === 'out') {
-                setSort('');
-              } else {
-                setSort('out');
-              }
             }}
           />
           <Button
@@ -263,11 +305,6 @@ const TransactionHistory = (props: Props) => {
             }
             onPress={() => {
               toggleButton('in');
-              if (sort === 'in') {
-                setSort('');
-              } else {
-                setSort('in');
-              }
             }}
           />
           <Button

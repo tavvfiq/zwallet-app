@@ -6,11 +6,9 @@ const styles = StyleSheet.create({
   homeContainer: {
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: 16,
-    paddingRight: 16,
     paddingTop: 42,
     backgroundColor: '#FAFCFF',
-    // height,
+    height,
   },
   profileImage: {
     width: 52,
@@ -23,6 +21,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   textAndImage: {
     display: 'flex',
@@ -51,6 +51,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     padding: 25,
+    marginLeft: 16,
+    marginRight: 16,
     height: 141,
     backgroundColor: '#6379F4',
     marginTop: 29,
@@ -70,6 +72,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingLeft: 16,
+    paddingRight: 16,
     marginTop: 30,
   },
   buttonStyle: {
@@ -89,6 +93,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingLeft: 16,
+    paddingRight: 16,
     marginTop: 30,
     marginBottom: 5,
   },

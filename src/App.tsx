@@ -26,6 +26,9 @@ import Transfer from './screens/Transaction/Transfer';
 import PinConfirmation from './screens/Transaction/PinConfirmation';
 import TransactionInfo from './screens/Transaction/TransactionInfo';
 import SplashScreen from './screens/SplashScreen/SplashScreen';
+import Profile from './screens/Profile/Profile';
+import PersonalInfo from './screens/Profile/PersonalInfo';
+import ChangePassword from './screens/Profile/ChangePassword';
 
 import {store} from './store';
 
@@ -59,6 +62,9 @@ const App = () => {
             <Stack.Screen name="Transfer" component={Transfer} />
             <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
             <Stack.Screen name="TransactionInfo" component={TransactionInfo} />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

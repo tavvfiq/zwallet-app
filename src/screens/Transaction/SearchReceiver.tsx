@@ -54,7 +54,7 @@ const SearchReceiver = (props: Props) => {
           <Icon
             name="arrow-left"
             color="#4D4B57"
-            size={26}
+            size={30}
             onPress={() => {
               props.navigation.goBack();
             }}

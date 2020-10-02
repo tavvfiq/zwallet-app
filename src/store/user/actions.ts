@@ -149,6 +149,7 @@ export const register = (body: registerType): AppThunk => (dispatch) => {
         const {
           id,
           username,
+          email,
           pin,
           image,
           phone_number: phoneNumber,
@@ -157,7 +158,7 @@ export const register = (body: registerType): AppThunk => (dispatch) => {
           token,
         } = data;
         mainAPI.setToken(token);
-        const credentials = {id, username, pin, token};
+        const credentials = {id, username, email, pin, token};
         const details = {image, phoneNumber, numOfContact, balance};
         dispatch(validateSession(true));
         dispatch(registerFulfilled({credentials, details}));
@@ -169,7 +170,7 @@ export const register = (body: registerType): AppThunk => (dispatch) => {
     .catch((error) => {
       // console.log(error);
       dispatch(validateSession(false));
-      dispatch(registerRejected(error));
+      dispatch(registerRejected('Register Failed'));
     });
 };
 
@@ -183,6 +184,7 @@ export const login = (body: loginType): AppThunk => (dispatch) => {
         const {
           id,
           username,
+          email,
           pin,
           image,
           phone_number: phoneNumber,
@@ -191,7 +193,7 @@ export const login = (body: loginType): AppThunk => (dispatch) => {
           token,
         } = data;
         mainAPI.setToken(token);
-        const credentials = {id, username, pin, token};
+        const credentials = {id, username, email, pin, token};
         const details = {image, phoneNumber, numOfContact, balance};
         dispatch(validateSession(true));
         dispatch(loginFulfilled({credentials, details}));
@@ -201,9 +203,8 @@ export const login = (body: loginType): AppThunk => (dispatch) => {
       }
     })
     .catch((error) => {
-      // console.log(error);
       dispatch(validateSession(false));
-      dispatch(loginRejected(error));
+      dispatch(loginRejected('Login Failed'));
     });
 };
 

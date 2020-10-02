@@ -14,6 +14,7 @@ import {
   GET_TRANSACTION_REJECTED,
   TransactionActionTypes,
 } from './types';
+import {PushNotification} from 'react-native-push-notification';
 
 function doTransactionPending(): TransactionActionTypes {
   return {
@@ -45,6 +46,7 @@ export const doTransaction = (body: transactionType): AppThunk => (
       const {isSuccess, isTokenValid} = res;
       if (isSuccess && isTokenValid) {
         const {amount} = res.data;
+
         dispatch(validateSession(true));
         dispatch(updateBalanceFulFilled(amount));
         dispatch(doTransactionFulfilled('Transaction Success'));
