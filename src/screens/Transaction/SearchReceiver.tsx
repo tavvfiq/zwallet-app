@@ -75,9 +75,19 @@ const SearchReceiver = (props: Props) => {
         />
         <Text style={styles.subTitle}>Quick Access</Text>
         <Text style={styles.subTitle}>All Contacts</Text>
-        <Text style={styles.childText}>
-          {state.user.details.numOfContact} Contact(s) Found
-        </Text>
+        {state.contacts?.length !== 0 ? (
+          <Text style={styles.childText}>
+            {state.user.details.numOfContact} Contact(s) Found
+          </Text>
+        ) : value !== '' ? (
+          <Text style={styles.childText}>
+            No Contact with name {value} is found!
+          </Text>
+        ) : (
+          <Text style={styles.childText}>
+            {state.user.details.numOfContact} Contact(s) Found
+          </Text>
+        )}
         <FlatList
           data={state.contacts}
           renderItem={({item}) => (

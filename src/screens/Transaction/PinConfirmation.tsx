@@ -2,7 +2,8 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {Button} from 'react-native-elements';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {NavigationScreenProp} from 'react-navigation';
+import {RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
 import {RootState} from '../../store';
@@ -10,6 +11,7 @@ import {AppThunkDispatch} from '../../store/thunk';
 import {doTransaction} from '../../store/transaction/actions';
 import {transactionType} from '../../utils/types';
 import {styles} from './transactionStyle';
+import {RootStackParamList} from '../../utils/types';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
@@ -32,9 +34,17 @@ type State = {
   isMatched: boolean;
 };
 
+type PinConfirmationRouteProps = RouteProp<
+  RootStackParamList,
+  'PinConfirmation'
+>;
+
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
+  navigation: NavigationScreenProp<
+    PinConfirmationRouteProps,
+    'PinConfirmation'
+  >;
+  route: PinConfirmationRouteProps;
 };
 
 class PinConfirmation extends React.Component<Props, State> {

@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {NavigationScreenProp} from 'react-navigation';
+import {RouteProp} from '@react-navigation/native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import userIcon from '../../assets/img/user.png';
@@ -10,6 +11,7 @@ import {DateTime} from 'luxon';
 import {RootState} from '../../store';
 import {connect, ConnectedProps} from 'react-redux';
 import {transactionType} from '../../utils/types';
+import {RootStackParamList} from '../../utils/types';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
@@ -20,9 +22,11 @@ const connector = connect(mapState, {});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
+type TransferRouteProps = RouteProp<RootStackParamList, 'Transfer'>;
+
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
+  navigation: NavigationScreenProp<RootStackParamList, 'Transfer'>;
+  route: TransferRouteProps;
 };
 
 type State = {

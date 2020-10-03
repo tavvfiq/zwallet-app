@@ -3,10 +3,21 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {NavigationScreenProp} from 'react-navigation';
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../utils/types';
+import Dialog, {DialogContent} from 'react-native-popup-dialog';
+import FastImage from 'react-native-fast-image';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
+import checkIcon from '../../assets/img/check.png';
+import failedIcon from '../../assets/img/failed.png';
+import waitingIcon from '../../assets/img/waiting.png';
 import {object as yupObject, string as yupString, ref} from 'yup';
+import {updateUser} from '../../store/user/actions';
+import {useSelector, useDispatch} from 'react-redux';
+import {updateUserType} from '../../utils/types';
+import {RootState} from '../../store';
 
 const {width, height} = Dimensions.get('window');
 
@@ -58,11 +69,33 @@ const styles = StyleSheet.create({
     marginTop: 217,
     marginBottom: 30,
   },
+  textDialog: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  buttonDialog: {
+    borderRadius: 10,
+    backgroundColor: '#6379F4',
+  },
+  dialogStyle: {
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  checkIconStyle: {
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
 });
 
+type ChangePasswordRouteProps = RouteProp<RootStackParamList, 'ChangePassword'>;
+
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
+  navigation: NavigationScreenProp<ChangePasswordRouteProps, 'ChangePassword'>;
+  route: ChangePasswordRouteProps;
 };
 
 const passwordValidation =
@@ -101,7 +134,13 @@ const ChangePassword = (props: Props) => {
   const {control, handleSubmit, errors} = useForm<formData>({
     resolver: yupResolver(validationSchema),
   });
+
+  const {status} = useSelector((state: RootState) => state.user);
   const [isPasswordShowed, setPasswordShowed] = useState(isPasswordShowedInit);
+
+  const [isVisible, setDialogVisiblity] = useState(false);
+
+  const dispatch = useDispatch();
 
   const toggleShowPassword = (what: string) => {
     const newState = {...isPasswordShowed};
@@ -112,12 +151,51 @@ const ChangePassword = (props: Props) => {
     }
     setPasswordShowed(newState);
   };
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    const updatePassword: updateUserType = {
+      password: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+    console.log(props.route.params?.id);
+    dispatch(updateUser(props.route.params?.id, updatePassword));
+    showDialog();
   });
+
+  const showDialog = () => {
+    setDialogVisiblity(true);
+  };
 
   return (
     <>
+      <Dialog visible={isVisible}>
+        <DialogContent style={styles.dialogStyle}>
+          <FastImage
+            style={styles.checkIconStyle}
+            source={
+              status.loading
+                ? waitingIcon
+                : status.error
+                ? failedIcon
+                : checkIcon
+            }
+            {...{resizeMode: 'cover'}}
+          />
+          <Text style={styles.textDialog}>{status.msg}</Text>
+          {!status.loading ? (
+            <Button
+              onPress={() => {
+                setDialogVisiblity(false);
+                if (!status.error) {
+                  props.navigation.navigate('Profile');
+                }
+              }}
+              buttonStyle={styles.buttonDialog}
+              title="Confirm"
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Icon

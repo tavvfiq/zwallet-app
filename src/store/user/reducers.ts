@@ -17,6 +17,7 @@ import {
   UserActionTypes,
   UserState,
   UPDATE_BALANCE_FULFILLED,
+  isUserDataType,
 } from './types';
 
 const initialState: UserState = {
@@ -110,31 +111,44 @@ export function userReducer(
         status: {
           ...state.status,
           loading: true,
+          msg: 'please wait',
         },
       };
     case UPDATE_USER_FULFILLED:
-      const {credentials, details} = action.payload as User;
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          credentials: {
-            ...state.user.credentials,
-            username: credentials.username,
-            pin: credentials.pin,
+      if (isUserDataType(action.payload)) {
+        const {credentials, details} = action.payload as User;
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            credentials: {
+              ...state.user.credentials,
+              username: credentials.username,
+              pin: credentials.pin,
+            },
+            details: {
+              ...state.user.details,
+              image: details.image,
+              phoneNumber: details.phoneNumber,
+            },
           },
-          details: {
-            ...state.user.details,
-            image: details.image,
-            phoneNumber: details.phoneNumber,
+          status: {
+            loading: false,
+            error: false,
+            msg: 'Profile updated',
           },
-        },
-        status: {
-          loading: false,
-          error: false,
-          msg: 'Profile updated',
-        },
-      };
+        };
+      } else {
+        return {
+          ...state,
+          status: {
+            loading: false,
+            error: false,
+            msg: action.payload as string,
+          },
+        };
+      }
+
     case UPDATE_USER_REJECTED:
       return {
         ...state,
@@ -157,8 +171,8 @@ export function userReducer(
         contacts: ContactDetail[];
         pageInfo: PageInfo;
       };
-      if (pageInfo.prevPage === '') {
-        if (contacts.length !== 0) {
+      if (contacts.length !== 0) {
+        if (pageInfo.prevPage === '') {
           return {
             ...state,
             contacts: [...contacts],
@@ -170,7 +184,33 @@ export function userReducer(
             },
           };
         } else {
-          // if (pageInfo.nextPage !== '') {
+          let _contacts = state.contacts || [];
+          const newArr = [..._contacts];
+          newArr.push(...contacts);
+          return {
+            ...state,
+            contacts: [...newArr],
+            status: {...state.status, loading: false, error: false},
+            pageInfo: {
+              prevPage: pageInfo.prevPage,
+              page: Number(pageInfo.page) + 1,
+              nextPage: pageInfo.nextPage,
+            },
+          };
+        }
+      } else {
+        if (pageInfo.prevPage === '') {
+          return {
+            ...state,
+            contacts: [],
+            status: {...state.status, loading: false, error: false},
+            pageInfo: {
+              prevPage: pageInfo.prevPage,
+              page: Number(pageInfo.page) + 1,
+              nextPage: pageInfo.nextPage,
+            },
+          };
+        } else {
           return {
             ...state,
             status: {...state.status, loading: false, error: false},
@@ -180,48 +220,7 @@ export function userReducer(
               nextPage: pageInfo.nextPage,
             },
           };
-          // } else {
-          //   return {
-          //     ...state,
-          //     contacts: [],
-          //     status: {...state.status, loading: false, error: false},
-          //     pageInfo: {
-          //       prevPage: pageInfo.prevPage,
-          //       page: Number(pageInfo.page) + 1,
-          //       nextPage: pageInfo.nextPage,
-          //     },
-          //   };
-          // }
         }
-      }
-      if (pageInfo.nextPage !== '') {
-        let _contacts = state.contacts || [];
-        const newArr = [..._contacts];
-        newArr.push(...contacts);
-        return {
-          ...state,
-          contacts: [...newArr],
-          status: {...state.status, loading: false, error: false},
-          pageInfo: {
-            prevPage: pageInfo.prevPage,
-            page: Number(pageInfo.page) + 1,
-            nextPage: pageInfo.nextPage,
-          },
-        };
-      } else {
-        let _contacts = state.contacts || [];
-        const newArr = [..._contacts];
-        newArr.push(...contacts);
-        return {
-          ...state,
-          contacts: [...newArr],
-          status: {...state.status, loading: false, error: false},
-          pageInfo: {
-            prevPage: pageInfo.prevPage,
-            nextPage: pageInfo.nextPage,
-            page: 1,
-          },
-        };
       }
     case GET_CONTACT_REJECTED:
       return {

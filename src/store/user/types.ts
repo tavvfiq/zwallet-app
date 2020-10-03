@@ -2,7 +2,7 @@ import {AsyncActionStatus} from '../asyncActionStatus';
 
 export type UserCredentials = {
   id?: number;
-  username: string;
+  username?: string;
   email?: string;
   password?: string;
   pin?: string;
@@ -71,6 +71,14 @@ export interface User {
   details: UserDetails;
 }
 
+export const isUserDataType = (data: any) => {
+  if ((data as User).credentials) {
+    return true;
+  } else {
+    false;
+  }
+};
+
 export interface UserState {
   user: User;
   contacts?: ContactList;
@@ -96,7 +104,7 @@ export interface updateUser {
     | typeof UPDATE_USER_PENDING
     | typeof UPDATE_USER_FULFILLED
     | typeof UPDATE_USER_REJECTED;
-  payload?: User;
+  payload?: User | string;
 }
 
 export interface addContact {

@@ -1,3 +1,5 @@
+import {DateTime} from 'luxon';
+
 export interface loginType {
   email: string;
   password: string;
@@ -22,8 +24,22 @@ export interface updateUserType {
   username?: string;
   email?: string;
   password?: string;
+  newPassword?: string;
   pin?: string;
+  newPin?: string;
   image?: any;
   phoneNumber?: number;
   numOfContact?: number;
 }
+
+export type RootStackParamList = {
+  Transfer: {id: number};
+  PinConfirmation: {
+    pin: string;
+    transactionData: transactionType;
+    date: DateTime;
+  };
+  TransactionInfo: {amount: number; date: DateTime; notes: string};
+  PersonalInfo: {username: string; email: string; phone: string};
+  ChangePassword: {id: number};
+};

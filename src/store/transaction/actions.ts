@@ -14,7 +14,6 @@ import {
   GET_TRANSACTION_REJECTED,
   TransactionActionTypes,
 } from './types';
-import {PushNotification} from 'react-native-push-notification';
 
 function doTransactionPending(): TransactionActionTypes {
   return {

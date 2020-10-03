@@ -1,9 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {NavigationScreenProp} from 'react-navigation';
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../utils/types';
 
 const {width, height} = Dimensions.get('window');
 
@@ -87,9 +89,11 @@ const styles = StyleSheet.create({
   },
 });
 
+type PersonalInfoRouteProps = RouteProp<RootStackParamList, 'PersonalInfo'>;
+
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
+  navigation: NavigationScreenProp<PersonalInfoRouteProps, 'PersonalInfo'>;
+  route: PersonalInfoRouteProps;
 };
 
 const PersonalInfo = (props: Props) => {

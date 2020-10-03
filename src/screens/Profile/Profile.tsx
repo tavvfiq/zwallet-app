@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, Switch} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {NavigationScreenProp} from 'react-navigation';
 import FastImage from 'react-native-fast-image';
 import userIcon from '../../assets/img/user.png';
 import {useSelector} from 'react-redux';
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
 };
 
 const Profile = (props: Props) => {
@@ -162,7 +161,9 @@ const Profile = (props: Props) => {
             containerStyle={styles.buttonSingleContainer}
             titleStyle={styles.titleStyle}
             onPress={() => {
-              props.navigation.navigate('ChangePassword');
+              props.navigation.navigate('ChangePassword', {
+                id: user.credentials.id,
+              });
             }}
           />
           <Button

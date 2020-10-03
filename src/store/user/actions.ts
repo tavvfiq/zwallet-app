@@ -4,7 +4,6 @@ import {loginType, registerType, updateUserType} from '../../utils/types';
 import {validateSession} from '../system/actions';
 
 import {
-  UserCredentials,
   User,
   PageInfo,
   ContactDetail,
@@ -20,9 +19,7 @@ import {
   GET_CONTACT_PENDING,
   GET_CONTACT_FULFILLED,
   GET_CONTACT_REJECTED,
-  UPDATE_BALANCE_PENDING,
   UPDATE_BALANCE_FULFILLED,
-  UPDATE_BALANCE_REJECTED,
   UserActionTypes,
 } from './types';
 
@@ -167,10 +164,9 @@ export const register = (body: registerType): AppThunk => (dispatch) => {
         dispatch(registerRejected(data.msg));
       }
     })
-    .catch((error) => {
-      // console.log(error);
+    .catch(() => {
       dispatch(validateSession(false));
-      dispatch(registerRejected('Register Failed'));
+      dispatch(registerRejected('Connection error'));
     });
 };
 
@@ -202,9 +198,9 @@ export const login = (body: loginType): AppThunk => (dispatch) => {
         dispatch(loginRejected(data.msg));
       }
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch(validateSession(false));
-      dispatch(loginRejected('Login Failed'));
+      dispatch(loginRejected('Connection error'));
     });
 };
 
@@ -217,19 +213,31 @@ export const updateUser = (id: number, body: updateUserType): AppThunk => (
     .then((res: any) => {
       const {isSuccess, isTokenValid, data} = res;
       if (isSuccess && isTokenValid) {
-        const {username, pin, image, phone_number: phoneNumber} = data;
-        const credentials = {id, username, pin};
+        const {
+          username,
+          email,
+          pin,
+          image,
+          phone_number: phoneNumber,
+          msg,
+        } = data;
+        const credentials = {id, username, email, pin};
         const details = {image, phoneNumber};
-        dispatch(validateSession(true));
-        dispatch(updateUserFulfilled({credentials, details}));
+        if (username !== undefined) {
+          dispatch(validateSession(true));
+          dispatch(updateUserFulfilled({credentials, details}));
+        } else {
+          dispatch(validateSession(true));
+          dispatch({type: UPDATE_USER_FULFILLED, payload: msg});
+        }
       } else {
         dispatch(validateSession(false));
         dispatch(updateUserRejected(data.msg));
       }
     })
-    .catch((err) => {
-      console.log(err);
-      dispatch(updateUserRejected(err));
+    .catch(() => {
+      const msg = 'Connection Error';
+      dispatch(updateUserRejected(msg));
     });
 };
 
@@ -248,7 +256,8 @@ export const getContact = (endpoint: string): AppThunk => (dispatch) => {
         dispatch(getContactRejected('Failed to get contact list.'));
       }
     })
-    .catch((err) => {
-      dispatch(getContactRejected(err));
+    .catch(() => {
+      const msg = 'Connection Error';
+      dispatch(getContactRejected(msg));
     });
 };

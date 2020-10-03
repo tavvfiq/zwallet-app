@@ -1,18 +1,29 @@
-import React, {Component} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
 import {styles} from './transactionStyle';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {NavigationScreenProp} from 'react-navigation';
+import {RouteProp} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import checkIcon from '../../assets/img/check.png';
+import {RootStackParamList} from '../../utils/types';
 
 const userSelector = (state: RootState) => state.user.user;
 
+type TransactionInfoRouteProps = RouteProp<
+  RootStackParamList,
+  'TransactionInfo'
+>;
+
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
+  navigation: NavigationScreenProp<
+    TransactionInfoRouteProps,
+    'TransactionInfo'
+  >;
+  route: TransactionInfoRouteProps;
 };
 
 const TransferInformation = (props: Props) => {
@@ -50,7 +61,7 @@ const TransferInformation = (props: Props) => {
               <Text style={styles.cellTitleText}>Balance Left</Text>
               <Text style={styles.cellChildText}>
                 Rp
-                {user.details.balance.toLocaleString('id-ID')}
+                {user.details.balance?.toLocaleString('id-ID')}
               </Text>
             </View>
           </View>

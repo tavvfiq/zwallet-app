@@ -38,9 +38,9 @@ interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
 
-// LogBox.ignoreLogs([
-//   'Non-serializable values were found in the navigation state',
-// ]);
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const App = () => {
   return (
