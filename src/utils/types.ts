@@ -12,34 +12,27 @@ export interface registerType {
 }
 
 export interface transactionType {
-  sender_id?: number;
-  receiver_id: number;
-  transaction_name: 'Transfer' | 'Subscription' | 'Top Up';
-  transaction_type: 'in' | 'out';
-  amount: number;
-  notes?: string;
+  transactionData: FormData;
 }
 
 export interface updateUserType {
-  username?: string;
-  email?: string;
-  password?: string;
-  newPassword?: string;
-  pin?: string;
-  newPin?: string;
-  image?: any;
-  phoneNumber?: number;
-  numOfContact?: number;
+  userdata?: FormData;
 }
 
 export type RootStackParamList = {
   Transfer: {id: number};
   PinConfirmation: {
     pin: string;
-    transactionData: transactionType;
+    data: FormData;
     date: DateTime;
   };
-  TransactionInfo: {amount: number; date: DateTime; notes: string};
+  TransactionInfo: {
+    amount: number;
+    date: DateTime;
+    notes: string;
+    success: boolean;
+  };
   PersonalInfo: {username: string; email: string; phone: string};
   ChangePassword: {id: number};
+  ChangePin: {id: number; pin: string};
 };

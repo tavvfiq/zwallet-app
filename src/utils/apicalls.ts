@@ -64,13 +64,17 @@ class protectedAPI extends zwalletAPI {
 
   private _handleRequest = (config: AxiosRequestConfig) => {
     config.headers['x-access-token'] = `Bearer ${this.token}`;
+    config.headers['content-type'] = 'multipart/form-data';
+    config.headers.mimeType = 'multipart/form-data';
+    config.headers['cache-control'] = 'no-cache';
+    config.headers.accept = 'application/json';
 
     return config;
   };
 
   public getTransactionHistory = (endpoint: string) =>
     this.instance.get(endpoint);
-  public doTransaction = (body: transactionType) =>
+  public doTransaction = (body: FormData) =>
     this.instance.post('/transaction/send', body);
   public topUp = (body: transactionType) => {
     this.instance.post('/transaction/topup', body);
@@ -79,7 +83,7 @@ class protectedAPI extends zwalletAPI {
     this.instance.post('/user/contact', body);
   public getContact = (endpoint: string) => this.instance.get(endpoint);
   public updateUser = (id: number, body: updateUserType) =>
-    this.instance.patch(`/user/${id}`, body);
+    this.instance.patch(`/user/${id}`, body.userdata);
   public getUserByid = (id: number) => this.instance.get(`/user/${id}`);
 }
 
