@@ -33,7 +33,10 @@ export const transactionReducer = (
 ): TransactionState => {
   switch (action.type) {
     case DO_TRANSACTION_PENDING:
-      return {...state, status: {...state.status, loading: true}};
+      return {
+        ...state,
+        status: {...state.status, loading: true, msg: 'Please wait'},
+      };
     case DO_TRANSACTION_FULFILLED:
       return {
         ...state,

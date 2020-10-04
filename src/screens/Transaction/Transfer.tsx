@@ -10,7 +10,6 @@ import {styles} from './transactionStyle';
 import {DateTime} from 'luxon';
 import {RootState} from '../../store';
 import {connect, ConnectedProps} from 'react-redux';
-import {transactionType} from '../../utils/types';
 import {RootStackParamList} from '../../utils/types';
 
 //connecting state and dispatch
@@ -78,7 +77,8 @@ class Transfer extends React.Component<Props, State> {
         return contact.id === this.props.route.params?.id;
       }) || 0;
     const user = contacts[idx];
-    const balanceLeft = currUser.details.balance - Number(this.state.value);
+    const balanceLeft =
+      (currUser.details.balance as number) - Number(this.state.value);
     return (
       <>
         <View style={styles.container}>

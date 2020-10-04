@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {Button} from 'react-native-elements';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import Dialog, {DialogContent} from 'react-native-popup-dialog';
+import FastImage from 'react-native-fast-image';
 import {NavigationScreenProp} from 'react-navigation';
 import {RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
@@ -9,13 +11,15 @@ import Icon from 'react-native-vector-icons/Feather';
 import {RootState} from '../../store';
 import {AppThunkDispatch} from '../../store/thunk';
 import {doTransaction} from '../../store/transaction/actions';
-import {transactionType} from '../../utils/types';
 import {styles} from './transactionStyle';
 import {RootStackParamList} from '../../utils/types';
+import checkIcon from '../../assets/img/check.png';
+import failedIcon from '../../assets/img/failed.png';
+import waitingIcon from '../../assets/img/waiting.png';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
-  user: state.user,
+  transaction: state.transaction,
 });
 
 const mapDispatch = (dispatch: AppThunkDispatch) => {
@@ -32,6 +36,7 @@ type State = {
   pin: string;
   msg: string;
   isMatched: boolean;
+  isDialogVisible: boolean;
 };
 
 type PinConfirmationRouteProps = RouteProp<
@@ -52,6 +57,7 @@ class PinConfirmation extends React.Component<Props, State> {
     pin: '',
     msg: '',
     isMatched: false,
+    isDialogVisible: false,
   };
 
   pinInputRef = React.createRef<SmoothPinCodeInput>();
@@ -67,12 +73,7 @@ class PinConfirmation extends React.Component<Props, State> {
         this.setState({isMatched: true});
         // console.log(this.props.route.params.data);
         this.props.doTransaction(this.props.route.params.data);
-        this.props.navigation.navigate('TransactionInfo', {
-          amount: this.props.route.params.data._parts[0].amount,
-          date: this.props.route.params.date,
-          notes: this.props.route.params.data._parts[0].notes,
-          success: !this.props.user.status.error,
-        });
+        this.setState({isDialogVisible: true});
       } else {
         this.setState({msg: 'Wrong PIN entered'});
         this.pinInputRef.current?.shake();
@@ -81,10 +82,41 @@ class PinConfirmation extends React.Component<Props, State> {
   };
 
   render() {
-    const {pin} = this.state;
-    const {status} = this.props.user;
+    const {pin, isDialogVisible} = this.state;
+    const {status} = this.props.transaction;
     return (
       <>
+        <Dialog visible={isDialogVisible}>
+          <DialogContent style={styles.dialogStyle}>
+            <FastImage
+              style={styles.checkIconStyle}
+              source={
+                status.loading
+                  ? waitingIcon
+                  : status.error
+                  ? failedIcon
+                  : checkIcon
+              }
+              {...{resizeMode: 'cover'}}
+            />
+            <Text style={styles.textDialog}>{status.msg}</Text>
+            {!status.loading ? (
+              <Button
+                onPress={() => {
+                  this.setState({isDialogVisible: false});
+                  this.props.navigation.navigate('TransactionInfo', {
+                    amount: this.props.route.params.data._parts[4][1],
+                    date: this.props.route.params.date,
+                    notes: this.props.route.params.data._parts[5][1],
+                    success: !this.props.transaction.status.error,
+                  });
+                }}
+                buttonStyle={styles.buttonDialog}
+                title="Confirm"
+              />
+            ) : null}
+          </DialogContent>
+        </Dialog>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <Icon

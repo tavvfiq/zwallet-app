@@ -30,6 +30,7 @@ import Profile from './screens/Profile/Profile';
 import PersonalInfo from './screens/Profile/PersonalInfo';
 import ChangePassword from './screens/Profile/ChangePassword';
 import ChangePin from './screens/Profile/ChangePin';
+import AddPhoneNumber from './screens/Profile/AddPhoneNumber';
 
 import {store} from './store';
 
@@ -67,6 +68,7 @@ const App = () => {
             <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
             <Stack.Screen name="ChangePin" component={ChangePin} />
+            <Stack.Screen name="AddPhoneNumber" component={AddPhoneNumber} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

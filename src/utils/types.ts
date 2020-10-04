@@ -32,7 +32,8 @@ export type RootStackParamList = {
     notes: string;
     success: boolean;
   };
-  PersonalInfo: {username: string; email: string; phone: string};
+  PersonalInfo: {id: number; username: string; email: string; phone: string};
   ChangePassword: {id: number};
   ChangePin: {id: number; pin: string};
+  AddPhoneNumber: {id: number};
 };

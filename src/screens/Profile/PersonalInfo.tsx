@@ -150,6 +150,11 @@ const PersonalInfo = (props: Props) => {
                   titleStyle={styles.addPhoneNumber}
                   type="clear"
                   title="Add phone number"
+                  onPress={() => {
+                    props.navigation.navigate('AddPhoneNumber', {
+                      id: props.route.params.id,
+                    });
+                  }}
                 />
               )}
             </Text>

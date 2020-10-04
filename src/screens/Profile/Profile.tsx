@@ -127,6 +127,7 @@ const Profile = (props: Props) => {
             iconRight={true}
             onPress={() => {
               props.navigation.navigate('PersonalInfo', {
+                id: user.credentials.id,
                 username: user.credentials.username,
                 email: user.credentials.email,
                 phone: user.details.phoneNumber,
