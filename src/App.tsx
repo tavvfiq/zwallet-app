@@ -31,6 +31,7 @@ import PersonalInfo from './screens/Profile/PersonalInfo';
 import ChangePassword from './screens/Profile/ChangePassword';
 import ChangePin from './screens/Profile/ChangePin';
 import AddPhoneNumber from './screens/Profile/AddPhoneNumber';
+import ManagePhoneNumber from './screens/Profile/ManagePhoneNumber';
 
 import {store} from './store';
 
@@ -69,6 +70,10 @@ const App = () => {
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
             <Stack.Screen name="ChangePin" component={ChangePin} />
             <Stack.Screen name="AddPhoneNumber" component={AddPhoneNumber} />
+            <Stack.Screen
+              name="ManagePhoneNumber"
+              component={ManagePhoneNumber}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

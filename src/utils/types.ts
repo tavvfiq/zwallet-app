@@ -36,4 +36,5 @@ export type RootStackParamList = {
   ChangePassword: {id: number};
   ChangePin: {id: number; pin: string};
   AddPhoneNumber: {id: number};
+  ManagePhoneNumber: {phoneNumber: string};
 };

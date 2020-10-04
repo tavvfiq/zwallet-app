@@ -165,6 +165,11 @@ const PersonalInfo = (props: Props) => {
               titleStyle={styles.manageText}
               type="clear"
               title="Manage"
+              onPress={() => {
+                props.navigation.navigate('ManagePhoneNumber', {
+                  phoneNumber: phone,
+                });
+              }}
             />
           ) : null}
         </View>
