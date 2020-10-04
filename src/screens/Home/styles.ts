@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: 'center',
     marginRight: 20,
+    resizeMode: 'cover',
   },
   headerContainer: {
     display: 'flex',

@@ -35,9 +35,7 @@ function doTransactionRejected(msg: string): TransactionActionTypes {
   };
 }
 
-export const doTransaction = (body: transactionType): AppThunk => (
-  dispatch,
-) => {
+export const doTransaction = (body: FormData): AppThunk => (dispatch) => {
   dispatch(doTransactionPending());
   mainAPI
     .doTransaction(body)

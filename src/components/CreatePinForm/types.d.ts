@@ -23,6 +23,7 @@ declare module 'react-native-smooth-pincode-input' {
     onFulfill?: (value: string) => void;
     onChangeText?: TextInputProps['onChangeText'];
     onBackspace?: () => void;
+    shake?: () => void;
     onTextChange?: TextInputProps['onChangeText'];
     testID?: any;
     onFocus?: TextInputProps['onFocus'];
@@ -32,13 +33,13 @@ declare module 'react-native-smooth-pincode-input' {
     inputProps?: TextInputProps;
   };
 
-  type SmoothInputSate = {
+  type SmoothInputState = {
     maskDelay: boolean;
     focused: boolean;
   };
 
   export default class SmoothPinCodeInput extends Component<
     SmoothPinCodeInputProps,
-    SmoothInputSate
+    SmoothInputState
   > {}
 }

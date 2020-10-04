@@ -2,6 +2,7 @@ import {AppThunk} from '../thunk';
 import {authAPI, mainAPI} from '../../utils/apicalls';
 import {loginType, registerType, updateUserType} from '../../utils/types';
 import {validateSession} from '../system/actions';
+import {IMAGE_URL} from '../../utils/environment';
 
 import {
   User,
@@ -156,7 +157,12 @@ export const register = (body: registerType): AppThunk => (dispatch) => {
         } = data;
         mainAPI.setToken(token);
         const credentials = {id, username, email, pin, token};
-        const details = {image, phoneNumber, numOfContact, balance};
+        const details = {
+          image: IMAGE_URL + image,
+          phoneNumber,
+          numOfContact,
+          balance,
+        };
         dispatch(validateSession(true));
         dispatch(registerFulfilled({credentials, details}));
       } else {
@@ -190,7 +196,12 @@ export const login = (body: loginType): AppThunk => (dispatch) => {
         } = data;
         mainAPI.setToken(token);
         const credentials = {id, username, email, pin, token};
-        const details = {image, phoneNumber, numOfContact, balance};
+        const details = {
+          image: image ? IMAGE_URL + image : image,
+          phoneNumber,
+          numOfContact,
+          balance,
+        };
         dispatch(validateSession(true));
         dispatch(loginFulfilled({credentials, details}));
       } else {
@@ -222,10 +233,15 @@ export const updateUser = (id: number, body: updateUserType): AppThunk => (
           msg,
         } = data;
         const credentials = {id, username, email, pin};
-        const details = {image, phoneNumber};
+        const details = {image: image ? IMAGE_URL + image : image, phoneNumber};
         if (username !== undefined) {
           dispatch(validateSession(true));
           dispatch(updateUserFulfilled({credentials, details}));
+        } else if (pin !== undefined) {
+          dispatch({
+            type: UPDATE_USER_FULFILLED,
+            payload: {credentials: {pin}, details: {}},
+          });
         } else {
           dispatch(validateSession(true));
           dispatch({type: UPDATE_USER_FULFILLED, payload: msg});

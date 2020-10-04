@@ -20,6 +20,8 @@ import {
   isUserDataType,
 } from './types';
 
+import {IMAGE_URL} from '../../utils/environment';
+
 const initialState: UserState = {
   user: {
     credentials: {
@@ -117,19 +119,17 @@ export function userReducer(
     case UPDATE_USER_FULFILLED:
       if (isUserDataType(action.payload)) {
         const {credentials, details} = action.payload as User;
+        const newCredentials = {...state.user.credentials, ...credentials};
+        const newDetails = {...state.user.details, ...details};
         return {
           ...state,
           user: {
             ...state.user,
             credentials: {
-              ...state.user.credentials,
-              username: credentials.username,
-              pin: credentials.pin,
+              ...newCredentials,
             },
             details: {
-              ...state.user.details,
-              image: details.image,
-              phoneNumber: details.phoneNumber,
+              ...newDetails,
             },
           },
           status: {
@@ -167,12 +167,18 @@ export function userReducer(
         },
       };
     case GET_CONTACT_FULFILLED:
-      const {contacts, pageInfo} = action.payload as {
+      let {contacts, pageInfo} = action.payload as {
         contacts: ContactDetail[];
         pageInfo: PageInfo;
       };
       if (contacts.length !== 0) {
         if (pageInfo.prevPage === '') {
+          contacts = contacts.map((contact) => {
+            return {
+              ...contact,
+              image: contact.image ? IMAGE_URL + contact.image : contact.image,
+            };
+          });
           return {
             ...state,
             contacts: [...contacts],
@@ -185,6 +191,12 @@ export function userReducer(
           };
         } else {
           let _contacts = state.contacts || [];
+          contacts = contacts.map((contact) => {
+            return {
+              ...contact,
+              image: contact.image ? IMAGE_URL + contact.image : contact.image,
+            };
+          });
           const newArr = [..._contacts];
           newArr.push(...contacts);
           return {
@@ -234,7 +246,8 @@ export function userReducer(
       };
     case UPDATE_BALANCE_FULFILLED:
       const newBalance =
-        state.user.details.balance - Number(action.payload as string);
+        (state.user.details.balance as number) -
+        Number(action.payload as string);
       return {
         ...state,
         user: {

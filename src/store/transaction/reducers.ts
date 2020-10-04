@@ -11,6 +11,8 @@ import {
   TransactionState,
 } from './types';
 
+import {IMAGE_URL} from '../../utils/environment';
+
 const initialState: TransactionState = {
   transactions: [],
   status: {
@@ -58,12 +60,20 @@ export const transactionReducer = (
         status: {...state.status, loading: true},
       };
     case GET_TRANSACTION_FULFILLED:
-      const {transactions, pageInfo} = action.payload as {
+      let {transactions, pageInfo} = action.payload as {
         transactions: transactionDetail[];
         pageInfo: PageInfo;
       };
       if (pageInfo.prevPage === '') {
         if (transactions.length !== 0) {
+          transactions = transactions.map((transaction) => {
+            return {
+              ...transaction,
+              image: transaction.image
+                ? IMAGE_URL + transaction.image
+                : transaction.image,
+            };
+          });
           return {
             ...state,
             transactions: [...transactions],
@@ -87,6 +97,14 @@ export const transactionReducer = (
         }
       }
       if (pageInfo.nextPage !== '') {
+        transactions = transactions.map((transaction) => {
+          return {
+            ...transaction,
+            image: transaction.image
+              ? IMAGE_URL + transaction.image
+              : transaction.image,
+          };
+        });
         let _transactions = state.transactions || [];
         const newArr = [..._transactions];
         newArr.push(...transactions);
@@ -101,6 +119,14 @@ export const transactionReducer = (
           },
         };
       } else {
+        transactions = transactions.map((transaction) => {
+          return {
+            ...transaction,
+            image: transaction.image
+              ? IMAGE_URL + transaction.image
+              : transaction.image,
+          };
+        });
         let _contacts = state.transactions || [];
         const newArr = [..._contacts];
         newArr.push(...transactions);
@@ -115,11 +141,6 @@ export const transactionReducer = (
           },
         };
       }
-    // return {
-    //   ...state,
-    //   transactions: [...(action.payload as transactionDetail[])],
-    //   status: {...state.status, loading: false, error: false, msg: 'done'},
-    // };
     case GET_TRANSACTION_REJECTED:
       return {
         ...state,
