@@ -1,112 +1,94 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, Switch} from 'react-native';
+import {View, Text, Switch} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import Dialog, {DialogContent} from 'react-native-popup-dialog';
+import ImagePicker from 'react-native-image-picker';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {NavigationScreenProp} from 'react-navigation';
-import FastImage from 'react-native-fast-image';
 import userIcon from '../../assets/img/user.png';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store';
-
-const {height, width} = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    height,
-    width,
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#FAFCFF',
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: 42,
-    marginBottom: 25,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    alignSelf: 'center',
-  },
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    // height: '100%',
-  },
-  buttonSingleContainer: {
-    borderRadius: 10,
-    width: 343,
-    marginTop: 20,
-    alignSelf: 'center',
-    elevation: 2,
-  },
-  buttonStyle: {
-    width: 343,
-    height: 58,
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 15,
-    paddingBottom: 15,
-    alignSelf: 'center',
-    borderRadius: 10,
-  },
-  nameText: {
-    alignSelf: 'center',
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#4D4B57',
-    marginBottom: 10,
-  },
-  phoneNumber: {
-    alignSelf: 'center',
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#7A7886',
-  },
-  titleStyle: {
-    color: '#4D4B57',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  logoutTitleStyle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FF5B37',
-    // textAlign: 'center',
-    // alignSelf: 'center',
-  },
-  editButtonStyle: {
-    width: 48,
-    height: 27,
-    alignSelf: 'center',
-    marginTop: 10,
-    marginBottom: 15,
-    // justifyContent: 'space-between',
-  },
-  editTitle: {
-    color: '#7A7886',
-  },
-
-  iconBackStyle: {
-    marginLeft: 21,
-  },
-});
+import {updateUser} from '../../store/user/actions';
+import checkIcon from '../../assets/img/check.png';
+import failedIcon from '../../assets/img/failed.png';
+import waitingIcon from '../../assets/img/waiting.png';
+import {styles} from './profileStyles';
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
 };
 
+const options = {
+  title: 'Select Profile Image',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+};
+
 const Profile = (props: Props) => {
   const [isEnabled, toggleSwitch] = useState(false);
-  const {user} = useSelector((state: RootState) => state.user);
+  const {user, status} = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const [isDialogVisible, setVisible] = useState(false);
+
+  const handleAddPhoto = () => {
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = {uri: response.uri};
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+        let formData = new FormData();
+        formData.append('username', user.credentials.username);
+        formData.append('image', {
+          uri: `file://${response.path}`,
+          name: response.fileName,
+          type: response.type,
+          size: response.fileSize,
+        });
+        dispatch(
+          updateUser(user.credentials.id as number, {userdata: formData}),
+        );
+        setVisible(true);
+      }
+    });
+  };
+
   return (
     <>
+      <Dialog visible={isDialogVisible}>
+        <DialogContent style={styles.dialogStyle}>
+          <FastImage
+            style={styles.checkIconStyle}
+            source={
+              status.loading
+                ? waitingIcon
+                : status.error
+                ? failedIcon
+                : checkIcon
+            }
+            {...{resizeMode: 'cover'}}
+          />
+          <Text style={styles.textDialog}>{status.msg}</Text>
+          {!status.loading ? (
+            <Button
+              onPress={() => {
+                setVisible(false);
+              }}
+              buttonStyle={styles.buttonDialog}
+              title="Confirm"
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
       <View style={styles.container}>
         <View style={styles.header}>
           <Icon
@@ -124,6 +106,7 @@ const Profile = (props: Props) => {
             source={user.details.image ? {uri: user.details.image} : userIcon}
           />
           <Button
+            onPress={handleAddPhoto}
             icon={<Icon name="edit-2" />}
             buttonStyle={styles.editButtonStyle}
             type="clear"
@@ -173,6 +156,12 @@ const Profile = (props: Props) => {
             buttonStyle={styles.buttonStyle}
             containerStyle={styles.buttonSingleContainer}
             titleStyle={styles.titleStyle}
+            onPress={() => {
+              props.navigation.navigate('ChangePin', {
+                id: user.credentials.id,
+                pin: user.credentials.pin,
+              });
+            }}
           />
           <Button
             title="Notification"

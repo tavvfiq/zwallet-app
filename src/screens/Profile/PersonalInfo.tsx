@@ -86,6 +86,12 @@ const styles = StyleSheet.create({
   manageText: {
     fontSize: 14,
     fontWeight: '600',
+    color: '#6379F4',
+  },
+  addPhoneNumber: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#6379F4',
   },
 });
 
@@ -136,15 +142,26 @@ const PersonalInfo = (props: Props) => {
           <View style={styles.phoneText}>
             <Text style={styles.cellTitleText}>Phone Number</Text>
             <Text style={styles.cellChildText}>
-              {phone ? phone : 'No Phone Number'}
+              {phone ? (
+                phone
+              ) : (
+                <Button
+                  containerStyle={styles.buttonStyle}
+                  titleStyle={styles.addPhoneNumber}
+                  type="clear"
+                  title="Add phone number"
+                />
+              )}
             </Text>
           </View>
-          <Button
-            containerStyle={styles.buttonStyle}
-            titleStyle={styles.manageText}
-            type="clear"
-            title="Manage"
-          />
+          {phone ? (
+            <Button
+              containerStyle={styles.buttonStyle}
+              titleStyle={styles.manageText}
+              type="clear"
+              title="Manage"
+            />
+          ) : null}
         </View>
       </View>
     </>

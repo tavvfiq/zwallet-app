@@ -55,17 +55,16 @@ class Transfer extends React.Component<Props, State> {
     if (!this.state.confirmed) {
       this.setState({confirmed: true});
     } else {
-      const transactionData: transactionType = {
-        sender_id: this.props.user.user.credentials.id,
-        receiver_id: this.props.route.params?.id,
-        transaction_name: 'Transfer',
-        transaction_type: 'out',
-        amount: Number(this.state.value),
-        notes: this.state.notes,
-      };
+      let formData = new FormData();
+      formData.append('sender_id', this.props.user.user.credentials.id);
+      formData.append('receiver_id', this.props.route.params?.id);
+      formData.append('transaction_name', 'Transfer');
+      formData.append('transaction_type', 'out');
+      formData.append('amount', Number(this.state.value));
+      formData.append('notes', this.state.notes);
       this.props.navigation.navigate('PinConfirmation', {
         pin: this.props.user.user.credentials.pin,
-        transactionData,
+        data: formData,
         date: this.state.datetime,
       });
     }

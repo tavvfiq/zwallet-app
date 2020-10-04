@@ -20,7 +20,7 @@ const mapState = (state: RootState) => ({
 
 const mapDispatch = (dispatch: AppThunkDispatch) => {
   return {
-    doTransaction: (data: transactionType) => dispatch(doTransaction(data)),
+    doTransaction: (data: FormData) => dispatch(doTransaction(data)),
   };
 };
 
@@ -65,11 +65,13 @@ class PinConfirmation extends React.Component<Props, State> {
     if (!this.state.isMatched) {
       if (this.state.pin === this.props.route.params?.pin) {
         this.setState({isMatched: true});
-        this.props.doTransaction(this.props.route.params.transactionData);
+        // console.log(this.props.route.params.data);
+        this.props.doTransaction(this.props.route.params.data);
         this.props.navigation.navigate('TransactionInfo', {
-          amount: this.props.route.params.transactionData.amount,
+          amount: this.props.route.params.data._parts[0].amount,
           date: this.props.route.params.date,
-          notes: this.props.route.params.transactionData.notes,
+          notes: this.props.route.params.data._parts[0].notes,
+          success: !this.props.user.status.error,
         });
       } else {
         this.setState({msg: 'Wrong PIN entered'});

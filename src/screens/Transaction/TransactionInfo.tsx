@@ -9,6 +9,7 @@ import {RouteProp} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import checkIcon from '../../assets/img/check.png';
+import failedIcon from '../../assets/img/failed.png';
 import {RootStackParamList} from '../../utils/types';
 
 const userSelector = (state: RootState) => state.user.user;
@@ -37,7 +38,7 @@ const TransferInformation = (props: Props) => {
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <FastImage
-            source={checkIcon}
+            source={props.route.params.success ? checkIcon : failedIcon}
             style={styles.checklistIcon}
             {...{resizeMode: 'cover'}}
           />
@@ -46,8 +47,16 @@ const TransferInformation = (props: Props) => {
               styles.transferDetailsTitle,
               {color: 'black', marginTop: 30},
             ]}>
-            Transfer Success
+            {props.route.params.success
+              ? 'Transfer Success'
+              : 'Transfer Failed'}
           </Text>
+          {props.route.params.success ? null : (
+            <Text style={styles.subTitleText}>
+              We can’t transfer your money at the moment, we recommend you to
+              check your internet connection and try again.
+            </Text>
+          )}
 
           <View style={styles.confirmationContainer}>
             <View style={styles.cell}>

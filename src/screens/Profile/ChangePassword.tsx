@@ -16,7 +16,6 @@ import waitingIcon from '../../assets/img/waiting.png';
 import {object as yupObject, string as yupString, ref} from 'yup';
 import {updateUser} from '../../store/user/actions';
 import {useSelector, useDispatch} from 'react-redux';
-import {updateUserType} from '../../utils/types';
 import {RootState} from '../../store';
 
 const {width, height} = Dimensions.get('window');
@@ -153,12 +152,10 @@ const ChangePassword = (props: Props) => {
   };
 
   const onSubmit = handleSubmit((data) => {
-    const updatePassword: updateUserType = {
-      password: data.currentPassword,
-      newPassword: data.newPassword,
-    };
-    console.log(props.route.params?.id);
-    dispatch(updateUser(props.route.params?.id, updatePassword));
+    let formData = new FormData();
+    formData.append('password', data.currentPassword);
+    formData.append('newPassword', data.newPassword);
+    dispatch(updateUser(props.route.params?.id, {userdata: formData}));
     showDialog();
   });
 

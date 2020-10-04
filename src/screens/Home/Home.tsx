@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
-import {View, Text, Pressable, ScrollView} from 'react-native';
+import {View, Text, Pressable, ScrollView, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import FastImage from 'react-native-fast-image';
 import userIcon from '../../assets/img/user.png';
 import UserCard from '../../components/UserCard/UserCard';
 import styles from './styles';
