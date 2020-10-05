@@ -9,7 +9,7 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
-import {StatusBar, LogBox} from 'react-native';
+import {LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {NavigationScreenProp} from 'react-navigation';
 import {createStackNavigator} from '@react-navigation/stack';
