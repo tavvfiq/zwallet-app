@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
-import {View, Text, Pressable, ScrollView, Image} from 'react-native';
+import {View, Text, Pressable, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
@@ -11,8 +11,8 @@ import {RootState} from '../../store';
 import {useSelector, useDispatch} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
 import {getTransaction} from '../../store/transaction/actions';
-import {transactionDetail} from '../../store/transaction/types';
 import {isEmpty} from 'underscore';
+import {changeStatusbarTheme} from '../../store/system/actions';
 // import NotifService from '../../utils/NotificationService';
 
 type Props = {
@@ -30,6 +30,19 @@ const Home = (props: Props) => {
       getTransaction(`/transaction/${user.user.credentials.id}?page=1&limit=3`),
     );
   }, [dispatch, user.user.details.balance, user.user.credentials.id]);
+
+  const changeTheme = React.useCallback(() => {
+    dispatch(
+      changeStatusbarTheme({
+        backgroundColor: '#FAFCFF',
+        barStyle: 'dark-content',
+      }),
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
+    props.navigation.addListener('focus', () => changeTheme());
+  }, []);
 
   return (
     <>
@@ -117,7 +130,7 @@ const Home = (props: Props) => {
             contentContainerStyle={styles.transactionHistoryList}
             contentInsetAdjustmentBehavior="automatic"
             showsVerticalScrollIndicator={false}>
-            {transaction.transactions.map((item, index) => {
+            {transaction.transactions.slice(0, 3).map((item, index) => {
               return <UserCard key={index} {...item} />;
             })}
           </ScrollView>

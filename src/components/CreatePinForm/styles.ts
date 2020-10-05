@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import colorTheme from '../../shared/appColorTheme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 26,
     fontWeight: '700',
-    color: '#6379F4',
+    color: colorTheme.primary,
     alignSelf: 'center',
   },
   formContainer: {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   inputContainerStyle: {
-    borderBottomColor: '#6379F4',
+    borderBottomColor: colorTheme.primary,
   },
   inputStyle: {
     fontSize: 16,
@@ -66,14 +67,14 @@ const styles = StyleSheet.create({
   confirmButton: {
     height: 57,
     borderRadius: 12,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     marginTop: 233,
     marginBottom: 64,
   },
   LoginButton: {
     height: 57,
     borderRadius: 12,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     marginTop: 70,
     marginBottom: 64,
   },
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#6379F4',
+    color: colorTheme.primary,
   },
   errorMessageText: {
     marginTop: 20,
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     height: 58,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#6379F4',
+    borderColor: colorTheme.primary,
   },
   pinText: {
     fontSize: 24,

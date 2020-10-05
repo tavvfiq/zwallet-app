@@ -14,6 +14,7 @@ import {object as yupObject, string as yupString} from 'yup';
 import {updateUser} from '../../store/user/actions';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store';
+import dialogStyle from '../../shared/dialogStyles';
 import {styles} from './phoneNumberStyles';
 import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
@@ -58,9 +59,9 @@ export default function AddPhoneNumber(props: Props) {
   return (
     <>
       <Dialog visible={isVisible}>
-        <DialogContent style={styles.dialogStyle}>
+        <DialogContent style={dialogStyle.container}>
           <FastImage
-            style={styles.checkIconStyle}
+            style={dialogStyle.checkIconStyle}
             source={
               status.loading
                 ? waitingIcon
@@ -70,7 +71,7 @@ export default function AddPhoneNumber(props: Props) {
             }
             {...{resizeMode: 'cover'}}
           />
-          <Text style={styles.textDialog}>{status.msg}</Text>
+          <Text style={dialogStyle.textDialog}>{status.msg}</Text>
           {!status.loading ? (
             <Button
               onPress={() => {
@@ -79,7 +80,7 @@ export default function AddPhoneNumber(props: Props) {
                   props.navigation.navigate('Profile');
                 }
               }}
-              buttonStyle={styles.buttonDialog}
+              buttonStyle={dialogStyle.buttonDialog}
               title="Confirm"
             />
           ) : null}

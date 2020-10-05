@@ -7,6 +7,8 @@ import {NavigationScreenProp} from 'react-navigation';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../utils/types';
 
+import colorTheme from '../../shared/appColorTheme';
+
 const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -86,12 +88,12 @@ const styles = StyleSheet.create({
   manageText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6379F4',
+    color: colorTheme.primary,
   },
   addPhoneNumber: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#6379F4',
+    color: colorTheme.primary,
   },
 });
 

@@ -1,7 +1,10 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {NavigationScreenProp} from 'react-navigation';
+import {
+  NavigationScreenProp,
+  NavigationEventSubscription,
+} from 'react-navigation';
 import {RouteProp} from '@react-navigation/native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
@@ -9,6 +12,8 @@ import userIcon from '../../assets/img/user.png';
 import {styles} from './transactionStyle';
 import {DateTime} from 'luxon';
 import {RootState} from '../../store';
+import {Dispatch} from 'redux';
+import {changeStatusbarTheme} from '../../store/system/actions';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootStackParamList} from '../../utils/types';
 
@@ -17,7 +22,14 @@ const mapState = (state: RootState) => ({
   user: state.user,
 });
 
-const connector = connect(mapState, {});
+const mapDispatch = (dispatch: Dispatch) => {
+  return {
+    changeTheme: (theme: {backgroundColor: string; barStyle: string}) =>
+      dispatch(changeStatusbarTheme(theme)),
+  };
+};
+
+const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -45,10 +57,21 @@ class Transfer extends React.Component<Props, State> {
     datetime: DateTime.local(),
   };
 
+  unsubscribe!: NavigationEventSubscription;
+
   handleOnChange = (event: any) => {
     const rawValue = event.nativeEvent.text;
     this.setState({value: rawValue});
   };
+
+  componentDidMount() {
+    this.props.navigation.addListener('focus', () =>
+      this.props.changeTheme({
+        backgroundColor: '#6379F4',
+        barStyle: 'light-content',
+      }),
+    );
+  }
 
   onConfirm = () => {
     if (!this.state.confirmed) {
@@ -113,7 +136,7 @@ class Transfer extends React.Component<Props, State> {
           {!confirmed ? (
             <>
               <View style={styles.amountContainer}>
-                <Text style={styles.textInputStyle}>
+                <Text style={styles.rpStyle}>
                   {this.state.value === '' ? '' : 'Rp'}
                 </Text>
                 <TextInput

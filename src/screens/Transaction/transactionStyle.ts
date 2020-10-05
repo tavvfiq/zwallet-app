@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import colorTheme from '../../shared/appColorTheme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -19,7 +20,7 @@ export const styles = StyleSheet.create({
     // flex: 1,
     width,
     height: 220,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     paddingLeft: 16,
@@ -84,17 +85,24 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginTop: 25,
-    alignSelf: 'center',
-    width,
     justifyContent: 'center',
+  },
+  rpStyle: {
+    fontWeight: '700',
+    fontSize: 42,
+    color: colorTheme.primary,
+    alignSelf: 'center',
   },
   textInputStyle: {
     fontWeight: '700',
     fontSize: 42,
-    color: '#6379F4',
-    alignSelf: 'center',
+    color: colorTheme.primary,
     // backgroundColor: 'blue',
-    // padding: 0,
+    textAlign: 'center',
+  },
+  inputContainerStyle: {
+    borderBottomWidth: 0,
+    alignSelf: 'center',
   },
   balanceText: {
     marginTop: 32,
@@ -105,7 +113,7 @@ export const styles = StyleSheet.create({
   },
   notesStyle: {
     marginTop: 35,
-    borderBottomColor: '#6379F4',
+    borderBottomColor: colorTheme.primary,
     alignSelf: 'flex-end',
   },
   notesText: {
@@ -121,7 +129,7 @@ export const styles = StyleSheet.create({
   submitButton: {
     width: 343,
     height: 57,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     borderRadius: 12,
     marginTop: 105,
     alignSelf: 'center',
@@ -181,7 +189,7 @@ export const styles = StyleSheet.create({
     height: 58,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#6379F4',
+    borderColor: colorTheme.primary,
   },
   pinText: {
     fontSize: 24,
@@ -204,7 +212,7 @@ export const styles = StyleSheet.create({
   transferButton: {
     height: 57,
     borderRadius: 12,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     marginTop: 392,
     marginBottom: 64,
   },
@@ -234,7 +242,7 @@ export const styles = StyleSheet.create({
   transferDetailHeader: {
     width,
     height: 97,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     paddingLeft: 16,
@@ -246,25 +254,5 @@ export const styles = StyleSheet.create({
     height: 70,
     alignSelf: 'center',
     marginTop: 40,
-  },
-  textDialog: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  buttonDialog: {
-    borderRadius: 10,
-    backgroundColor: '#6379F4',
-  },
-  dialogStyle: {
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  checkIconStyle: {
-    width: 50,
-    height: 50,
-    alignSelf: 'center',
-    marginBottom: 10,
   },
 });

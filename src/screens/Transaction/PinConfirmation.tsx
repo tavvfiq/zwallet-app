@@ -12,6 +12,7 @@ import {RootState} from '../../store';
 import {AppThunkDispatch} from '../../store/thunk';
 import {doTransaction} from '../../store/transaction/actions';
 import {styles} from './transactionStyle';
+import dialogStyle from '../../shared/dialogStyles';
 import {RootStackParamList} from '../../utils/types';
 import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
@@ -87,9 +88,9 @@ class PinConfirmation extends React.Component<Props, State> {
     return (
       <>
         <Dialog visible={isDialogVisible}>
-          <DialogContent style={styles.dialogStyle}>
+          <DialogContent style={dialogStyle.container}>
             <FastImage
-              style={styles.checkIconStyle}
+              style={dialogStyle.checkIconStyle}
               source={
                 status.loading
                   ? waitingIcon
@@ -99,7 +100,7 @@ class PinConfirmation extends React.Component<Props, State> {
               }
               {...{resizeMode: 'cover'}}
             />
-            <Text style={styles.textDialog}>{status.msg}</Text>
+            <Text style={dialogStyle.textDialog}>{status.msg}</Text>
             {!status.loading ? (
               <Button
                 onPress={() => {
@@ -111,7 +112,7 @@ class PinConfirmation extends React.Component<Props, State> {
                     success: !this.props.transaction.status.error,
                   });
                 }}
-                buttonStyle={styles.buttonDialog}
+                buttonStyle={dialogStyle.buttonDialog}
                 title="Confirm"
               />
             ) : null}

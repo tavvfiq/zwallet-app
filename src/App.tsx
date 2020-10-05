@@ -16,6 +16,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {Provider} from 'react-redux';
 
+import SystemStatusbar from './SystemStatusbar';
 import LoginScreen from './screens/Authentication/LoginScreen';
 import RegisterScreen from './screens/Authentication/RegisterScreen';
 import CreatePinScreen from './screens/Authentication/CreatePinScreen';
@@ -32,6 +33,7 @@ import ChangePassword from './screens/Profile/ChangePassword';
 import ChangePin from './screens/Profile/ChangePin';
 import AddPhoneNumber from './screens/Profile/AddPhoneNumber';
 import ManagePhoneNumber from './screens/Profile/ManagePhoneNumber';
+import ResetPassword from './screens/Authentication/ResetPassword';
 
 import {store} from './store';
 
@@ -49,7 +51,7 @@ const App = () => {
   return (
     <>
       <Provider store={store}>
-        {/* <StatusBar /> */}
+        <SystemStatusbar />
         <NavigationContainer>
           <Stack.Navigator initialRouteName="SplashScreen" headerMode="none">
             <Stack.Screen name="SplashScreen" component={SplashScreen} />
@@ -74,6 +76,7 @@ const App = () => {
               name="ManagePhoneNumber"
               component={ManagePhoneNumber}
             />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

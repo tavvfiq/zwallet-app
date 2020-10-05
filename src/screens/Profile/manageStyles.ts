@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import colorTheme from '../../shared/appColorTheme';
 
 const {height, width} = Dimensions.get('window');
 
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
     lineHeight: 27,
   },
   inputContainerStyle: {
-    borderBottomColor: '#6379F4',
+    borderBottomColor: colorTheme.primary,
   },
   inputStyle: {
     fontSize: 16,
@@ -46,30 +47,11 @@ export const styles = StyleSheet.create({
   submitButton: {
     height: 57,
     borderRadius: 12,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     marginTop: 0.48 * height,
     marginBottom: 30,
   },
-  textDialog: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  buttonDialog: {
-    borderRadius: 10,
-    backgroundColor: '#6379F4',
-  },
-  dialogStyle: {
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  checkIconStyle: {
-    width: 50,
-    height: 50,
-    alignSelf: 'center',
-    marginBottom: 10,
-  },
+
   longCell: {
     width: width * 0.92,
     minHeight: 87,

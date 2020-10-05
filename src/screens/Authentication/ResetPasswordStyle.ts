@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     height: 57,
     borderRadius: 12,
     backgroundColor: colorTheme.primary,
-    marginTop: 27,
+    marginTop: 0.2 * height,
     marginBottom: 30,
   },
   footerContainer: {

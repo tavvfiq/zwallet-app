@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {View, Text} from 'react-native';
 import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
 import {styles} from './styles';

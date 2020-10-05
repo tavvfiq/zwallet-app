@@ -17,6 +17,8 @@ import {object as yupObject, string as yupString, ref} from 'yup';
 import {updateUser} from '../../store/user/actions';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store';
+import dialogStyle from '../../shared/dialogStyles';
+import colorTheme from '../../shared/appColorTheme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     lineHeight: 27,
   },
   inputContainerStyle: {
-    borderBottomColor: '#6379F4',
+    borderBottomColor: colorTheme.primary,
   },
   inputStyle: {
     fontSize: 16,
@@ -64,29 +66,9 @@ const styles = StyleSheet.create({
   changePasswordButton: {
     height: 57,
     borderRadius: 12,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     marginTop: 217,
     marginBottom: 30,
-  },
-  textDialog: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  buttonDialog: {
-    borderRadius: 10,
-    backgroundColor: '#6379F4',
-  },
-  dialogStyle: {
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  checkIconStyle: {
-    width: 50,
-    height: 50,
-    alignSelf: 'center',
-    marginBottom: 10,
   },
 });
 
@@ -137,7 +119,7 @@ const ChangePassword = (props: Props) => {
   const {status} = useSelector((state: RootState) => state.user);
   const [isPasswordShowed, setPasswordShowed] = useState(isPasswordShowedInit);
 
-  const [isVisible, setDialogVisiblity] = useState(false);
+  const [isVisible, setDialogVisibility] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -160,15 +142,15 @@ const ChangePassword = (props: Props) => {
   });
 
   const showDialog = () => {
-    setDialogVisiblity(true);
+    setDialogVisibility(true);
   };
 
   return (
     <>
       <Dialog visible={isVisible}>
-        <DialogContent style={styles.dialogStyle}>
+        <DialogContent style={dialogStyle.container}>
           <FastImage
-            style={styles.checkIconStyle}
+            style={dialogStyle.checkIconStyle}
             source={
               status.loading
                 ? waitingIcon
@@ -178,16 +160,16 @@ const ChangePassword = (props: Props) => {
             }
             {...{resizeMode: 'cover'}}
           />
-          <Text style={styles.textDialog}>{status.msg}</Text>
+          <Text style={dialogStyle.textDialog}>{status.msg}</Text>
           {!status.loading ? (
             <Button
               onPress={() => {
-                setDialogVisiblity(false);
+                setDialogVisibility(false);
                 if (!status.error) {
                   props.navigation.navigate('Profile');
                 }
               }}
-              buttonStyle={styles.buttonDialog}
+              buttonStyle={dialogStyle.buttonDialog}
               title="Confirm"
             />
           ) : null}
@@ -315,6 +297,7 @@ const ChangePassword = (props: Props) => {
             Boolean(errors.newPassword?.message) ||
             Boolean(errors.repeatPassword?.message)
           }
+          loading={status.loading}
           loadingProps={{size: 'large', color: 'white'}}
           buttonStyle={styles.changePasswordButton}
           title="Change Password"

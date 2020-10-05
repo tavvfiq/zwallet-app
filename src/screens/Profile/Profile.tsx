@@ -11,10 +11,12 @@ import userIcon from '../../assets/img/user.png';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store';
 import {updateUser} from '../../store/user/actions';
+import {enableAppNotification} from '../../store/system/actions';
 import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
 import waitingIcon from '../../assets/img/waiting.png';
 import {styles} from './profileStyles';
+import dialogStyle from '../../shared/dialogStyles';
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
@@ -29,10 +31,15 @@ const options = {
 };
 
 const Profile = (props: Props) => {
-  const [isEnabled, toggleSwitch] = useState(false);
   const {user, status} = useSelector((state: RootState) => state.user);
+  const [enableNotification, setEnableNotification] = useState(false);
   const dispatch = useDispatch();
   const [isDialogVisible, setVisible] = useState(false);
+
+  const toggleSwitch = () => {
+    dispatch(enableAppNotification(!enableNotification));
+    setEnableNotification((prevState: boolean) => !prevState);
+  };
 
   const handleAddPhoto = () => {
     ImagePicker.showImagePicker(options, (response) => {
@@ -65,9 +72,9 @@ const Profile = (props: Props) => {
   return (
     <>
       <Dialog visible={isDialogVisible}>
-        <DialogContent style={styles.dialogStyle}>
+        <DialogContent style={dialogStyle.container}>
           <FastImage
-            style={styles.checkIconStyle}
+            style={dialogStyle.checkIconStyle}
             source={
               status.loading
                 ? waitingIcon
@@ -77,13 +84,13 @@ const Profile = (props: Props) => {
             }
             {...{resizeMode: 'cover'}}
           />
-          <Text style={styles.textDialog}>{status.msg}</Text>
+          <Text style={dialogStyle.textDialog}>{status.msg}</Text>
           {!status.loading ? (
             <Button
               onPress={() => {
                 setVisible(false);
               }}
-              buttonStyle={styles.buttonDialog}
+              buttonStyle={dialogStyle.buttonDialog}
               title="Confirm"
             />
           ) : null}
@@ -175,9 +182,9 @@ const Profile = (props: Props) => {
                   false: 'rgba(169, 169, 169, 0.4)',
                   true: '#6379F4',
                 }}
-                thumbColor={isEnabled ? 'white' : 'white'}
+                thumbColor={enableNotification ? 'white' : 'white'}
                 onValueChange={toggleSwitch}
-                value={isEnabled}
+                value={enableNotification}
               />
             }
             iconRight={true}

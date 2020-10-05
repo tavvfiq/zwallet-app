@@ -8,6 +8,7 @@ import {getContact} from '../../store/user/actions';
 import {styles} from './searchReceiverStyle';
 import UserCard from '../../components/UserCard/UserCard';
 import {NavigationScreenProp} from 'react-navigation';
+import {changeStatusbarTheme} from '../../store/system/actions';
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
@@ -41,6 +42,19 @@ const SearchReceiver = (props: Props) => {
         `/user/contact/${state.user.credentials.id}?search=${value}&page=1&limit=5`,
       ),
     );
+  }, []);
+
+  const changeTheme = React.useCallback(() => {
+    dispatch(
+      changeStatusbarTheme({
+        backgroundColor: '#FAFCFF',
+        barStyle: 'dark-content',
+      }),
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
+    props.navigation.addListener('focus', () => changeTheme());
   }, []);
 
   const onClickHandler = (id: number) => {

@@ -10,6 +10,9 @@ import {getTransaction} from '../../store/transaction/actions';
 import {Button} from 'react-native-elements';
 import UserCard from '../../components/UserCard/UserCard';
 import {isEmpty} from 'underscore';
+import {changeStatusbarTheme} from '../../store/system/actions';
+
+import colorTheme from '../../shared/appColorTheme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -26,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width,
     height: 98,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     paddingLeft: 22,
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
   buttonStyleClicked: {
     width: 57,
     height: 57,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     borderRadius: 10,
     justifyContent: 'space-evenly',
     elevation: 2,
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   buttonText: {
-    color: '#6379F4',
+    color: colorTheme.primary,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -241,7 +244,13 @@ const TransactionHistory = (props: Props) => {
     dispatch(
       getTransaction(`/transaction/${props.route.params?.id}?page=1&limit=10`),
     );
-  }, [dispatch]);
+    dispatch(
+      changeStatusbarTheme({
+        backgroundColor: colorTheme.primary,
+        barStyle: 'light-content',
+      }),
+    );
+  }, [dispatch, props.route.params]);
   const sectionData = sortTransactions(
     transaction.transactions,
     buttonState.sort,

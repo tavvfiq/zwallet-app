@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import colorTheme from '../../shared/appColorTheme';
 
 const {height, width} = Dimensions.get('window');
 
@@ -6,7 +7,7 @@ export const styles = StyleSheet.create({
   splashScreen: {
     height,
     width,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     justifyContent: 'center',
   },
   text: {

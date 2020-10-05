@@ -88,24 +88,4 @@ export const styles = StyleSheet.create({
   iconBackStyle: {
     marginLeft: 21,
   },
-  textDialog: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  buttonDialog: {
-    borderRadius: 10,
-    backgroundColor: '#6379F4',
-  },
-  dialogStyle: {
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  checkIconStyle: {
-    width: 50,
-    height: 50,
-    alignSelf: 'center',
-    marginBottom: 10,
-  },
 });

@@ -14,6 +14,7 @@ import {AppThunkDispatch} from '../../store/thunk';
 import {updateUser} from '../../store/user/actions';
 import {updateUserType} from '../../utils/types';
 import {styles} from './changePinstyles';
+import dialogStyle from '../../shared/dialogStyles';
 import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
 import waitingIcon from '../../assets/img/waiting.png';
@@ -86,9 +87,9 @@ class ChangePin extends React.Component<Props, State> {
     return (
       <>
         <Dialog visible={isDialogVisible}>
-          <DialogContent style={styles.dialogStyle}>
+          <DialogContent style={dialogStyle.container}>
             <FastImage
-              style={styles.checkIconStyle}
+              style={dialogStyle.checkIconStyle}
               source={
                 status.loading
                   ? waitingIcon
@@ -98,7 +99,7 @@ class ChangePin extends React.Component<Props, State> {
               }
               {...{resizeMode: 'cover'}}
             />
-            <Text style={styles.textDialog}>{status.msg}</Text>
+            <Text style={dialogStyle.textDialog}>{status.msg}</Text>
             {!status.loading ? (
               <Button
                 onPress={() => {
@@ -109,7 +110,7 @@ class ChangePin extends React.Component<Props, State> {
                     this.setState({isMatched: false});
                   }
                 }}
-                buttonStyle={styles.buttonDialog}
+                buttonStyle={dialogStyle.buttonDialog}
                 title="Confirm"
               />
             ) : null}

@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import colorTheme from '../../shared/appColorTheme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16,
     height: 141,
-    backgroundColor: '#6379F4',
+    backgroundColor: colorTheme.primary,
     marginTop: 29,
     borderRadius: 20,
   },
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
   seeAllButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6379F4',
+    color: colorTheme.primary,
     paddingTop: 4,
   },
   transactionHistoryList: {

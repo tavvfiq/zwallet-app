@@ -12,6 +12,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../../store';
 import {AppThunkDispatch} from '../../store/thunk';
 import {login} from '../../store/user/actions';
+import {changeStatusbarTheme} from '../../store/system/actions';
 import {loginType} from '../../utils/types';
 
 //connecting state and dispatch
@@ -23,6 +24,8 @@ const mapState = (state: RootState) => ({
 const mapDispatch = (dispatch: AppThunkDispatch) => {
   return {
     login: (data: loginType) => dispatch(login(data)),
+    changeTheme: (theme: {backgroundColor: string; barStyle: string}) =>
+      dispatch(changeStatusbarTheme(theme)),
   };
 };
 
@@ -80,6 +83,15 @@ class LoginForm extends Component<Props, object> {
       this.props.navigation.navigate('CreatePinScreen');
     });
   };
+
+  componentDidMount() {
+    this.props.navigation.addListener('focus', () =>
+      this.props.changeTheme({
+        backgroundColor: '#FAFCFF',
+        barStyle: 'dark-content',
+      }),
+    );
+  }
 
   renderForm = ({
     values,
@@ -144,6 +156,9 @@ class LoginForm extends Component<Props, object> {
           title="Forgot password?"
           titleStyle={styles.forgotPassword}
           containerStyle={styles.forgotPasswordButton}
+          onPress={() => {
+            this.props.navigation.navigate('ResetPassword');
+          }}
         />
         <Text style={styles.errorMessageText}>
           {this.props.user.status.error ? this.props.user.status.msg : ''}
