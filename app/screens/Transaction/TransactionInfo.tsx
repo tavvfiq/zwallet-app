@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
@@ -29,7 +29,33 @@ type Props = {
 
 const TransferInformation = (props: Props) => {
   const user = useSelector(userSelector);
-  const {amount, date, notes} = props.route.params;
+  const {socket} = useSelector((state: RootState) => state.system);
+  const {
+    sender_id,
+    receiver_id,
+    amount,
+    date,
+    notes,
+    success,
+  } = props.route.params;
+
+  useEffect(() => {
+    if (socket === undefined) return;
+    props.navigation.addListener('focus', () => {
+      if (success) {
+        const title = 'Incoming Transaction';
+        const message = `${
+          user.credentials.username
+        } has transfer you by Rp${amount.toLocaleString('id-ID')}`;
+        socket.emit('transaction', {
+          title,
+          message,
+          receiverId: receiver_id,
+        });
+      }
+    });
+  }, [socket]);
+
   return (
     <>
       <View style={styles.container}>
@@ -38,7 +64,7 @@ const TransferInformation = (props: Props) => {
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <FastImage
-            source={props.route.params.success ? checkIcon : failedIcon}
+            source={success ? checkIcon : failedIcon}
             style={styles.checklistIcon}
             {...{resizeMode: 'cover'}}
           />
@@ -47,11 +73,9 @@ const TransferInformation = (props: Props) => {
               styles.transferDetailsTitle,
               {color: 'black', marginTop: 30},
             ]}>
-            {props.route.params.success
-              ? 'Transfer Success'
-              : 'Transfer Failed'}
+            {success ? 'Transfer Success' : 'Transfer Failed'}
           </Text>
-          {props.route.params.success ? null : (
+          {success ? null : (
             <Text style={styles.subTitleText}>
               We can’t transfer your money at the moment, we recommend you to
               check your internet connection and try again.

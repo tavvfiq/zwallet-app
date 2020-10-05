@@ -21,6 +21,9 @@ import {
   GET_CONTACT_FULFILLED,
   GET_CONTACT_REJECTED,
   UPDATE_BALANCE_FULFILLED,
+  FETCH_CURRENT_USER_FULFILLED,
+  FETCH_CURRENT_USER_PENDING,
+  FETCH_CURRENT_USER_REJECTED,
   UserActionTypes,
 } from './types';
 
@@ -114,28 +117,61 @@ export function updateBalanceFulFilled(balance: string): UserActionTypes {
   };
 }
 
-// function getUserFulfilled(credentials: UserCredentials): UserActionTypes {
-//   return {
-//     type: UPDATE_BALANCE_FULFILLED,
-//     payload: credentials,
-//   };
-// }
+function getUserPending(): UserActionTypes {
+  return {
+    type: FETCH_CURRENT_USER_PENDING,
+  };
+}
 
-// function getUserRejected(): UserActionTypes {
-//   return {
-//     type: UPDATE_BALANCE_REJECTED,
-//   };
-// }
+function getUserFulfilled(user: User): UserActionTypes {
+  return {
+    type: FETCH_CURRENT_USER_FULFILLED,
+    payload: user,
+  };
+}
 
-// export const getUser = (id: number): AppThunk => (dispatch) => {
-//   dispatch(getUserPending());
-//   mainAPI.getUserByid(id).then((res)=>{
-//     const {isSuccess} = res;
-//     if(isSuccess){
-//       const {balan}
-//     }
-//   })
-// };
+function getUserRejected(msg: string): UserActionTypes {
+  return {
+    type: FETCH_CURRENT_USER_REJECTED,
+    payload: msg,
+  };
+}
+
+export const getUser = (id: number): AppThunk => (dispatch) => {
+  dispatch(getUserPending());
+  mainAPI
+    .getUserByid(id)
+    .then((res: any) => {
+      const {isSuccess, isTokenValid, data} = res;
+      if (isSuccess && isTokenValid) {
+        const {
+          username,
+          email,
+          pin,
+          image,
+          phone_number: phoneNumber,
+          num_of_contact: numOfContact,
+          balance,
+        } = data;
+        const credentials = {id, username, email, pin};
+        const details = {
+          image: image ? IMAGE_URL + image : image,
+          phoneNumber,
+          numOfContact,
+          balance,
+        };
+        dispatch(validateSession(true));
+        dispatch(getUserFulfilled({credentials, details}));
+      } else {
+        dispatch(validateSession(false));
+        dispatch(getUserRejected(data.msg));
+      }
+    })
+    .catch(() => {
+      dispatch(validateSession(false));
+      dispatch(getUserRejected('Connection error'));
+    });
+};
 
 export const register = (body: registerType): AppThunk => (dispatch) => {
   dispatch(registerPending());

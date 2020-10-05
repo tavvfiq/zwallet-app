@@ -65,6 +65,13 @@ const GET_CONTACT = 'GET_CONTACT';
 export const GET_CONTACT_PENDING = GET_CONTACT + AsyncActionStatus.PENDING;
 export const GET_CONTACT_FULFILLED = GET_CONTACT + AsyncActionStatus.FULFILLED;
 export const GET_CONTACT_REJECTED = GET_CONTACT + AsyncActionStatus.REJECTED;
+const FETCH_CURRENT_USER = 'FETCH_CURRENT_USER';
+export const FETCH_CURRENT_USER_PENDING =
+  FETCH_CURRENT_USER + AsyncActionStatus.PENDING;
+export const FETCH_CURRENT_USER_FULFILLED =
+  FETCH_CURRENT_USER + AsyncActionStatus.FULFILLED;
+export const FETCH_CURRENT_USER_REJECTED =
+  FETCH_CURRENT_USER + AsyncActionStatus.REJECTED;
 
 export interface User {
   credentials: UserCredentials;
@@ -131,10 +138,19 @@ export interface updateBalance {
   payload: string;
 }
 
+export interface fetchCurrentUser {
+  type:
+    | typeof FETCH_CURRENT_USER_FULFILLED
+    | typeof FETCH_CURRENT_USER_PENDING
+    | typeof FETCH_CURRENT_USER_REJECTED;
+  payload: User | string;
+}
+
 export type UserActionTypes =
   | login
   | register
   | updateUser
   | addContact
   | getContact
-  | updateBalance;
+  | updateBalance
+  | fetchCurrentUser;

@@ -27,6 +27,8 @@ export type RootStackParamList = {
     date: DateTime;
   };
   TransactionInfo: {
+    sender_id: number;
+    receiver_id: number;
     amount: number;
     date: DateTime;
     notes: string;

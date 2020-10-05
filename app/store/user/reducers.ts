@@ -14,6 +14,9 @@ import {
   GET_CONTACT_PENDING,
   GET_CONTACT_FULFILLED,
   GET_CONTACT_REJECTED,
+  FETCH_CURRENT_USER_FULFILLED,
+  FETCH_CURRENT_USER_PENDING,
+  FETCH_CURRENT_USER_REJECTED,
   UserActionTypes,
   UserState,
   UPDATE_BALANCE_FULFILLED,
@@ -116,6 +119,44 @@ export function userReducer(
           msg: 'please wait',
         },
       };
+    case FETCH_CURRENT_USER_PENDING:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: true,
+          msg: 'please wait',
+        },
+      };
+    case FETCH_CURRENT_USER_REJECTED:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: false,
+          msg: action.payload as string,
+        },
+      };
+    case FETCH_CURRENT_USER_FULFILLED:
+      const {credentials, details} = action.payload as User;
+      const newCredentials = {...state.user.credentials, ...credentials};
+      const newDetails = {...state.user.details, ...details};
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          credentials: {...state.user.credentials, ...newCredentials},
+          details: {
+            ...state.user.details,
+            ...newDetails,
+          },
+        },
+        status: {
+          loading: false,
+          error: false,
+          msg: 'Profile fetched',
+        },
+      };
     case UPDATE_USER_FULFILLED:
       if (isUserDataType(action.payload)) {
         const {credentials, details} = action.payload as User;
@@ -125,10 +166,9 @@ export function userReducer(
           ...state,
           user: {
             ...state.user,
-            credentials: {
-              ...newCredentials,
-            },
+            credentials: {...state.user.credentials, ...newCredentials},
             details: {
+              ...state.user.details,
               ...newDetails,
             },
           },

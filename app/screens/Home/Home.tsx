@@ -4,6 +4,7 @@ import {View, Text, Pressable, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
+import _ioClient from 'socket.io-client';
 import userIcon from '../../assets/img/user.png';
 import UserCard from '../../components/UserCard/UserCard';
 import styles from './styles';
@@ -11,18 +12,29 @@ import {RootState} from '../../store';
 import {useSelector, useDispatch} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
 import {getTransaction} from '../../store/transaction/actions';
+import {getUser} from '../../store/user/actions';
 import {isEmpty} from 'underscore';
-import {changeStatusbarTheme} from '../../store/system/actions';
+import {SOCKET_URL} from '../../utils/environment';
+import {
+  changeStatusbarTheme,
+  setSystemSocket,
+} from '../../store/system/actions';
 import {LocalNotification} from '../../services/NotificationService';
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
 };
 
+type SocketData = {
+  title: string;
+  message: string;
+};
+
 const selector = (state: RootState) => state;
 
-const Home = (props: Props) => {
+const Home: React.FunctionComponent<Props> = (props) => {
   const {user, transaction} = useSelector(selector);
+  const {socket} = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();
   useEffect(() => {
     //TODO: store the recent transaction on local state and update when there is new transaction
@@ -41,12 +53,27 @@ const Home = (props: Props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    const eventListener = props.navigation.addListener('focus', () =>
-      changeTheme(),
-    );
+    const newSocket = _ioClient(SOCKET_URL, {
+      query: {id: user.user.credentials.id},
+    });
+    dispatch(setSystemSocket(newSocket));
+  }, []);
+
+  //subscribe to socket event
+  useEffect(() => {
+    if (socket === undefined) return;
+    socket.on('transaction', ({title, message}: SocketData) => {
+      dispatch(getUser(user.user.credentials.id as number));
+      LocalNotification(title, message);
+    });
     return () => {
-      eventListener.remove();
+      socket.off('transaction');
     };
+  }, [socket]);
+
+  //change statusbar color
+  useEffect(() => {
+    props.navigation.addListener('focus', () => changeTheme());
   }, []);
 
   return (
@@ -81,7 +108,7 @@ const Home = (props: Props) => {
         <View style={styles.cardBalanceContainer}>
           <Text style={styles.childText}>Balance</Text>
           <Text style={styles.balanceText}>
-            Rp{user.user.details.balance?.toLocaleString('id-ID')}
+            Rp{Number(user.user.details.balance).toLocaleString('id-ID')}
           </Text>
           <Text style={styles.childText}>
             {user.user.details.phoneNumber

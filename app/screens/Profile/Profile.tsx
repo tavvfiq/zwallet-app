@@ -30,7 +30,7 @@ const options = {
   },
 };
 
-const Profile = (props: Props) => {
+const Profile: React.FunctionComponent<Props> = (props) => {
   const {user, status} = useSelector((state: RootState) => state.user);
   const [enableNotification, setEnableNotification] = useState(false);
   const dispatch = useDispatch();

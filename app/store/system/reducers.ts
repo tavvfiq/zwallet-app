@@ -2,6 +2,7 @@ import {
   SystemState,
   SystemActionTypes,
   CHANGE_STATUSBAR_THEME,
+  SET_SYSTEM_SOCKET,
   VALIDATE_TOKEN,
   ENABLE_APP_NOTIFICATION,
 } from './types';
@@ -37,6 +38,11 @@ export function systemReducer(
       return {
         ...state,
         enableNotification: action.payload,
+      };
+    case SET_SYSTEM_SOCKET:
+      return {
+        ...state,
+        socket: action.payload,
       };
     default:
       return state;

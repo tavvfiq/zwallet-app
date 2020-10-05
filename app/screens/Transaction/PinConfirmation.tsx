@@ -72,7 +72,6 @@ class PinConfirmation extends React.Component<Props, State> {
     if (!this.state.isMatched) {
       if (this.state.pin === this.props.route.params?.pin) {
         this.setState({isMatched: true});
-        // console.log(this.props.route.params.data);
         this.props.doTransaction(this.props.route.params.data);
         this.setState({isDialogVisible: true});
       } else {
@@ -106,6 +105,8 @@ class PinConfirmation extends React.Component<Props, State> {
                 onPress={() => {
                   this.setState({isDialogVisible: false});
                   this.props.navigation.navigate('TransactionInfo', {
+                    sender_id: this.props.route.params.data._parts[0][1],
+                    receiver_id: this.props.route.params.data._parts[1][1],
                     amount: this.props.route.params.data._parts[4][1],
                     date: this.props.route.params.date,
                     notes: this.props.route.params.data._parts[5][1],
