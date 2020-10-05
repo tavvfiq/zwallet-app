@@ -1,4 +1,4 @@
-import {RootState} from './';
+import {RootState} from '.';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {Action} from 'redux';
 
