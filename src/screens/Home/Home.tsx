@@ -13,6 +13,7 @@ import {NavigationScreenProp} from 'react-navigation';
 import {getTransaction} from '../../store/transaction/actions';
 import {isEmpty} from 'underscore';
 import {changeStatusbarTheme} from '../../store/system/actions';
+import {LocalNotification} from '../../services/NotificationService';
 // import NotifService from '../../utils/NotificationService';
 
 type Props = {

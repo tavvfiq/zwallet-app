@@ -12,6 +12,8 @@ target 'zwallet' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'zwalletTests' do
     inherit! :complete
     # Pods for testing

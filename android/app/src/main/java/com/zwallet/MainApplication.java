@@ -15,6 +15,7 @@ import java.util.List;
 // ... all your other imports here
 import androidx.multidex.MultiDexApplication; // <-- ADD THIS IMPORT
 
+
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =

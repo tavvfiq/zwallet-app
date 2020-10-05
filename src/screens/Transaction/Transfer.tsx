@@ -223,6 +223,7 @@ class Transfer extends React.Component<Props, State> {
             title="Continue"
             titleStyle={styles.buttonText}
             onPress={this.onConfirm}
+            disabled={this.state.value === ''}
           />
         </View>
       </>
