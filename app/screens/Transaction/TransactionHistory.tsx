@@ -14,84 +14,6 @@ import {changeStatusbarTheme} from '../../store/system/actions';
 
 import colorTheme from '../../shared/appColorTheme';
 
-const {width, height} = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#FAFCFF',
-    height,
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width,
-    height: 98,
-    backgroundColor: colorTheme.primary,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    paddingLeft: 22,
-    paddingRight: 22,
-    paddingTop: 42,
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: 'white',
-    marginLeft: 26,
-  },
-  SectionHeaderStyle: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#7A7886',
-    marginTop: 30,
-    marginLeft: 16,
-  },
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    paddingTop: 5,
-    paddingBottom: 10,
-  },
-  buttonStyle: {
-    width: 57,
-    height: 57,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    justifyContent: 'space-evenly',
-    elevation: 2,
-  },
-  buttonStyleClicked: {
-    width: 57,
-    height: 57,
-    backgroundColor: colorTheme.primary,
-    borderRadius: 10,
-    justifyContent: 'space-evenly',
-    elevation: 2,
-  },
-  buttonStyleFilter: {
-    width: 189,
-    height: 57,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    justifyContent: 'space-evenly',
-  },
-  buttonText: {
-    color: colorTheme.primary,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  sectionList: {
-    paddingBottom: 5,
-  },
-  singleButtonContainer: {
-    elevation: 2,
-  },
-});
-
 type Props = {
   navigation: NavigationScreenProp<any, any>;
   route: NavigationRoute;
@@ -244,13 +166,24 @@ const TransactionHistory = (props: Props) => {
     dispatch(
       getTransaction(`/transaction/${props.route.params?.id}?page=1&limit=10`),
     );
+  }, [dispatch, props.route.params]);
+  const changeTheme = React.useCallback(() => {
     dispatch(
       changeStatusbarTheme({
         backgroundColor: colorTheme.primary,
         barStyle: 'light-content',
       }),
     );
-  }, [dispatch, props.route.params]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    const eventListener = props.navigation.addListener('focus', () =>
+      changeTheme(),
+    );
+    return () => {
+      eventListener.remove();
+    };
+  }, []);
   const sectionData = sortTransactions(
     transaction.transactions,
     buttonState.sort,
@@ -329,3 +262,81 @@ const TransactionHistory = (props: Props) => {
 };
 
 export default TransactionHistory;
+
+const {width, height} = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#FAFCFF',
+    height,
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width,
+    height: 98,
+    backgroundColor: colorTheme.primary,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    paddingLeft: 22,
+    paddingRight: 22,
+    paddingTop: 42,
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: 'white',
+    marginLeft: 26,
+  },
+  SectionHeaderStyle: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#7A7886',
+    marginTop: 30,
+    marginLeft: 16,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingTop: 5,
+    paddingBottom: 10,
+  },
+  buttonStyle: {
+    width: 57,
+    height: 57,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    elevation: 2,
+  },
+  buttonStyleClicked: {
+    width: 57,
+    height: 57,
+    backgroundColor: colorTheme.primary,
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    elevation: 2,
+  },
+  buttonStyleFilter: {
+    width: 189,
+    height: 57,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+  },
+  buttonText: {
+    color: colorTheme.primary,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  sectionList: {
+    paddingBottom: 5,
+  },
+  singleButtonContainer: {
+    elevation: 2,
+  },
+});

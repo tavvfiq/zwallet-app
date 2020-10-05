@@ -9,6 +9,91 @@ import {RootStackParamList} from '../../utils/types';
 
 import colorTheme from '../../shared/appColorTheme';
 
+type PersonalInfoRouteProps = RouteProp<RootStackParamList, 'PersonalInfo'>;
+
+type Props = {
+  navigation: NavigationScreenProp<PersonalInfoRouteProps, 'PersonalInfo'>;
+  route: PersonalInfoRouteProps;
+};
+
+const PersonalInfo = (props: Props) => {
+  const {username, email, phone} = props.route.params;
+  const [firstname, lastname] = username.split(' ');
+  return (
+    <>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Icon
+            name="arrow-left"
+            color="#4D4B57"
+            size={30}
+            onPress={() => {
+              props.navigation.goBack();
+            }}
+          />
+          <Text style={styles.headerText}>Personal Information</Text>
+        </View>
+        <Text style={styles.subHeaderText}>
+          We got your personal information from the sign up proccess. If you
+          want to make changes on your information, contact our support.
+        </Text>
+        <View style={styles.cellContainer}>
+          <View style={styles.cell}>
+            <Text style={styles.cellTitleText}>First Name</Text>
+            <Text style={styles.cellChildText}>{firstname}</Text>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.cellTitleText}>Last Name</Text>
+            <Text style={styles.cellChildText}>{lastname}</Text>
+          </View>
+        </View>
+        <View style={styles.longCell}>
+          <Text style={styles.cellTitleText}>Verified E-mail</Text>
+          <Text style={styles.cellChildText}>{email}</Text>
+        </View>
+        <View
+          style={[styles.longCell, {display: 'flex', flexDirection: 'row'}]}>
+          <View style={styles.phoneText}>
+            <Text style={styles.cellTitleText}>Phone Number</Text>
+            <Text style={styles.cellChildText}>
+              {phone ? (
+                phone
+              ) : (
+                <Button
+                  containerStyle={styles.buttonStyle}
+                  titleStyle={styles.addPhoneNumber}
+                  type="clear"
+                  title="Add phone number"
+                  onPress={() => {
+                    props.navigation.navigate('AddPhoneNumber', {
+                      id: props.route.params.id,
+                    });
+                  }}
+                />
+              )}
+            </Text>
+          </View>
+          {phone ? (
+            <Button
+              containerStyle={styles.buttonStyle}
+              titleStyle={styles.manageText}
+              type="clear"
+              title="Manage"
+              onPress={() => {
+                props.navigation.navigate('ManagePhoneNumber', {
+                  phoneNumber: phone,
+                });
+              }}
+            />
+          ) : null}
+        </View>
+      </View>
+    </>
+  );
+};
+
+export default PersonalInfo;
+
 const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -96,88 +181,3 @@ const styles = StyleSheet.create({
     color: colorTheme.primary,
   },
 });
-
-type PersonalInfoRouteProps = RouteProp<RootStackParamList, 'PersonalInfo'>;
-
-type Props = {
-  navigation: NavigationScreenProp<PersonalInfoRouteProps, 'PersonalInfo'>;
-  route: PersonalInfoRouteProps;
-};
-
-const PersonalInfo = (props: Props) => {
-  const {username, email, phone} = props.route.params;
-  const [firstname, lastname] = username.split(' ');
-  return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Icon
-            name="arrow-left"
-            color="#4D4B57"
-            size={30}
-            onPress={() => {
-              props.navigation.goBack();
-            }}
-          />
-          <Text style={styles.headerText}>Personal Information</Text>
-        </View>
-        <Text style={styles.subHeaderText}>
-          We got your personal information from the sign up proccess. If you
-          want to make changes on your information, contact our support.
-        </Text>
-        <View style={styles.cellContainer}>
-          <View style={styles.cell}>
-            <Text style={styles.cellTitleText}>First Name</Text>
-            <Text style={styles.cellChildText}>{firstname}</Text>
-          </View>
-          <View style={styles.cell}>
-            <Text style={styles.cellTitleText}>Last Name</Text>
-            <Text style={styles.cellChildText}>{lastname}</Text>
-          </View>
-        </View>
-        <View style={styles.longCell}>
-          <Text style={styles.cellTitleText}>Verified E-mail</Text>
-          <Text style={styles.cellChildText}>{email}</Text>
-        </View>
-        <View
-          style={[styles.longCell, {display: 'flex', flexDirection: 'row'}]}>
-          <View style={styles.phoneText}>
-            <Text style={styles.cellTitleText}>Phone Number</Text>
-            <Text style={styles.cellChildText}>
-              {phone ? (
-                phone
-              ) : (
-                <Button
-                  containerStyle={styles.buttonStyle}
-                  titleStyle={styles.addPhoneNumber}
-                  type="clear"
-                  title="Add phone number"
-                  onPress={() => {
-                    props.navigation.navigate('AddPhoneNumber', {
-                      id: props.route.params.id,
-                    });
-                  }}
-                />
-              )}
-            </Text>
-          </View>
-          {phone ? (
-            <Button
-              containerStyle={styles.buttonStyle}
-              titleStyle={styles.manageText}
-              type="clear"
-              title="Manage"
-              onPress={() => {
-                props.navigation.navigate('ManagePhoneNumber', {
-                  phoneNumber: phone,
-                });
-              }}
-            />
-          ) : null}
-        </View>
-      </View>
-    </>
-  );
-};
-
-export default PersonalInfo;

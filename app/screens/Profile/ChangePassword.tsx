@@ -20,58 +20,6 @@ import {RootState} from '../../store';
 import dialogStyle from '../../shared/dialogStyles';
 import colorTheme from '../../shared/appColorTheme';
 
-const {width, height} = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    width,
-    height,
-    backgroundColor: '#FAFCFF',
-    paddingTop: 42,
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  headerContainer: {
-    width,
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    color: '#4D4B57',
-    marginLeft: 25,
-  },
-  subHeaderText: {
-    color: '#7A7886',
-    fontSize: 16,
-    marginTop: 40,
-    textAlign: 'justify',
-    lineHeight: 27,
-  },
-  inputContainerStyle: {
-    borderBottomColor: colorTheme.primary,
-  },
-  inputStyle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#3A3D42',
-  },
-  errorMessage: {
-    color: '#FF5B37',
-  },
-  changePasswordButton: {
-    height: 57,
-    borderRadius: 12,
-    backgroundColor: colorTheme.primary,
-    marginTop: 217,
-    marginBottom: 30,
-  },
-});
-
 type ChangePasswordRouteProps = RouteProp<RootStackParamList, 'ChangePassword'>;
 
 type Props = {
@@ -308,3 +256,55 @@ const ChangePassword = (props: Props) => {
 };
 
 export default ChangePassword;
+
+const {width, height} = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    width,
+    height,
+    backgroundColor: '#FAFCFF',
+    paddingTop: 42,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  headerContainer: {
+    width,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    color: '#4D4B57',
+    marginLeft: 25,
+  },
+  subHeaderText: {
+    color: '#7A7886',
+    fontSize: 16,
+    marginTop: 40,
+    textAlign: 'justify',
+    lineHeight: 27,
+  },
+  inputContainerStyle: {
+    borderBottomColor: colorTheme.primary,
+  },
+  inputStyle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#3A3D42',
+  },
+  errorMessage: {
+    color: '#FF5B37',
+  },
+  changePasswordButton: {
+    height: 57,
+    borderRadius: 12,
+    backgroundColor: colorTheme.primary,
+    marginTop: 217,
+    marginBottom: 30,
+  },
+});

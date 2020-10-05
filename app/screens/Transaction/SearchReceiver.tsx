@@ -54,7 +54,12 @@ const SearchReceiver = (props: Props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    props.navigation.addListener('focus', () => changeTheme());
+    const eventListener = props.navigation.addListener('focus', () =>
+      changeTheme(),
+    );
+    return () => {
+      eventListener.remove();
+    };
   }, []);
 
   const onClickHandler = (id: number) => {

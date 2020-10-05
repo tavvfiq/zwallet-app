@@ -14,7 +14,6 @@ import {getTransaction} from '../../store/transaction/actions';
 import {isEmpty} from 'underscore';
 import {changeStatusbarTheme} from '../../store/system/actions';
 import {LocalNotification} from '../../services/NotificationService';
-// import NotifService from '../../utils/NotificationService';
 
 type Props = {
   navigation: NavigationScreenProp<any, any>;
@@ -42,7 +41,12 @@ const Home = (props: Props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    props.navigation.addListener('focus', () => changeTheme());
+    const eventListener = props.navigation.addListener('focus', () =>
+      changeTheme(),
+    );
+    return () => {
+      eventListener.remove();
+    };
   }, []);
 
   return (
