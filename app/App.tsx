@@ -11,8 +11,9 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {createStackNavigator} from '@react-navigation/stack';
+import {RootStackParamList} from './utils/types';
 
 import {Provider} from 'react-redux';
 
@@ -37,10 +38,10 @@ import ResetPassword from './screens/Authentication/ResetPassword';
 
 import {store} from './store';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 interface Props {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 }
 
 LogBox.ignoreLogs([

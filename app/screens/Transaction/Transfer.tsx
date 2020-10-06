@@ -1,10 +1,7 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  NavigationScreenProp,
-  NavigationEventSubscription,
-} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
@@ -36,7 +33,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type TransferRouteProps = RouteProp<RootStackParamList, 'Transfer'>;
 
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<RootStackParamList, 'Transfer'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Transfer'>;
   route: TransferRouteProps;
 };
 
@@ -56,8 +53,6 @@ class Transfer extends React.Component<Props, State> {
     confirmed: false,
     datetime: DateTime.local(),
   };
-
-  unsubscribe!: NavigationEventSubscription;
 
   handleOnChange = (event: any) => {
     const rawValue = event.nativeEvent.text;
@@ -85,9 +80,9 @@ class Transfer extends React.Component<Props, State> {
       formData.append('amount', Number(this.state.value));
       formData.append('notes', this.state.notes);
       this.props.navigation.navigate('PinConfirmation', {
-        pin: this.props.user.user.credentials.pin,
+        pin: this.props.user.user.credentials.pin as string,
         data: formData,
-        date: this.state.datetime,
+        date: this.state.datetime as DateTime,
       });
     }
   };
@@ -99,7 +94,7 @@ class Transfer extends React.Component<Props, State> {
       contacts?.findIndex((contact) => {
         return contact.id === this.props.route.params?.id;
       }) || 0;
-    const user = contacts[idx];
+    const user = contacts![idx];
     const balanceLeft =
       (currUser.details.balance as number) - Number(this.state.value);
     return (

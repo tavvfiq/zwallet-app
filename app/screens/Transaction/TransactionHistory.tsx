@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Dimensions, SectionList} from 'react-native';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store/index';
@@ -9,14 +10,20 @@ import {DateTime} from 'luxon';
 import {getTransaction} from '../../store/transaction/actions';
 import {Button} from 'react-native-elements';
 import UserCard from '../../components/UserCard/UserCard';
+import {RootStackParamList} from '../../utils/types';
 import {isEmpty} from 'underscore';
 import {changeStatusbarTheme} from '../../store/system/actions';
 
 import colorTheme from '../../shared/appColorTheme';
 
+type TransactionHistoryRouteProps = RouteProp<
+  RootStackParamList,
+  'TransactionHistory'
+>;
+
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
+  navigation: StackNavigationProp<RootStackParamList, 'TransactionHistory'>;
+  route: TransactionHistoryRouteProps;
 };
 
 type sectionListData = {
@@ -24,27 +31,27 @@ type sectionListData = {
   data: transactionDetail[];
 };
 
-const compare = (
-  a: transactionDetail,
-  b: transactionDetail,
-  sort: string,
-): number => {
-  if (sort === 'in') {
-    if (a.transaction_type < b.transaction_type) {
-      return 1;
-    } else {
-      return -1;
-    }
-  } else if (sort === 'out') {
-    if (a.transaction_type > b.transaction_type) {
-      return 1;
-    } else {
-      return -1;
-    }
-  } else {
-    return 0;
-  }
-};
+// const compare = (
+//   a: transactionDetail,
+//   b: transactionDetail,
+//   sort: string,
+// ): number => {
+//   if (sort === 'in') {
+//     if (a.transaction_type < b.transaction_type) {
+//       return 1;
+//     } else {
+//       return -1;
+//     }
+//   } else if (sort === 'out') {
+//     if (a.transaction_type > b.transaction_type) {
+//       return 1;
+//     } else {
+//       return -1;
+//     }
+//   } else {
+//     return 0;
+//   }
+// };
 
 const sortTransactions = (
   transactions: transactionDetail[],
@@ -177,7 +184,10 @@ const TransactionHistory = (props: Props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    props.navigation.addListener('focus', () => changeTheme());
+    const eventHandler = props.navigation.addListener('focus', () =>
+      changeTheme(),
+    );
+    return () => eventHandler();
   }, []);
   const sectionData = sortTransactions(
     transaction.transactions,

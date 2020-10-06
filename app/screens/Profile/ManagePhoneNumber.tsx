@@ -2,7 +2,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../utils/types';
 import {styles} from './manageStyles';
@@ -11,11 +11,9 @@ type ManagePhoneNumberRouteProps = RouteProp<
   RootStackParamList,
   'ManagePhoneNumber'
 >;
+
 type Props = {
-  navigation: NavigationScreenProp<
-    ManagePhoneNumberRouteProps,
-    'ManagePhoneNumber'
-  >;
+  navigation: StackNavigationProp<RootStackParamList, 'ManagePhoneNumber'>;
   route: ManagePhoneNumberRouteProps;
 };
 

@@ -6,7 +6,7 @@ import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import ImagePicker from 'react-native-image-picker';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import userIcon from '../../assets/img/user.png';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store';
@@ -19,7 +19,7 @@ import {styles} from './profileStyles';
 import dialogStyle from '../../shared/dialogStyles';
 
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 };
 
 const options = {
@@ -32,14 +32,9 @@ const options = {
 
 const Profile: React.FunctionComponent<Props> = (props) => {
   const {user, status} = useSelector((state: RootState) => state.user);
-  const [enableNotification, setEnableNotification] = useState(false);
+  const {enableNotification} = useSelector((state: RootState) => state.system);
   const dispatch = useDispatch();
   const [isDialogVisible, setVisible] = useState(false);
-
-  const toggleSwitch = () => {
-    dispatch(enableAppNotification(!enableNotification));
-    setEnableNotification((prevState: boolean) => !prevState);
-  };
 
   const handleAddPhoto = () => {
     ImagePicker.showImagePicker(options, (response) => {
@@ -68,7 +63,6 @@ const Profile: React.FunctionComponent<Props> = (props) => {
       }
     });
   };
-
   return (
     <>
       <Dialog visible={isDialogVisible}>
@@ -183,7 +177,9 @@ const Profile: React.FunctionComponent<Props> = (props) => {
                   true: '#6379F4',
                 }}
                 thumbColor={enableNotification ? 'white' : 'white'}
-                onValueChange={toggleSwitch}
+                onValueChange={(value) => {
+                  dispatch(enableAppNotification(value));
+                }}
                 value={enableNotification}
               />
             }

@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import FastImage from 'react-native-fast-image';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../utils/types';
 import {connect, ConnectedProps} from 'react-redux';
@@ -45,7 +45,7 @@ type State = {
 type ChangePinRouteProps = RouteProp<RootStackParamList, 'ChangePin'>;
 
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<ChangePinRouteProps, 'ChangePin'>;
+  navigation: StackNavigationProp<RootStackParamList, 'ChangePin'>;
   route: ChangePinRouteProps;
 };
 

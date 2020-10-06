@@ -10,7 +10,7 @@ import UserCard from '../../components/UserCard/UserCard';
 import styles from './styles';
 import {RootState} from '../../store';
 import {useSelector, useDispatch} from 'react-redux';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {getTransaction} from '../../store/transaction/actions';
 import {getUser} from '../../store/user/actions';
 import {isEmpty} from 'underscore';
@@ -22,7 +22,7 @@ import {
 import {LocalNotification} from '../../services/NotificationService';
 
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 };
 
 type SocketData = {
@@ -34,7 +34,9 @@ const selector = (state: RootState) => state;
 
 const Home: React.FunctionComponent<Props> = (props) => {
   const {user, transaction} = useSelector(selector);
-  const {socket} = useSelector((state: RootState) => state.system);
+  const {socket, enableNotification} = useSelector(
+    (state: RootState) => state.system,
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     //TODO: store the recent transaction on local state and update when there is new transaction
@@ -53,6 +55,7 @@ const Home: React.FunctionComponent<Props> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (socket !== undefined) return;
     const newSocket = _ioClient(SOCKET_URL, {
       query: {id: user.user.credentials.id},
     });
@@ -64,7 +67,9 @@ const Home: React.FunctionComponent<Props> = (props) => {
     if (socket === undefined) return;
     socket.on('transaction', ({title, message}: SocketData) => {
       dispatch(getUser(user.user.credentials.id as number));
-      LocalNotification(title, message);
+      if (enableNotification) {
+        LocalNotification(title, message);
+      }
     });
     return () => {
       socket.off('transaction');
@@ -73,9 +78,12 @@ const Home: React.FunctionComponent<Props> = (props) => {
 
   //change statusbar color
   useEffect(() => {
-    props.navigation.addListener('focus', () => changeTheme());
+    const eventHandler = props.navigation.addListener('focus', () =>
+      changeTheme(),
+    );
+    // console.log(eventHandler);
+    return () => eventHandler();
   }, []);
-
   return (
     <>
       <View style={styles.homeContainer}>

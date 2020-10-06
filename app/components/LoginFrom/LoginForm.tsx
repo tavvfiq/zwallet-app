@@ -35,7 +35,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   navigation: StackNavigationProp<any, any>;
-  route: RouteProp<any, any>;
+  route?: RouteProp<any, any>;
 };
 
 type FormValues = {

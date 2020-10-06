@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PinInputForm from '../../components/CreatePinForm';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../../store';
 
@@ -14,7 +14,7 @@ const connector = connect(mapState, {});
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 };
 
 class CreatePinForm extends Component<Props, object> {

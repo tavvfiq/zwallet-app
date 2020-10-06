@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import LoginForm from '../../components/LoginFrom';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../utils/types';
 
 interface Props {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 }
 
 export default class LoginScreen extends Component<Props, object> {

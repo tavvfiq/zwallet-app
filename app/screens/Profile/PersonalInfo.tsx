@@ -3,7 +3,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../utils/types';
 
@@ -12,7 +12,7 @@ import colorTheme from '../../shared/appColorTheme';
 type PersonalInfoRouteProps = RouteProp<RootStackParamList, 'PersonalInfo'>;
 
 type Props = {
-  navigation: NavigationScreenProp<PersonalInfoRouteProps, 'PersonalInfo'>;
+  navigation: StackNavigationProp<RootStackParamList, 'PersonalInfo'>;
   route: PersonalInfoRouteProps;
 };
 

@@ -3,7 +3,7 @@ import {View, Text} from 'react-native';
 import {Button} from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../../store';
 import {AppThunkDispatch} from '../../store/thunk';
@@ -34,7 +34,7 @@ type State = {
 };
 
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 };
 
 class CreatePinForm extends React.Component<Props, State> {
@@ -53,9 +53,9 @@ class CreatePinForm extends React.Component<Props, State> {
     const {id} = this.props.user.user.credentials;
     if (!this.state.isPinCreated) {
       this.setState({isPinCreated: true});
-      this.props.updateUser(id as number, {
-        pin: this.state.pin,
-      });
+      let formData = new FormData();
+      formData.append('pin', this.state.pin);
+      this.props.updateUser(id as number, {userdata: formData});
     } else {
       this.props.navigation.navigate('Home');
     }

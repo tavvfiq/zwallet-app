@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {Input, Button} from 'react-native-elements';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import FastImage from 'react-native-fast-image';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../utils/types';
 import {useForm, Controller} from 'react-hook-form';
@@ -22,7 +22,7 @@ import waitingIcon from '../../assets/img/waiting.png';
 
 type AddPhoneNumberRouteProps = RouteProp<RootStackParamList, 'AddPhoneNumber'>;
 type Props = {
-  navigation: NavigationScreenProp<AddPhoneNumberRouteProps, 'AddPhoneNumber'>;
+  navigation: StackNavigationProp<RootStackParamList, 'AddPhoneNumber'>;
   route: AddPhoneNumberRouteProps;
 };
 

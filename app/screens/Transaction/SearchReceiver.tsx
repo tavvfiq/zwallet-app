@@ -7,11 +7,11 @@ import {RootState} from '../../store';
 import {getContact} from '../../store/user/actions';
 import {styles} from './searchReceiverStyle';
 import UserCard from '../../components/UserCard/UserCard';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {changeStatusbarTheme} from '../../store/system/actions';
 
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 };
 
 const selectUser = (state: RootState) => state.user;

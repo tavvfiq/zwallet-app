@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../utils/types';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
@@ -23,7 +23,7 @@ import colorTheme from '../../shared/appColorTheme';
 type ChangePasswordRouteProps = RouteProp<RootStackParamList, 'ChangePassword'>;
 
 type Props = {
-  navigation: NavigationScreenProp<ChangePasswordRouteProps, 'ChangePassword'>;
+  navigation: StackNavigationProp<RootStackParamList, 'ChangePassword'>;
   route: ChangePasswordRouteProps;
 };
 

@@ -4,7 +4,7 @@ import {View, Text, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button} from 'react-native-elements';
 import {styles} from './transactionStyle';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
@@ -20,10 +20,7 @@ type TransactionInfoRouteProps = RouteProp<
 >;
 
 type Props = {
-  navigation: NavigationScreenProp<
-    TransactionInfoRouteProps,
-    'TransactionInfo'
-  >;
+  navigation: StackNavigationProp<RootStackParamList, 'TransactionInfo'>;
   route: TransactionInfoRouteProps;
 };
 

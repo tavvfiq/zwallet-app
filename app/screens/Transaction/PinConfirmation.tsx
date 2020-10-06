@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import FastImage from 'react-native-fast-image';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
@@ -46,10 +46,7 @@ type PinConfirmationRouteProps = RouteProp<
 >;
 
 type Props = PropsFromRedux & {
-  navigation: NavigationScreenProp<
-    PinConfirmationRouteProps,
-    'PinConfirmation'
-  >;
+  navigation: StackNavigationProp<RootStackParamList, 'PinConfirmation'>;
   route: PinConfirmationRouteProps;
 };
 

@@ -20,6 +20,14 @@ export interface updateUserType {
 }
 
 export type RootStackParamList = {
+  SplashScreen: undefined;
+  Login: undefined;
+  SignUp: undefined;
+  CreatePinScreen: undefined;
+  Home: undefined;
+  Profile: undefined;
+  TransactionHistory: {id: number};
+  SearchReceiver: undefined;
   Transfer: {id: number};
   PinConfirmation: {
     pin: string;
@@ -39,4 +47,5 @@ export type RootStackParamList = {
   ChangePin: {id: number; pin: string};
   AddPhoneNumber: {id: number};
   ManagePhoneNumber: {phoneNumber: string};
+  ResetPassword: undefined;
 };

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import RegisterForm from '../../components/RegisterForm';
-import {NavigationScreenProp} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 interface Props {
-  navigation: NavigationScreenProp<any, any>;
+  navigation: StackNavigationProp<any, any>;
 }
 
 export default class RegisterScreen extends Component<Props, object> {

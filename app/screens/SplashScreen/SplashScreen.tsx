@@ -1,11 +1,10 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {styles} from './styles';
 
 type Props = {
-  navigation: NavigationScreenProp<any, any>;
-  route: NavigationRoute;
+  navigation: StackNavigationProp<any, any>;
 };
 
 const SplashScreen = (props: Props) => {
