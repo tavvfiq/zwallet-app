@@ -23,7 +23,7 @@ const persistConfig = {
 const systemPersistConfig = {
   key: 'system',
   storage: AsyncStorage,
-  whitelist: ['sessionIsValid'],
+  whitelist: ['sessionIsValid', 'enableNotification'],
 };
 
 const sessionPersistConfig = {
