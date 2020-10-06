@@ -5,6 +5,9 @@ import {
   LOGIN_FULFILLED,
   LOGIN_PENDING,
   LOGIN_REJECTED,
+  LOGOUT_FULFILLED,
+  LOGOUT_PENDING,
+  LOGOUT_REJECTED,
   REGISTER_FULFILLED,
   REGISTER_PENDING,
   REGISTER_REJECTED,
@@ -51,7 +54,7 @@ const initialState: UserState = {
   },
 };
 
-export function userReducer(
+export function sessionReducer(
   state = initialState,
   action: UserActionTypes,
 ): UserState {
@@ -78,6 +81,27 @@ export function userReducer(
       return {
         ...state,
         status: {
+          loading: false,
+          error: true,
+          msg: action.payload as string,
+        },
+      };
+    case LOGOUT_PENDING:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          loading: true,
+          msg: 'please wait',
+        },
+      };
+    case LOGOUT_FULFILLED:
+      return initialState;
+    case LOGOUT_REJECTED:
+      return {
+        ...state,
+        status: {
+          ...state.status,
           loading: false,
           error: true,
           msg: action.payload as string,

@@ -51,7 +51,7 @@ export default function ResetPassword(props: Props) {
   const {control, handleSubmit, errors} = useForm<resetPassword>({
     resolver: yupResolver(validationSchema),
   });
-  const {status} = useSelector((state: RootState) => state.user);
+  const {status} = useSelector((state: RootState) => state.session);
   const [emailFound, setEmailFound] = useState(false);
   const [isPasswordShowed, setPasswordShowed] = useState(isPasswordShowedInit);
   const [isVisible, setDialogVisibility] = useState(false);

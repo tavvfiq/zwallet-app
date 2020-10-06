@@ -6,7 +6,7 @@ import {RootState} from '../../store';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
-  user: state.user.user,
+  user: state.session.user,
 });
 
 const connector = connect(mapState, {});
@@ -22,7 +22,14 @@ class CreatePinForm extends Component<Props, object> {
 
   componentDidMount() {
     if (this.props.user.credentials.pin) {
-      this.props.navigation.navigate('Home');
+      this.props.navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Home',
+          },
+        ],
+      });
     }
   }
 

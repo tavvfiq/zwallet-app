@@ -7,7 +7,7 @@ export interface SystemState {
   statusbarTheme: StatusbarTheme;
   enableNotification: boolean;
   sessionIsValid: boolean;
-  socket?: SocketIOClient.Socket;
+  socket?: SocketIOClient.Socket | null;
 }
 
 export const CHANGE_STATUSBAR_THEME = 'CHANGE_STATUSBAR_THEME';

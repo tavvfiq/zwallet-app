@@ -7,7 +7,7 @@ import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import FastImage from 'react-native-fast-image';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../utils/types';
+import {ProfileStackParamList} from '../../utils/types';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
 import {object as yupObject, string as yupString} from 'yup';
@@ -20,9 +20,12 @@ import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
 import waitingIcon from '../../assets/img/waiting.png';
 
-type AddPhoneNumberRouteProps = RouteProp<RootStackParamList, 'AddPhoneNumber'>;
+type AddPhoneNumberRouteProps = RouteProp<
+  ProfileStackParamList,
+  'AddPhoneNumber'
+>;
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'AddPhoneNumber'>;
+  navigation: StackNavigationProp<ProfileStackParamList, 'AddPhoneNumber'>;
   route: AddPhoneNumberRouteProps;
 };
 
@@ -44,7 +47,7 @@ export default function AddPhoneNumber(props: Props) {
   });
   const [isVisible, setDialogVisiblity] = useState(false);
   const dispatch = useDispatch();
-  const {status} = useSelector((state: RootState) => state.user);
+  const {status} = useSelector((state: RootState) => state.session);
   const onSubmit = handleSubmit(
     (data) => {
       let formData = new FormData();

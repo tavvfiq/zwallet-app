@@ -4,16 +4,16 @@ import {View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../utils/types';
+import {ProfileStackParamList} from '../../utils/types';
 import {styles} from './manageStyles';
 
 type ManagePhoneNumberRouteProps = RouteProp<
-  RootStackParamList,
+  ProfileStackParamList,
   'ManagePhoneNumber'
 >;
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'ManagePhoneNumber'>;
+  navigation: StackNavigationProp<ProfileStackParamList, 'ManagePhoneNumber'>;
   route: ManagePhoneNumberRouteProps;
 };
 

@@ -10,12 +10,12 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
-import {RootStackParamList} from '../../utils/types';
+import {RootStackParamList, TransactionStackParamList} from '../../utils/types';
 
-const userSelector = (state: RootState) => state.user.user;
+const userSelector = (state: RootState) => state.session.user;
 
 type TransactionInfoRouteProps = RouteProp<
-  RootStackParamList,
+  TransactionStackParamList,
   'TransactionInfo'
 >;
 
@@ -26,7 +26,6 @@ type Props = {
 
 const TransferInformation = (props: Props) => {
   const user = useSelector(userSelector);
-  const {socket} = useSelector((state: RootState) => state.system);
   const {
     sender_id,
     receiver_id,
@@ -35,23 +34,6 @@ const TransferInformation = (props: Props) => {
     notes,
     success,
   } = props.route.params;
-
-  useEffect(() => {
-    if (socket === undefined) return;
-    props.navigation.addListener('focus', () => {
-      if (success) {
-        const title = 'Incoming Transaction';
-        const message = `${
-          user.credentials.username
-        } has transfer you by Rp${amount.toLocaleString('id-ID')}`;
-        socket.emit('transaction', {
-          title,
-          message,
-          receiverId: receiver_id,
-        });
-      }
-    });
-  }, [socket]);
 
   return (
     <>

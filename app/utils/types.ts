@@ -25,7 +25,12 @@ export type RootStackParamList = {
   SignUp: undefined;
   CreatePinScreen: undefined;
   Home: undefined;
-  Profile: undefined;
+  TransactionScreen: undefined;
+  ProfileScreen: undefined;
+  ResetPassword: undefined;
+};
+
+export type TransactionStackParamList = {
   TransactionHistory: {id: number};
   SearchReceiver: undefined;
   Transfer: {id: number};
@@ -42,10 +47,13 @@ export type RootStackParamList = {
     notes: string;
     success: boolean;
   };
+};
+
+export type ProfileStackParamList = {
+  Profile: undefined;
   PersonalInfo: {id: number; username: string; email: string; phone: string};
   ChangePassword: {id: number};
   ChangePin: {id: number; pin: string};
   AddPhoneNumber: {id: number};
   ManagePhoneNumber: {phoneNumber: string};
-  ResetPassword: undefined;
 };

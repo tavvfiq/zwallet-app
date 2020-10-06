@@ -10,10 +10,22 @@ const styles = StyleSheet.create({
   },
   buttonDialog: {
     borderRadius: 10,
+    marginBottom: 5,
     backgroundColor: colorTheme.primary,
     width: 128,
     height: 40,
     alignSelf: 'center',
+  },
+  cancelButton: {
+    marginBottom: 5,
+    borderRadius: 10,
+    backgroundColor: colorTheme.error,
+    width: 128,
+    height: 40,
+    alignSelf: 'center',
+  },
+  canceltext: {
+    color: colorTheme.dark,
   },
   container: {
     paddingTop: 10,

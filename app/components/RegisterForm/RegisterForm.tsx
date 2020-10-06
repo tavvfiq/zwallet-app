@@ -17,7 +17,7 @@ import {registerType} from '../../utils/types';
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
   system: state.system,
-  user: state.user,
+  user: state.session,
 });
 
 const mapDispatch = (dispatch: AppThunkDispatch) => {

@@ -6,7 +6,7 @@ import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import FastImage from 'react-native-fast-image';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../utils/types';
+import {ProfileStackParamList} from '../../utils/types';
 import {connect, ConnectedProps} from 'react-redux';
 import Icon from 'react-native-vector-icons/Feather';
 import {RootState} from '../../store';
@@ -21,7 +21,7 @@ import waitingIcon from '../../assets/img/waiting.png';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
-  status: state.user.status,
+  status: state.session.status,
 });
 
 const mapDispatch = (dispatch: AppThunkDispatch) => {
@@ -42,10 +42,10 @@ type State = {
   isDialogVisible: boolean;
 };
 
-type ChangePinRouteProps = RouteProp<RootStackParamList, 'ChangePin'>;
+type ChangePinRouteProps = RouteProp<ProfileStackParamList, 'ChangePin'>;
 
 type Props = PropsFromRedux & {
-  navigation: StackNavigationProp<RootStackParamList, 'ChangePin'>;
+  navigation: StackNavigationProp<ProfileStackParamList, 'ChangePin'>;
   route: ChangePinRouteProps;
 };
 

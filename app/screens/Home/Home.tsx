@@ -12,7 +12,7 @@ import {RootState} from '../../store';
 import {useSelector, useDispatch} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {getTransaction} from '../../store/transaction/actions';
-import {getUser} from '../../store/user/actions';
+import {getUser, logout} from '../../store/user/actions';
 import {isEmpty} from 'underscore';
 import {SOCKET_URL} from '../../utils/environment';
 import {
@@ -33,17 +33,31 @@ type SocketData = {
 const selector = (state: RootState) => state;
 
 const Home: React.FunctionComponent<Props> = (props) => {
-  const {user, transaction} = useSelector(selector);
-  const {socket, enableNotification} = useSelector(
+  const {session, transaction} = useSelector(selector);
+  const {socket, enableNotification, sessionIsValid} = useSelector(
     (state: RootState) => state.system,
   );
   const dispatch = useDispatch();
   useEffect(() => {
     //TODO: store the recent transaction on local state and update when there is new transaction
-    dispatch(
-      getTransaction(`/transaction/${user.user.credentials.id}?page=1&limit=3`),
-    );
-  }, [dispatch, user.user.details.balance, user.user.credentials.id]);
+    if (sessionIsValid && session.user.credentials.token) {
+      dispatch(
+        getTransaction(
+          `/transaction/${session.user.credentials.id}?page=1&limit=3`,
+        ),
+      );
+    } else {
+      dispatch(logout());
+      props.navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Login',
+          },
+        ],
+      });
+    }
+  }, [dispatch, session.user.details.balance, session.user.credentials.id]);
 
   const changeTheme = React.useCallback(() => {
     dispatch(
@@ -55,33 +69,30 @@ const Home: React.FunctionComponent<Props> = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (socket !== undefined) return;
+    if (socket !== null) return;
     const newSocket = _ioClient(SOCKET_URL, {
-      query: {id: user.user.credentials.id},
+      query: {id: session.user.credentials.id},
     });
     dispatch(setSystemSocket(newSocket));
   }, []);
 
   //subscribe to socket event
   useEffect(() => {
-    if (socket === undefined) return;
-    socket.on('transaction', ({title, message}: SocketData) => {
-      dispatch(getUser(user.user.credentials.id as number));
-      if (enableNotification) {
-        LocalNotification(title, message);
-      }
+    if (socket === null) return;
+    socket?.on('transaction', ({title, message}: SocketData) => {
+      dispatch(getUser(session.user.credentials.id as number));
+      if (enableNotification) LocalNotification(title, message);
     });
     return () => {
-      socket.off('transaction');
+      socket?.off('transaction');
     };
-  }, [socket]);
+  }, [socket, enableNotification]);
 
   //change statusbar color
   useEffect(() => {
     const eventHandler = props.navigation.addListener('focus', () =>
       changeTheme(),
     );
-    // console.log(eventHandler);
     return () => eventHandler();
   }, []);
   return (
@@ -91,13 +102,13 @@ const Home: React.FunctionComponent<Props> = (props) => {
           <View style={styles.textAndImage}>
             <Pressable
               onPress={() => {
-                props.navigation.navigate('Profile');
+                props.navigation.navigate('ProfileScreen', {screen: 'Profile'});
               }}>
               <FastImage
                 style={styles.profileImage}
                 source={
-                  user.user.details.image
-                    ? {uri: user.user.details.image}
+                  session.user.details.image
+                    ? {uri: session.user.details.image}
                     : userIcon
                 }
                 {...{resizeMode: 'cover'}}
@@ -107,7 +118,7 @@ const Home: React.FunctionComponent<Props> = (props) => {
             <View style={styles.textContainer}>
               <Text style={styles.helloText}>Hello,</Text>
               <Text style={styles.nameText}>
-                {user.user.credentials.username}
+                {session.user.credentials.username}
               </Text>
             </View>
           </View>
@@ -116,11 +127,11 @@ const Home: React.FunctionComponent<Props> = (props) => {
         <View style={styles.cardBalanceContainer}>
           <Text style={styles.childText}>Balance</Text>
           <Text style={styles.balanceText}>
-            Rp{Number(user.user.details.balance).toLocaleString('id-ID')}
+            Rp{Number(session.user.details.balance).toLocaleString('id-ID')}
           </Text>
           <Text style={styles.childText}>
-            {user.user.details.phoneNumber
-              ? user.user.details.phoneNumber
+            {session.user.details.phoneNumber
+              ? session.user.details.phoneNumber
               : 'No Phone Number'}
           </Text>
         </View>
@@ -131,7 +142,9 @@ const Home: React.FunctionComponent<Props> = (props) => {
             titleStyle={styles.buttonText}
             buttonStyle={styles.buttonStyle}
             onPress={() => {
-              props.navigation.navigate('SearchReceiver');
+              props.navigation.navigate('TransactionScreen', {
+                screen: 'SearchReceiver',
+              });
             }}
           />
           <Button
@@ -145,8 +158,9 @@ const Home: React.FunctionComponent<Props> = (props) => {
           <Text style={styles.subSectionText}>Transaction History</Text>
           <Pressable
             onPress={() => {
-              props.navigation.navigate('TransactionHistory', {
-                id: user.user.credentials.id,
+              props.navigation.navigate('TransactionScreen', {
+                screen: 'TransactionHistory',
+                params: {id: session.user.credentials.id},
               });
             }}
             style={styles.seeAllButton}>

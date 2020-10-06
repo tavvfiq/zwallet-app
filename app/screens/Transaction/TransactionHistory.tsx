@@ -10,19 +10,22 @@ import {DateTime} from 'luxon';
 import {getTransaction} from '../../store/transaction/actions';
 import {Button} from 'react-native-elements';
 import UserCard from '../../components/UserCard/UserCard';
-import {RootStackParamList} from '../../utils/types';
+import {TransactionStackParamList} from '../../utils/types';
 import {isEmpty} from 'underscore';
 import {changeStatusbarTheme} from '../../store/system/actions';
 
 import colorTheme from '../../shared/appColorTheme';
 
 type TransactionHistoryRouteProps = RouteProp<
-  RootStackParamList,
+  TransactionStackParamList,
   'TransactionHistory'
 >;
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'TransactionHistory'>;
+  navigation: StackNavigationProp<
+    TransactionStackParamList,
+    'TransactionHistory'
+  >;
   route: TransactionHistoryRouteProps;
 };
 

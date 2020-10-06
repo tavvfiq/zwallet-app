@@ -2,6 +2,7 @@ import {AppThunk} from '../thunk';
 import {mainAPI} from '../../utils/apicalls';
 import {transactionType} from '../../utils/types';
 import {validateSession} from '../system/actions';
+import {logout} from '../user/actions';
 import {updateBalanceFulFilled} from '../user/actions';
 import {
   transactionDetail,
@@ -48,7 +49,7 @@ export const doTransaction = (body: FormData): AppThunk => (dispatch) => {
         dispatch(updateBalanceFulFilled(amount));
         dispatch(doTransactionFulfilled('Transaction Success'));
       } else {
-        dispatch(validateSession(false));
+        dispatch(logout());
         dispatch(doTransactionRejected('Transaction failed'));
       }
     })
@@ -91,7 +92,7 @@ export const getTransaction = (endpoint: string): AppThunk => (dispatch) => {
         dispatch(validateSession(true));
         dispatch(getTransactionFulfilled(transactions, pageInfo));
       } else {
-        dispatch(validateSession(false));
+        dispatch(logout());
         dispatch(getTransactionRejected('Error fetching transaction history'));
       }
     })

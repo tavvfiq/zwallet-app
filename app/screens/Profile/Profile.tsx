@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Switch} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
@@ -10,11 +10,12 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import userIcon from '../../assets/img/user.png';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store';
-import {updateUser} from '../../store/user/actions';
+import {updateUser, logout} from '../../store/user/actions';
 import {enableAppNotification} from '../../store/system/actions';
 import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
 import waitingIcon from '../../assets/img/waiting.png';
+import logoutIcon from '../../assets/img/logout.png';
 import {styles} from './profileStyles';
 import dialogStyle from '../../shared/dialogStyles';
 
@@ -31,10 +32,28 @@ const options = {
 };
 
 const Profile: React.FunctionComponent<Props> = (props) => {
-  const {user, status} = useSelector((state: RootState) => state.user);
-  const {enableNotification} = useSelector((state: RootState) => state.system);
+  const {user, status} = useSelector((state: RootState) => state.session);
+  const {enableNotification, sessionIsValid} = useSelector(
+    (state: RootState) => state.system,
+  );
+  const [isLogOut, setLogOut] = useState(false);
   const dispatch = useDispatch();
   const [isDialogVisible, setVisible] = useState(false);
+
+  // useEffect(() => {
+  //   if (!sessionIsValid && user.credentials.token === '') {
+  //     props.navigation.navigate('Login');
+  //   }
+  // }, [sessionIsValid, user.credentials.token, props.navigation]);
+
+  const handleTouchOutside = () => {
+    if (isLogOut) {
+      setVisible(false);
+      setLogOut(false);
+    } else {
+      setVisible(false);
+    }
+  };
 
   const handleAddPhoto = () => {
     ImagePicker.showImagePicker(options, (response) => {
@@ -70,7 +89,9 @@ const Profile: React.FunctionComponent<Props> = (props) => {
           <FastImage
             style={dialogStyle.checkIconStyle}
             source={
-              status.loading
+              isLogOut
+                ? logoutIcon
+                : status.loading
                 ? waitingIcon
                 : status.error
                 ? failedIcon
@@ -78,14 +99,31 @@ const Profile: React.FunctionComponent<Props> = (props) => {
             }
             {...{resizeMode: 'cover'}}
           />
-          <Text style={dialogStyle.textDialog}>{status.msg}</Text>
+          <Text style={dialogStyle.textDialog}>
+            {isLogOut ? 'Are you sure want to logout?' : status.msg}
+          </Text>
           {!status.loading ? (
+            <Button
+              onPress={() => {
+                if (isLogOut) {
+                  setLogOut(false);
+                  dispatch(logout());
+                }
+                setVisible(false);
+              }}
+              buttonStyle={
+                isLogOut ? dialogStyle.cancelButton : dialogStyle.buttonDialog
+              }
+              title={isLogOut ? 'Logout' : 'Confirm'}
+            />
+          ) : null}
+          {isLogOut ? (
             <Button
               onPress={() => {
                 setVisible(false);
               }}
               buttonStyle={dialogStyle.buttonDialog}
-              title="Confirm"
+              title="Cancel"
             />
           ) : null}
         </DialogContent>
@@ -190,6 +228,10 @@ const Profile: React.FunctionComponent<Props> = (props) => {
             buttonStyle={[styles.buttonStyle, {justifyContent: 'center'}]}
             containerStyle={styles.buttonSingleContainer}
             titleStyle={styles.logoutTitleStyle}
+            onPress={() => {
+              setLogOut(true);
+              setVisible(true);
+            }}
           />
         </View>
       </View>

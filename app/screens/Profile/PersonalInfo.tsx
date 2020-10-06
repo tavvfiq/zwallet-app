@@ -5,14 +5,14 @@ import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../utils/types';
+import {ProfileStackParamList} from '../../utils/types';
 
 import colorTheme from '../../shared/appColorTheme';
 
-type PersonalInfoRouteProps = RouteProp<RootStackParamList, 'PersonalInfo'>;
+type PersonalInfoRouteProps = RouteProp<ProfileStackParamList, 'PersonalInfo'>;
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'PersonalInfo'>;
+  navigation: StackNavigationProp<ProfileStackParamList, 'PersonalInfo'>;
   route: PersonalInfoRouteProps;
 };
 

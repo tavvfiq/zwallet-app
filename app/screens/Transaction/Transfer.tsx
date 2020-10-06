@@ -12,11 +12,11 @@ import {RootState} from '../../store';
 import {Dispatch} from 'redux';
 import {changeStatusbarTheme} from '../../store/system/actions';
 import {connect, ConnectedProps} from 'react-redux';
-import {RootStackParamList} from '../../utils/types';
+import {RootStackParamList, TransactionStackParamList} from '../../utils/types';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
-  user: state.user,
+  user: state.session,
 });
 
 const mapDispatch = (dispatch: Dispatch) => {
@@ -30,10 +30,10 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type TransferRouteProps = RouteProp<RootStackParamList, 'Transfer'>;
+type TransferRouteProps = RouteProp<TransactionStackParamList, 'Transfer'>;
 
 type Props = PropsFromRedux & {
-  navigation: StackNavigationProp<RootStackParamList, 'Transfer'>;
+  navigation: StackNavigationProp<TransactionStackParamList, 'Transfer'>;
   route: TransferRouteProps;
 };
 

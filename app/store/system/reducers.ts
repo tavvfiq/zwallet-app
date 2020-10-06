@@ -14,6 +14,7 @@ const initialState: SystemState = {
   },
   sessionIsValid: false,
   enableNotification: false,
+  socket: null,
 };
 
 export function systemReducer(
@@ -30,10 +31,15 @@ export function systemReducer(
         },
       };
     case VALIDATE_TOKEN:
-      return {
-        ...state,
-        sessionIsValid: action.payload,
-      };
+      if (action.payload) {
+        return {
+          ...state,
+          sessionIsValid: action.payload,
+        };
+      } else {
+        state.socket?.close();
+        return initialState;
+      }
     case ENABLE_APP_NOTIFICATION:
       return {
         ...state,

@@ -1,6 +1,7 @@
 import {AppThunk} from '../thunk';
 import {authAPI, mainAPI} from '../../utils/apicalls';
 import {loginType, registerType, updateUserType} from '../../utils/types';
+import AsyncStorage from '@react-native-community/async-storage';
 import {validateSession} from '../system/actions';
 import {IMAGE_URL} from '../../utils/environment';
 
@@ -25,6 +26,9 @@ import {
   FETCH_CURRENT_USER_PENDING,
   FETCH_CURRENT_USER_REJECTED,
   UserActionTypes,
+  LOGOUT_PENDING,
+  LOGOUT_FULFILLED,
+  LOGOUT_REJECTED,
 } from './types';
 
 function loginPending(): UserActionTypes {
@@ -163,7 +167,7 @@ export const getUser = (id: number): AppThunk => (dispatch) => {
         dispatch(validateSession(true));
         dispatch(getUserFulfilled({credentials, details}));
       } else {
-        dispatch(validateSession(false));
+        dispatch(logout());
         dispatch(getUserRejected(data.msg));
       }
     })
@@ -251,6 +255,19 @@ export const login = (body: loginType): AppThunk => (dispatch) => {
     });
 };
 
+export const logout = (): AppThunk => (dispatch) => {
+  dispatch({type: LOGOUT_PENDING});
+  AsyncStorage.removeItem('persist:root', (error) => {
+    if (!error) {
+      mainAPI.setToken('');
+      dispatch(validateSession(false));
+      dispatch({type: LOGOUT_FULFILLED});
+    } else {
+      dispatch({type: LOGOUT_REJECTED, payload: error.message});
+    }
+  });
+};
+
 export const updateUser = (id: number, body: updateUserType): AppThunk => (
   dispatch,
 ) => {
@@ -283,7 +300,7 @@ export const updateUser = (id: number, body: updateUserType): AppThunk => (
           dispatch({type: UPDATE_USER_FULFILLED, payload: msg});
         }
       } else {
-        dispatch(validateSession(false));
+        dispatch(logout());
         dispatch(updateUserRejected(data.msg));
       }
     })
@@ -304,7 +321,7 @@ export const getContact = (endpoint: string): AppThunk => (dispatch) => {
         dispatch(validateSession(true));
         dispatch(getContactFulfilled(contacts, pageInfo));
       } else {
-        dispatch(validateSession(false));
+        dispatch(logout());
         dispatch(getContactRejected('Failed to get contact list.'));
       }
     })

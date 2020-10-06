@@ -14,7 +14,7 @@ import styles from './styles';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
-  user: state.user,
+  user: state.session,
 });
 
 const mapDispatch = (dispatch: AppThunkDispatch) => {

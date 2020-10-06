@@ -13,7 +13,7 @@ import {AppThunkDispatch} from '../../store/thunk';
 import {doTransaction} from '../../store/transaction/actions';
 import {styles} from './transactionStyle';
 import dialogStyle from '../../shared/dialogStyles';
-import {RootStackParamList} from '../../utils/types';
+import {TransactionStackParamList} from '../../utils/types';
 import checkIcon from '../../assets/img/check.png';
 import failedIcon from '../../assets/img/failed.png';
 import waitingIcon from '../../assets/img/waiting.png';
@@ -41,12 +41,12 @@ type State = {
 };
 
 type PinConfirmationRouteProps = RouteProp<
-  RootStackParamList,
+  TransactionStackParamList,
   'PinConfirmation'
 >;
 
 type Props = PropsFromRedux & {
-  navigation: StackNavigationProp<RootStackParamList, 'PinConfirmation'>;
+  navigation: StackNavigationProp<TransactionStackParamList, 'PinConfirmation'>;
   route: PinConfirmationRouteProps;
 };
 

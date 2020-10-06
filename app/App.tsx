@@ -11,32 +11,30 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {createStackNavigator} from '@react-navigation/stack';
-import {RootStackParamList} from './utils/types';
+import {
+  StackNavigationProp,
+  createStackNavigator,
+} from '@react-navigation/stack';
+import {
+  RootStackParamList,
+  TransactionStackParamList,
+  ProfileStackParamList,
+} from './utils/types';
 
 import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
 import SystemStatusbar from './SystemStatusbar';
 import LoginScreen from './screens/Authentication/LoginScreen';
 import RegisterScreen from './screens/Authentication/RegisterScreen';
 import CreatePinScreen from './screens/Authentication/CreatePinScreen';
 import Home from './screens/Home/Home';
-import TransactionHistory from './screens/Transaction/TransactionHistory';
-import SearchReceiver from './screens/Transaction/SearchReceiver';
-import Transfer from './screens/Transaction/Transfer';
-import PinConfirmation from './screens/Transaction/PinConfirmation';
-import TransactionInfo from './screens/Transaction/TransactionInfo';
+import TransactionScreen from './screens/Transaction/TransactionScreen';
 import SplashScreen from './screens/SplashScreen/SplashScreen';
-import Profile from './screens/Profile/Profile';
-import PersonalInfo from './screens/Profile/PersonalInfo';
-import ChangePassword from './screens/Profile/ChangePassword';
-import ChangePin from './screens/Profile/ChangePin';
-import AddPhoneNumber from './screens/Profile/AddPhoneNumber';
-import ManagePhoneNumber from './screens/Profile/ManagePhoneNumber';
+import ProfileScreen from './screens/Profile/ProfileScreen';
 import ResetPassword from './screens/Authentication/ResetPassword';
 
-import {store} from './store';
+import {appStore, persistor} from './store';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -51,35 +49,28 @@ LogBox.ignoreLogs([
 const App = () => {
   return (
     <>
-      <Provider store={store}>
-        <SystemStatusbar />
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="SplashScreen" headerMode="none">
-            <Stack.Screen name="SplashScreen" component={SplashScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="SignUp" component={RegisterScreen} />
-            <Stack.Screen name="CreatePinScreen" component={CreatePinScreen} />
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen
-              name="TransactionHistory"
-              component={TransactionHistory}
-            />
-            <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
-            <Stack.Screen name="Transfer" component={Transfer} />
-            <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
-            <Stack.Screen name="TransactionInfo" component={TransactionInfo} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
-            <Stack.Screen name="ChangePassword" component={ChangePassword} />
-            <Stack.Screen name="ChangePin" component={ChangePin} />
-            <Stack.Screen name="AddPhoneNumber" component={AddPhoneNumber} />
-            <Stack.Screen
-              name="ManagePhoneNumber"
-              component={ManagePhoneNumber}
-            />
-            <Stack.Screen name="ResetPassword" component={ResetPassword} />
-          </Stack.Navigator>
-        </NavigationContainer>
+      <Provider store={appStore}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SystemStatusbar />
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="SplashScreen" headerMode="none">
+              <Stack.Screen name="SplashScreen" component={SplashScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="SignUp" component={RegisterScreen} />
+              <Stack.Screen name="ResetPassword" component={ResetPassword} />
+              <Stack.Screen
+                name="CreatePinScreen"
+                component={CreatePinScreen}
+              />
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen
+                name="TransactionScreen"
+                component={TransactionScreen}
+              />
+              <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PersistGate>
       </Provider>
     </>
   );

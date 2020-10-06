@@ -14,7 +14,7 @@ type Props = {
   navigation: StackNavigationProp<any, any>;
 };
 
-const selectUser = (state: RootState) => state.user;
+const selectUser = (state: RootState) => state.session;
 
 const SearchReceiver = (props: Props) => {
   const [value, setValue] = useState('');

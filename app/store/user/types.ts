@@ -42,6 +42,10 @@ const LOGIN = 'LOGIN';
 export const LOGIN_PENDING = LOGIN + AsyncActionStatus.PENDING;
 export const LOGIN_FULFILLED = LOGIN + AsyncActionStatus.FULFILLED;
 export const LOGIN_REJECTED = LOGIN + AsyncActionStatus.REJECTED;
+const LOGOUT = 'LOGOUT';
+export const LOGOUT_PENDING = LOGOUT + AsyncActionStatus.PENDING;
+export const LOGOUT_FULFILLED = LOGOUT + AsyncActionStatus.FULFILLED;
+export const LOGOUT_REJECTED = LOGOUT + AsyncActionStatus.REJECTED;
 const REGISTER = 'REGISTER';
 export const REGISTER_PENDING = REGISTER + AsyncActionStatus.PENDING;
 export const REGISTER_FULFILLED = REGISTER + AsyncActionStatus.FULFILLED;
@@ -98,6 +102,14 @@ export interface login {
   payload?: User;
 }
 
+export interface logout {
+  type:
+    | typeof LOGOUT_PENDING
+    | typeof LOGOUT_FULFILLED
+    | typeof LOGOUT_REJECTED;
+  payload?: string;
+}
+
 export interface register {
   type:
     | typeof REGISTER_PENDING
@@ -148,6 +160,7 @@ export interface fetchCurrentUser {
 
 export type UserActionTypes =
   | login
+  | logout
   | register
   | updateUser
   | addContact

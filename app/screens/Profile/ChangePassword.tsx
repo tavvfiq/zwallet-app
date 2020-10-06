@@ -5,7 +5,7 @@ import {Button, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../utils/types';
+import {ProfileStackParamList} from '../../utils/types';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import FastImage from 'react-native-fast-image';
 import {useForm, Controller} from 'react-hook-form';
@@ -20,10 +20,13 @@ import {RootState} from '../../store';
 import dialogStyle from '../../shared/dialogStyles';
 import colorTheme from '../../shared/appColorTheme';
 
-type ChangePasswordRouteProps = RouteProp<RootStackParamList, 'ChangePassword'>;
+type ChangePasswordRouteProps = RouteProp<
+  ProfileStackParamList,
+  'ChangePassword'
+>;
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'ChangePassword'>;
+  navigation: StackNavigationProp<ProfileStackParamList, 'ChangePassword'>;
   route: ChangePasswordRouteProps;
 };
 
@@ -64,7 +67,7 @@ const ChangePassword = (props: Props) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const {status} = useSelector((state: RootState) => state.user);
+  const {status} = useSelector((state: RootState) => state.session);
   const [isPasswordShowed, setPasswordShowed] = useState(isPasswordShowedInit);
 
   const [isVisible, setDialogVisibility] = useState(false);

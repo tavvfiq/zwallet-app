@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import {Formik, FormikProps} from 'formik';
+import {mainAPI} from '../../utils/apicalls';
 import {object as yupObject, string as yupString} from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -18,7 +19,7 @@ import {loginType} from '../../utils/types';
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
   system: state.system,
-  user: state.user,
+  session: state.session,
 });
 
 const mapDispatch = (dispatch: AppThunkDispatch) => {
@@ -85,6 +86,20 @@ class LoginForm extends Component<Props, object> {
   };
 
   componentDidMount() {
+    if (
+      this.props.system.sessionIsValid &&
+      this.props.session.user.credentials.token
+    ) {
+      mainAPI.setToken(this.props.session.user.credentials.token);
+      this.props.navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Home',
+          },
+        ],
+      });
+    }
     this.props.navigation.addListener('focus', () =>
       this.props.changeTheme({
         backgroundColor: '#FAFCFF',
@@ -118,7 +133,7 @@ class LoginForm extends Component<Props, object> {
           value={values.email}
           onChangeText={(value) => setFieldValue('email', value)}
           onBlur={() => setFieldTouched('email')}
-          editable={!this.props.user.status.loading}
+          editable={!this.props.session.status.loading}
           errorStyle={styles.errorMessage}
           errorMessage={
             touched.email && errors.email ? errors.email : undefined
@@ -134,7 +149,7 @@ class LoginForm extends Component<Props, object> {
           value={values.password}
           onChangeText={(value) => setFieldValue('password', value)}
           onBlur={() => setFieldTouched('password')}
-          editable={!this.props.user.status.loading}
+          editable={!this.props.session.status.loading}
           errorStyle={styles.errorMessage}
           errorMessage={
             touched.password && errors.password ? errors.password : undefined
@@ -161,12 +176,12 @@ class LoginForm extends Component<Props, object> {
           }}
         />
         <Text style={styles.errorMessageText}>
-          {this.props.user.status.error ? this.props.user.status.msg : ''}
+          {this.props.session.status.error ? this.props.session.status.msg : ''}
         </Text>
         <Button
           onPress={handleSubmit}
-          disabled={this.props.user.status.loading || !isValid}
-          loading={this.props.user.status.loading}
+          disabled={this.props.session.status.loading || !isValid}
+          loading={this.props.session.status.loading}
           loadingProps={{size: 'large', color: 'white'}}
           buttonStyle={styles.loginButton}
           title="Login"
