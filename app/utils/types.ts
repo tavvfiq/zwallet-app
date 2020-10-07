@@ -22,20 +22,16 @@ export interface updateUserType {
 export type RootStackParamList = {
   SplashScreen: undefined;
   AuthScreen: undefined;
-  // Login: undefined;
-  // SignUp: undefined;
-  // CreatePin: undefined;
   Home: undefined;
   TransactionScreen: undefined;
   ProfileScreen: undefined;
-  // ResetPassword: undefined;
 };
 
 export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
   CreatePin: undefined;
-  ResetPassword: undefined;
+  ResetPassword: {email?: string; isReset?: boolean};
 };
 
 export type TransactionStackParamList = {

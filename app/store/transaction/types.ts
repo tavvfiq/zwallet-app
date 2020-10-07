@@ -44,12 +44,18 @@ export const DO_TRANSACTION_FULFILLED =
   DO_TRANSACTION + AsyncActionStatus.FULFILLED;
 export const DO_TRANSACTION_REJECTED =
   DO_TRANSACTION + AsyncActionStatus.REJECTED;
+export const CLEAR_TRANSACTION = 'CLEAR_TRANSACTION';
 
 export type doTransaction = {
   type:
     | typeof DO_TRANSACTION_PENDING
     | typeof DO_TRANSACTION_FULFILLED
     | typeof DO_TRANSACTION_REJECTED;
+  payload?: string;
+};
+
+export type clearTransaction = {
+  type: typeof CLEAR_TRANSACTION;
   payload?: string;
 };
 
@@ -61,4 +67,7 @@ export type getTransactionHistory = {
   payload?: {transactions: transactionDetail[]; pageInfo: PageInfo} | string;
 };
 
-export type TransactionActionTypes = doTransaction | getTransactionHistory;
+export type TransactionActionTypes =
+  | doTransaction
+  | getTransactionHistory
+  | clearTransaction;

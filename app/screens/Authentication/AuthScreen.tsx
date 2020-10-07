@@ -13,7 +13,6 @@ import ResetPassword from './ResetPassword';
 import {changeStatusbarTheme} from '../../store/system/actions';
 import {AuthStackParamList} from '../../utils/types';
 import {RootState} from '../../store';
-// import {mainAPI} from '../../utils/apicalls';
 
 const AuthStack = createStackNavigator<AuthStackParamList>();
 

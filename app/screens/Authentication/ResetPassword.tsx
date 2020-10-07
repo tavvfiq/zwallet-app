@@ -3,6 +3,7 @@ import {View, Text} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
 import {yupResolver} from '@hookform/resolvers';
@@ -11,6 +12,7 @@ import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import {updateUser} from '../../store/user/actions';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../store';
+import {AuthStackParamList} from '../../utils/types';
 import styles from './ResetPasswordStyle';
 import dialogStyle from '../../shared/dialogStyles';
 import checkIcon from '../../assets/img/check.png';
@@ -43,8 +45,11 @@ const isPasswordShowedInit: {[key: string]: any} = {
   repeatPassword: false,
 };
 
+type ResetPasswordRouteProps = RouteProp<AuthStackParamList, 'ResetPassword'>;
+
 type Props = {
   navigation: StackNavigationProp<any, any>;
+  route: ResetPasswordRouteProps;
 };
 
 export default function ResetPassword(props: Props) {
@@ -52,7 +57,7 @@ export default function ResetPassword(props: Props) {
     resolver: yupResolver(validationSchema),
   });
   const {status} = useSelector((state: RootState) => state.session);
-  const [emailFound, setEmailFound] = useState(false);
+  const {isReset, id} = props.route.params;
   const [isPasswordShowed, setPasswordShowed] = useState(isPasswordShowedInit);
   const [isVisible, setDialogVisibility] = useState(false);
   const [email, setEmail] = useState('');
@@ -69,7 +74,7 @@ export default function ResetPassword(props: Props) {
   };
   const onSubmit = handleSubmit((data) => {
     let formData = new FormData();
-    if (emailFound) {
+    if (isReset) {
       formData.append('email', email);
       formData.append('newPassword', data.newPassword);
       dispatch(updateUser(Number('null'), {userdata: formData}));
@@ -102,10 +107,8 @@ export default function ResetPassword(props: Props) {
               onPress={() => {
                 setDialogVisibility(false);
                 if (!status.error) {
-                  if (emailFound) {
+                  if (isReset) {
                     props.navigation.navigate('Login');
-                  } else {
-                    setEmailFound(true);
                   }
                 }
               }}
@@ -122,11 +125,11 @@ export default function ResetPassword(props: Props) {
         <View style={styles.formContainer}>
           <Text style={styles.titleText}>Reset Password</Text>
           <Text style={styles.subTitleText}>
-            {emailFound
+            {isReset
               ? 'Create and confirm your new password so you can login to Zwallet.'
               : 'Enter your Zwallet e-mail so we can send you a password reset link.'}
           </Text>
-          {emailFound ? (
+          {isReset ? (
             <>
               <Controller
                 control={control}
@@ -223,13 +226,13 @@ export default function ResetPassword(props: Props) {
             loadingProps={{size: 'large', color: 'white'}}
             buttonStyle={styles.loginButton}
             disabled={
-              emailFound
+              isReset
                 ? Boolean(errors.newPassword?.message) ||
                   Boolean(errors.repeatPassword?.message)
                 : Boolean(errors.email?.message)
             }
             loading={status.loading}
-            title={emailFound ? 'Reset Password' : 'Confirm'}
+            title={isReset ? 'Reset Password' : 'Confirm'}
             onPress={onSubmit}
           />
         </View>

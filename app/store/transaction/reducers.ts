@@ -7,6 +7,7 @@ import {
   GET_TRANSACTION_FULFILLED,
   GET_TRANSACTION_PENDING,
   GET_TRANSACTION_REJECTED,
+  CLEAR_TRANSACTION,
   TransactionActionTypes,
   TransactionState,
 } from './types';
@@ -32,6 +33,8 @@ export const transactionReducer = (
   action: TransactionActionTypes,
 ): TransactionState => {
   switch (action.type) {
+    case CLEAR_TRANSACTION:
+      return initialState;
     case DO_TRANSACTION_PENDING:
       return {
         ...state,

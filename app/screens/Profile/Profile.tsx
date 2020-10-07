@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
-import {View, Text, Switch} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Switch, ActivityIndicator} from 'react-native';
+import {Image} from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import ImagePicker from 'react-native-image-picker';
@@ -33,18 +34,10 @@ const options = {
 
 const Profile: React.FunctionComponent<Props> = (props) => {
   const {user, status} = useSelector((state: RootState) => state.session);
-  const {enableNotification, sessionIsValid} = useSelector(
-    (state: RootState) => state.system,
-  );
+  const {enableNotification} = useSelector((state: RootState) => state.system);
   const [isLogOut, setLogOut] = useState(false);
   const dispatch = useDispatch();
   const [isDialogVisible, setVisible] = useState(false);
-
-  // useEffect(() => {
-  //   if (!sessionIsValid && user.credentials.token === '') {
-  //     props.navigation.navigate('Login');
-  //   }
-  // }, [sessionIsValid, user.credentials.token, props.navigation]);
 
   const handleTouchOutside = () => {
     if (isLogOut) {
@@ -58,11 +51,17 @@ const Profile: React.FunctionComponent<Props> = (props) => {
   const handleAddPhoto = () => {
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        if (__DEV__) {
+          console.log('User cancelled image picker');
+        }
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        if (__DEV__) {
+          console.log('ImagePicker Error: ', response.error);
+        }
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        if (__DEV__) {
+          console.log('User tapped custom button: ', response.customButton);
+        }
       } else {
         const source = {uri: response.uri};
         // You can also display the image using data:
@@ -141,7 +140,6 @@ const Profile: React.FunctionComponent<Props> = (props) => {
           />
           <FastImage
             style={styles.image}
-            {...{resizeMode: 'cover'}}
             source={user.details.image ? {uri: user.details.image} : userIcon}
           />
           <Button

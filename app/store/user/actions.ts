@@ -3,6 +3,7 @@ import {authAPI, mainAPI} from '../../utils/apicalls';
 import {loginType, registerType, updateUserType} from '../../utils/types';
 import AsyncStorage from '@react-native-community/async-storage';
 import {validateSession} from '../system/actions';
+import {clearTransaction} from '../transaction/actions';
 import {IMAGE_URL} from '../../utils/environment';
 
 import {
@@ -261,6 +262,7 @@ export const logout = (): AppThunk => (dispatch) => {
     if (!error) {
       mainAPI.setToken('');
       dispatch(validateSession(false));
+      dispatch(clearTransaction());
       dispatch({type: LOGOUT_FULFILLED});
     } else {
       dispatch({type: LOGOUT_REJECTED, payload: error.message});

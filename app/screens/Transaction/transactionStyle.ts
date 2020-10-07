@@ -63,6 +63,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginLeft: 16,
     borderRadius: 10,
+    resizeMode: 'cover',
   },
   headerCardText: {
     display: 'flex',

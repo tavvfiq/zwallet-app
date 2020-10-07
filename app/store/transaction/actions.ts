@@ -13,6 +13,7 @@ import {
   GET_TRANSACTION_FULFILLED,
   GET_TRANSACTION_PENDING,
   GET_TRANSACTION_REJECTED,
+  CLEAR_TRANSACTION,
   TransactionActionTypes,
 } from './types';
 
@@ -35,6 +36,12 @@ function doTransactionRejected(msg: string): TransactionActionTypes {
     payload: msg,
   };
 }
+
+export const clearTransaction = (): TransactionActionTypes => {
+  return {
+    type: CLEAR_TRANSACTION,
+  };
+};
 
 export const doTransaction = (body: FormData): AppThunk => (dispatch) => {
   dispatch(doTransactionPending());

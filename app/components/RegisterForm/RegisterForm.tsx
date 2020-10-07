@@ -161,6 +161,9 @@ class RegisterForm extends Component<Props, object> {
           inputContainerStyle={styles.inputContainerStyle}
           inputStyle={styles.inputStyle}
         />
+        <Text style={styles.errorMessageText}>
+          {this.props.user.status.error ? this.props.user.status.msg : ''}
+        </Text>
         <Button
           onPress={handleSubmit}
           disabled={this.props.user.status.loading || !isValid}

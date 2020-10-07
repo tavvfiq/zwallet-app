@@ -56,7 +56,9 @@ export default function AddPhoneNumber(props: Props) {
       setDialogVisiblity(true);
     },
     (err) => {
-      console.log(err);
+      if (__DEV__) {
+        console.log(err);
+      }
     },
   );
   return (

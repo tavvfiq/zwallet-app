@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginRight: 16,
     borderRadius: 10,
+    resizeMode: 'cover',
   },
   textContainer: {
     display: 'flex',

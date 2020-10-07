@@ -1,7 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
-import {View, Text, Pressable, ScrollView} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import {Image} from 'react-native-elements';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import _ioClient from 'socket.io-client';
@@ -20,6 +26,7 @@ import {
   setSystemSocket,
 } from '../../store/system/actions';
 import {LocalNotification} from '../../services/NotificationService';
+import colorTheme from '../../shared/appColorTheme';
 
 type Props = {
   navigation: StackNavigationProp<any, any>;
@@ -105,14 +112,16 @@ const Home: React.FunctionComponent<Props> = (props) => {
               onPress={() => {
                 props.navigation.navigate('ProfileScreen', {screen: 'Profile'});
               }}>
-              <FastImage
+              <Image
                 style={styles.profileImage}
                 source={
                   session.user.details.image
                     ? {uri: session.user.details.image}
                     : userIcon
                 }
-                {...{resizeMode: 'cover'}}
+                PlaceholderContent={
+                  <ActivityIndicator size="small" color={colorTheme.white} />
+                }
               />
             </Pressable>
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, Pressable} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {View, Text, Pressable, ActivityIndicator} from 'react-native';
+import {Image} from 'react-native-elements';
 import styles from './styles';
 import userIcon from '../../assets/img/user.png';
-// import {CardProps} from './propsType';
+import colorTheme from '../../shared/appColorTheme';
 import {ContactDetail} from '../../store/user/types';
 import {transactionDetail} from '../../store/transaction/types';
 
@@ -23,10 +23,13 @@ const UserCard = (props: CardProps) => {
         }}
         style={styles.cardContainer}>
         <View style={styles.imageAndName}>
-          <FastImage
+          <Image
             style={styles.image}
             source={props.image !== null ? {uri: props.image} : userIcon}
             {...{resizeMode: 'cover'}}
+            PlaceholderContent={
+              <ActivityIndicator size="small" color={colorTheme.white} />
+            }
           />
           <View style={styles.textContainer}>
             <Text style={styles.nameText}>{props.username}</Text>

@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, TextInput} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {View, Text, TextInput, ActivityIndicator} from 'react-native';
+import {Image} from 'react-native-elements';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {Input, Button} from 'react-native-elements';
@@ -13,6 +13,7 @@ import {Dispatch} from 'redux';
 import {changeStatusbarTheme} from '../../store/system/actions';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootStackParamList, TransactionStackParamList} from '../../utils/types';
+import colorTheme from '../../shared/appColorTheme';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
@@ -115,10 +116,12 @@ class Transfer extends React.Component<Props, State> {
               </Text>
             </View>
             <View style={styles.headerCard}>
-              <FastImage
+              <Image
                 style={styles.cardImage}
                 source={user.image ? {uri: user.image} : userIcon}
-                {...{resizeMode: 'cover'}}
+                PlaceholderContent={
+                  <ActivityIndicator size="small" color={colorTheme.white} />
+                }
               />
               <View style={styles.headerCardText}>
                 <Text style={styles.nameText}>{user.username}</Text>

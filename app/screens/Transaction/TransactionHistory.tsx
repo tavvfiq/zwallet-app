@@ -216,60 +216,80 @@ const TransactionHistory = (props: Props) => {
           />
           <Text style={styles.headerText}>History</Text>
         </View>
-        <SectionList
-          contentContainerStyle={styles.sectionList}
-          showsVerticalScrollIndicator={false}
-          sections={sectionData}
-          renderSectionHeader={({section}) => (
-            <Text style={styles.SectionHeaderStyle}> {section.title} </Text>
-          )}
-          renderItem={({item}) => (
-            <UserCard key={item.transaction_id} {...item} />
-          )}
-          keyExtractor={(item) => String(item.transaction_id)}
-          onEndReached={trigGetHistory}
-          onEndReachedThreshold={0.2}
-        />
-        <View style={styles.buttonContainer}>
-          <Button
-            containerStyle={styles.singleButtonContainer}
-            icon={
-              <Icon
-                name="arrow-up"
-                color={buttonState.out ? 'white' : '#F74C3C'}
-                size={28}
+        {sectionData.length === 0 ? (
+          <Text
+            style={[
+              styles.subSectionText,
+              {
+                alignSelf: 'center',
+                marginTop: 10,
+                color: 'rgba(169, 169, 169, 0.8)',
+              },
+            ]}>
+            No Transaction History
+          </Text>
+        ) : (
+          <>
+            <SectionList
+              contentContainerStyle={styles.sectionList}
+              showsVerticalScrollIndicator={false}
+              sections={sectionData}
+              renderSectionHeader={({section}) => (
+                <Text style={styles.SectionHeaderStyle}> {section.title} </Text>
+              )}
+              renderItem={({item}) => (
+                <UserCard key={item.transaction_id} {...item} />
+              )}
+              keyExtractor={(item) => String(item.transaction_id)}
+              onEndReached={trigGetHistory}
+              onEndReachedThreshold={0.2}
+            />
+            <View style={styles.buttonContainer}>
+              <Button
+                containerStyle={styles.singleButtonContainer}
+                icon={
+                  <Icon
+                    name="arrow-up"
+                    color={buttonState.out ? 'white' : '#F74C3C'}
+                    size={28}
+                  />
+                }
+                buttonStyle={
+                  buttonState.out
+                    ? styles.buttonStyleClicked
+                    : styles.buttonStyle
+                }
+                onPress={() => {
+                  toggleButton('out', buttonState, setButtonState);
+                }}
               />
-            }
-            buttonStyle={
-              buttonState.out ? styles.buttonStyleClicked : styles.buttonStyle
-            }
-            onPress={() => {
-              toggleButton('out', buttonState, setButtonState);
-            }}
-          />
-          <Button
-            containerStyle={styles.singleButtonContainer}
-            icon={
-              <Icon
-                name="arrow-down"
-                color={buttonState.in ? 'white' : '#00C06A'}
-                size={28}
+              <Button
+                containerStyle={styles.singleButtonContainer}
+                icon={
+                  <Icon
+                    name="arrow-down"
+                    color={buttonState.in ? 'white' : '#00C06A'}
+                    size={28}
+                  />
+                }
+                buttonStyle={
+                  buttonState.in
+                    ? styles.buttonStyleClicked
+                    : styles.buttonStyle
+                }
+                onPress={() => {
+                  toggleButton('in', buttonState, setButtonState);
+                }}
               />
-            }
-            buttonStyle={
-              buttonState.in ? styles.buttonStyleClicked : styles.buttonStyle
-            }
-            onPress={() => {
-              toggleButton('in', buttonState, setButtonState);
-            }}
-          />
-          <Button
-            containerStyle={styles.singleButtonContainer}
-            title="Filter by Date"
-            titleStyle={styles.buttonText}
-            buttonStyle={styles.buttonStyleFilter}
-          />
-        </View>
+              <Button
+                containerStyle={styles.singleButtonContainer}
+                title="Filter by Date"
+                titleStyle={styles.buttonText}
+                buttonStyle={styles.buttonStyleFilter}
+              />
+            </View>
+          </>
+        )}
       </View>
     </>
   );
@@ -298,6 +318,10 @@ const styles = StyleSheet.create({
     paddingLeft: 22,
     paddingRight: 22,
     paddingTop: 42,
+  },
+  subSectionText: {
+    fontSize: 18,
+    fontWeight: '700',
   },
   headerText: {
     fontSize: 20,
