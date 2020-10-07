@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 26,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: colorTheme.primary,
     alignSelf: 'center',
     fontFamily: 'NunitoSans-Regular.ttf',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     alignSelf: 'center',
     marginBottom: 20,
   },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: colorTheme.primary,
   },
   errorMessageText: {

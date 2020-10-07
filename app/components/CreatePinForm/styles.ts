@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 26,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: colorTheme.primary,
     alignSelf: 'center',
   },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     alignSelf: 'center',
     marginTop: 40,
     marginBottom: 20,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: colorTheme.primary,
   },
   errorMessageText: {
@@ -123,12 +123,12 @@ const styles = StyleSheet.create({
   },
   pinText: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#3A3D42',
   },
   pinTextFocused: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#3A3D42',
     borderBottomWidth: 1,
     borderColor: 'rgba(169, 169, 169, 0.4)',

@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
   nameText: {
     alignSelf: 'center',
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#4D4B57',
     marginBottom: 10,
   },
@@ -64,11 +64,11 @@ export const styles = StyleSheet.create({
   titleStyle: {
     color: '#4D4B57',
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
   },
   logoutTitleStyle: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#FF5B37',
     // textAlign: 'center',
     // alignSelf: 'center',

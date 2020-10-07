@@ -28,6 +28,8 @@ import {
 import {LocalNotification} from '../../services/NotificationService';
 import colorTheme from '../../shared/appColorTheme';
 
+import {BoldText} from '../../components/CustomText/CustomText';
+
 type Props = {
   navigation: StackNavigationProp<any, any>;
 };
@@ -127,18 +129,18 @@ const Home: React.FunctionComponent<Props> = (props) => {
 
             <View style={styles.textContainer}>
               <Text style={styles.helloText}>Hello,</Text>
-              <Text style={styles.nameText}>
+              <BoldText style={styles.nameText}>
                 {session.user.credentials.username}
-              </Text>
+              </BoldText>
             </View>
           </View>
           <Icon name="bell" size={21} style={styles.icon} />
         </View>
         <View style={styles.cardBalanceContainer}>
           <Text style={styles.childText}>Balance</Text>
-          <Text style={styles.balanceText}>
+          <BoldText style={styles.balanceText}>
             Rp{Number(session.user.details.balance).toLocaleString('id-ID')}
-          </Text>
+          </BoldText>
           <Text style={styles.childText}>
             {session.user.details.phoneNumber
               ? session.user.details.phoneNumber
@@ -165,7 +167,7 @@ const Home: React.FunctionComponent<Props> = (props) => {
           />
         </View>
         <View style={styles.subSectionContainer}>
-          <Text style={styles.subSectionText}>Transaction History</Text>
+          <BoldText style={styles.subSectionText}>Transaction History</BoldText>
           <Pressable
             onPress={() => {
               props.navigation.navigate('TransactionScreen', {

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   nameText: {
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     fontSize: 16,
     color: '#4D4B57',
   },
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   amountTextIn: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     minWidth: 90,
     maxHeight: 25,
     alignSelf: 'center',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   amountTextOut: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     minWidth: 90,
     maxHeight: 25,
     alignSelf: 'center',

@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {ProfileStackParamList} from '../../utils/types';
+import {BoldText} from '../../components/CustomText/CustomText';
 
 import colorTheme from '../../shared/appColorTheme';
 
@@ -40,22 +41,22 @@ const PersonalInfo = (props: Props) => {
         <View style={styles.cellContainer}>
           <View style={styles.cell}>
             <Text style={styles.cellTitleText}>First Name</Text>
-            <Text style={styles.cellChildText}>{firstname}</Text>
+            <BoldText style={styles.cellChildText}>{firstname}</BoldText>
           </View>
           <View style={styles.cell}>
             <Text style={styles.cellTitleText}>Last Name</Text>
-            <Text style={styles.cellChildText}>{lastname}</Text>
+            <BoldText style={styles.cellChildText}>{lastname}</BoldText>
           </View>
         </View>
         <View style={styles.longCell}>
           <Text style={styles.cellTitleText}>Verified E-mail</Text>
-          <Text style={styles.cellChildText}>{email}</Text>
+          <BoldText style={styles.cellChildText}>{email}</BoldText>
         </View>
         <View
           style={[styles.longCell, {display: 'flex', flexDirection: 'row'}]}>
           <View style={styles.phoneText}>
             <Text style={styles.cellTitleText}>Phone Number</Text>
-            <Text style={styles.cellChildText}>
+            <BoldText style={styles.cellChildText}>
               {phone ? (
                 phone
               ) : (
@@ -71,7 +72,7 @@ const PersonalInfo = (props: Props) => {
                   }}
                 />
               )}
-            </Text>
+            </BoldText>
           </View>
           {phone ? (
             <Button
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
     alignSelf: 'center',
     color: '#4D4B57',
     marginLeft: 25,
@@ -143,7 +144,6 @@ const styles = StyleSheet.create({
   },
   cellChildText: {
     fontSize: 18,
-    fontWeight: '700',
     color: '#514F5B',
   },
   longCell: {
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   addPhoneNumber: {
     fontSize: 18,
-    fontWeight: '700',
+
     color: colorTheme.primary,
   },
 });

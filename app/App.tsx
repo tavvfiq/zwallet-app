@@ -9,7 +9,6 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
-import {LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   StackNavigationProp,
@@ -27,6 +26,8 @@ import Home from './screens/Home/Home';
 import TransactionScreen from './screens/Transaction/TransactionScreen';
 import ProfileScreen from './screens/Profile/ProfileScreen';
 
+import GlobalFont from 'react-native-global-font';
+
 import {appStore, persistor} from './store';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -35,11 +36,8 @@ interface Props {
   navigation: StackNavigationProp<any, any>;
 }
 
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
-
 const App = () => {
+  GlobalFont.applyGlobal('NunitoSans-Regular');
   return (
     <>
       <Provider store={appStore}>

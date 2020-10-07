@@ -37,13 +37,13 @@ export const styles = StyleSheet.create({
   },
   headerPinText: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#4D4B57',
     marginLeft: 26,
   },
   headerText: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: 'white',
     marginLeft: 26,
   },
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#4D4B57',
   },
   phoneNumberText: {
@@ -90,7 +90,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textInputStyle: {
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     fontSize: 42,
     color: colorTheme.primary,
     alignSelf: 'center',
@@ -100,7 +100,7 @@ export const styles = StyleSheet.create({
   balanceText: {
     marginTop: 32,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
     color: '#7C7895',
     alignSelf: 'center',
   },
@@ -153,7 +153,7 @@ export const styles = StyleSheet.create({
   },
   cellChildText: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#514F5B',
   },
   longCell: {
@@ -186,12 +186,12 @@ export const styles = StyleSheet.create({
   },
   pinText: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#3A3D42',
   },
   pinTextFocused: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#3A3D42',
     borderBottomWidth: 1,
     borderColor: 'rgba(169, 169, 169, 0.4)',
@@ -228,7 +228,7 @@ export const styles = StyleSheet.create({
   },
   transferDetailsTitle: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: 'white',
     alignSelf: 'center',
   },

@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import {Formik, FormikProps} from 'formik';
-import {mainAPI} from '../../utils/apicalls';
 import {object as yupObject, string as yupString} from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -15,6 +14,7 @@ import {AppThunkDispatch} from '../../store/thunk';
 import {login} from '../../store/user/actions';
 import {changeStatusbarTheme} from '../../store/system/actions';
 import {loginType} from '../../utils/types';
+import {NormalText, BoldText} from '../CustomText/CustomText';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
@@ -51,9 +51,15 @@ const validationSchema = yupObject().shape({
   password: yupString().required(strings.passwordRequired),
 });
 
-class LoginForm extends Component<Props, object> {
+type State = {
+  showPassword: boolean;
+  msg: string;
+};
+
+class LoginForm extends Component<Props, State> {
   state = {
     showPassword: false,
+    msg: '',
   };
 
   toSignUpScreen = () => {
@@ -65,18 +71,6 @@ class LoginForm extends Component<Props, object> {
       showPassword: !this.state.showPassword,
     });
   };
-
-  async waitLogin() {
-    return await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (this.props.system.sessionIsValid) {
-          resolve(true);
-        } else {
-          reject(false);
-        }
-      }, 1000);
-    });
-  }
 
   handleSubmit = (values: FormValues) => {
     this.props.login(values);
@@ -93,13 +87,13 @@ class LoginForm extends Component<Props, object> {
   }: FormikProps<FormValues>) => (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Zwallet</Text>
+        <BoldText style={styles.headerText}>Zwallet</BoldText>
       </View>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText}>Login</Text>
-        <Text style={styles.subTitleText}>
+        <BoldText style={styles.titleText}>Login</BoldText>
+        <NormalText style={styles.subTitleText}>
           Login to your existing account to access all the features in Zwallet.
-        </Text>
+        </NormalText>
         <Input
           placeholder={strings.emailAddress}
           keyboardType="email-address"

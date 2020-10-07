@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   text: {
     alignSelf: 'center',
     fontSize: 32,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: 'white',
   },
 });

@@ -13,6 +13,7 @@ import {RootState} from '../../store';
 import {AppThunkDispatch} from '../../store/thunk';
 import {register} from '../../store/user/actions';
 import {registerType} from '../../utils/types';
+import {NormalText, BoldText} from '../CustomText/CustomText';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
@@ -57,6 +58,7 @@ const validationSchema = yupObject().shape({
 class RegisterForm extends Component<Props, object> {
   state = {
     showPassword: false,
+    msg: '',
   };
 
   toggleShowPassword = () => {
@@ -102,7 +104,7 @@ class RegisterForm extends Component<Props, object> {
         <Text style={styles.headerText}>Zwallet</Text>
       </View>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText}>Sign Up</Text>
+        <BoldText style={styles.titleText}>Sign Up</BoldText>
         <Text style={styles.subTitleText}>
           Create your account to access Zwallet.
         </Text>

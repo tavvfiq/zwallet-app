@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#4D4B57',
     marginLeft: 26,
   },
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: '#4D4B57',
     marginTop: 25,
     marginLeft: 16,

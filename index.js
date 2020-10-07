@@ -2,10 +2,13 @@
  * @format
  */
 
-import {AppRegistry, Platform} from 'react-native';
+import {AppRegistry, Platform, LogBox} from 'react-native';
 import App from './app/App';
 import {name as appName} from './app.json';
 import {INIT_PUSH_NOTIFICATION} from './app/services/NotificationService';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 INIT_PUSH_NOTIFICATION();
 

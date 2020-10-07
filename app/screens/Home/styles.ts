@@ -41,8 +41,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   nameText: {
-    fontFamily: 'NunitoSans-Regular.ttf',
-    fontWeight: '700',
     fontSize: 18,
   },
   icon: {
@@ -63,7 +61,6 @@ const styles = StyleSheet.create({
   balanceText: {
     color: 'white',
     fontSize: 24,
-    fontWeight: '700',
   },
   childText: {
     color: '#DFDCDC',
@@ -102,7 +99,6 @@ const styles = StyleSheet.create({
   },
   subSectionText: {
     fontSize: 18,
-    fontWeight: '700',
   },
   seeAllButton: {
     alignSelf: 'center',

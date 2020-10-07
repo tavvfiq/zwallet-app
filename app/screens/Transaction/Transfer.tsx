@@ -14,6 +14,7 @@ import {changeStatusbarTheme} from '../../store/system/actions';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootStackParamList, TransactionStackParamList} from '../../utils/types';
 import colorTheme from '../../shared/appColorTheme';
+import FastImage from 'react-native-fast-image';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
@@ -116,12 +117,9 @@ class Transfer extends React.Component<Props, State> {
               </Text>
             </View>
             <View style={styles.headerCard}>
-              <Image
+              <FastImage
                 style={styles.cardImage}
                 source={user.image ? {uri: user.image} : userIcon}
-                PlaceholderContent={
-                  <ActivityIndicator size="small" color={colorTheme.white} />
-                }
               />
               <View style={styles.headerCardText}>
                 <Text style={styles.nameText}>{user.username}</Text>

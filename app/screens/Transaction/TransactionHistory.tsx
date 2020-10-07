@@ -13,6 +13,7 @@ import UserCard from '../../components/UserCard/UserCard';
 import {TransactionStackParamList} from '../../utils/types';
 import {isEmpty} from 'underscore';
 import {changeStatusbarTheme} from '../../store/system/actions';
+import {BoldText} from '../../components/CustomText/CustomText';
 
 import colorTheme from '../../shared/appColorTheme';
 
@@ -214,9 +215,9 @@ const TransactionHistory = (props: Props) => {
             color="white"
             size={26}
           />
-          <Text style={styles.headerText}>History</Text>
+          <BoldText style={styles.headerText}>History</BoldText>
         </View>
-        {sectionData.length === 0 ? (
+        {isEmpty(transaction.transactions) ? (
           <Text
             style={[
               styles.subSectionText,
@@ -321,11 +322,9 @@ const styles = StyleSheet.create({
   },
   subSectionText: {
     fontSize: 18,
-    fontWeight: '700',
   },
   headerText: {
     fontSize: 20,
-    fontWeight: '700',
     color: 'white',
     marginLeft: 26,
   },
@@ -369,7 +368,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colorTheme.primary,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
   },
   sectionList: {
     paddingBottom: 5,

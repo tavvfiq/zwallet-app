@@ -21,10 +21,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 26,
-    fontWeight: '700',
     color: colorTheme.primary,
     alignSelf: 'center',
-    fontFamily: 'NunitoSans-Regular.ttf',
   },
   formContainer: {
     height: 0.8 * height,
@@ -40,7 +38,6 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 24,
-    fontWeight: '700',
     alignSelf: 'center',
     marginBottom: 20,
   },
@@ -60,9 +57,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: '#3A3D42',
+    fontFamily: 'NunitoSans-Regular',
   },
   forgotPassword: {
     color: 'rgba(58, 61, 66, 0.8)',
+    fontFamily: 'NunitoSans-Bold',
   },
   forgotPasswordButton: {
     alignSelf: 'flex-end',
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: colorTheme.primary,
   },
   errorMessageText: {

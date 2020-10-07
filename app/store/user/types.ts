@@ -20,7 +20,7 @@ export type ContactDetail = {
   id: number;
   username: string;
   image: string;
-  phoneNumber?: string;
+  phone_number?: string;
 };
 
 export type ContactList = ContactDetail[];

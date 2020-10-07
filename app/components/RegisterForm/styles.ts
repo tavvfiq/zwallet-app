@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 26,
-    fontWeight: '700',
     color: colorTheme.primary,
     alignSelf: 'center',
+    fontFamily: 'NunitoSans-Bold',
   },
   formContainer: {
     height: 0.8 * height,
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 24,
-    fontWeight: '700',
     alignSelf: 'center',
     marginBottom: 20,
   },
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     height: 57,
     borderRadius: 12,
     backgroundColor: colorTheme.primary,
-    marginTop: 42,
+    marginTop: 40,
     marginBottom: 30,
   },
   footerContainer: {
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'NunitoSans-Bold',
     color: colorTheme.primary,
   },
   errorMessageText: {

@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NunitoSans-Bold',
     alignSelf: 'center',
     color: '#4D4B57',
     marginLeft: 25,

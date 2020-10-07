@@ -20,6 +20,8 @@ import logoutIcon from '../../assets/img/logout.png';
 import {styles} from './profileStyles';
 import dialogStyle from '../../shared/dialogStyles';
 
+import {BoldText} from '../../components/CustomText/CustomText';
+
 type Props = {
   navigation: StackNavigationProp<any, any>;
 };
@@ -150,7 +152,9 @@ const Profile: React.FunctionComponent<Props> = (props) => {
             title="Edit"
             titleStyle={styles.titleStyle}
           />
-          <Text style={styles.nameText}>{user.credentials.username}</Text>
+          <BoldText style={styles.nameText}>
+            {user.credentials.username}
+          </BoldText>
           <Text style={styles.phoneNumber}>
             {user.details.phoneNumber
               ? user.details.phoneNumber

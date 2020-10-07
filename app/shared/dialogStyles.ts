@@ -4,9 +4,9 @@ import colorTheme from './appColorTheme';
 const styles = StyleSheet.create({
   textDialog: {
     marginTop: 10,
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 16,
+    fontFamily: 'NunitoSans-Bold',
+    marginBottom: 20,
     textAlign: 'center',
   },
   buttonDialog: {
@@ -31,13 +31,12 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingBottom: 10,
-    maxWidth: 200,
+    maxWidth: 180,
   },
   checkIconStyle: {
     width: 50,
     height: 50,
     alignSelf: 'center',
-    marginBottom: 10,
     marginTop: 5,
   },
 });
