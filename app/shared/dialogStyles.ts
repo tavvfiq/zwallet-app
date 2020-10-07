@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingBottom: 10,
+    maxWidth: 200,
   },
   checkIconStyle: {
     width: 50,
