@@ -3,6 +3,7 @@ import colorTheme from './appColorTheme';
 
 const styles = StyleSheet.create({
   textDialog: {
+    marginTop: 10,
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: 'center',
     marginBottom: 10,
+    marginTop: 5,
   },
 });
 export default styles;

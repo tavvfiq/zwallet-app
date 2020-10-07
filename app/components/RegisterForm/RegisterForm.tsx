@@ -83,9 +83,9 @@ class RegisterForm extends Component<Props, object> {
 
   handleSubmit = (values: FormValues) => {
     this.props.register(values);
-    this.waitLogin().then(() => {
-      this.props.navigation.navigate('CreatePinScreen');
-    });
+    // this.waitLogin().then(() => {
+    //   this.props.navigation.navigate('CreatePinScreen');
+    // });
   };
 
   renderForm = ({

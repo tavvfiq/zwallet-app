@@ -36,7 +36,7 @@ const ProfileScreen: React.FunctionComponent<Props> = (props) => {
         index: 0,
         routes: [
           {
-            name: 'Login',
+            name: 'AuthScreen',
           },
         ],
       });

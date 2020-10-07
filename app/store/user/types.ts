@@ -5,7 +5,7 @@ export type UserCredentials = {
   username?: string;
   email?: string;
   password?: string;
-  pin?: string;
+  pin?: string | null;
   token?: string;
 };
 

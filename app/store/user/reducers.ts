@@ -34,7 +34,7 @@ const initialState: UserState = {
       id: 0,
       username: 'Unknown',
       token: '',
-      pin: '',
+      pin: null,
     },
     details: {
       numOfContact: 0,

@@ -80,33 +80,33 @@ class LoginForm extends Component<Props, object> {
 
   handleSubmit = (values: FormValues) => {
     this.props.login(values);
-    this.waitLogin().then(() => {
-      this.props.navigation.navigate('CreatePinScreen');
-    });
+    // this.waitLogin().then(() => {
+    //   this.props.navigation.navigate('CreatePinScreen');
+    // });
   };
 
-  componentDidMount() {
-    if (
-      this.props.system.sessionIsValid &&
-      this.props.session.user.credentials.token
-    ) {
-      mainAPI.setToken(this.props.session.user.credentials.token);
-      this.props.navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: 'Home',
-          },
-        ],
-      });
-    }
-    this.props.navigation.addListener('focus', () =>
-      this.props.changeTheme({
-        backgroundColor: '#FAFCFF',
-        barStyle: 'dark-content',
-      }),
-    );
-  }
+  // componentDidMount() {
+  //   if (
+  //     this.props.system.sessionIsValid &&
+  //     this.props.session.user.credentials.token
+  //   ) {
+  //     mainAPI.setToken(this.props.session.user.credentials.token);
+  //     this.props.navigation.reset({
+  //       index: 0,
+  //       routes: [
+  //         {
+  //           name: 'Home',
+  //         },
+  //       ],
+  //     });
+  //   }
+  //   this.props.navigation.addListener('focus', () =>
+  //     this.props.changeTheme({
+  //       backgroundColor: '#FAFCFF',
+  //       barStyle: 'dark-content',
+  //     }),
+  //   );
+  // }
 
   renderForm = ({
     values,

@@ -3,14 +3,18 @@ import {View, Text} from 'react-native';
 import {Button} from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import Dialog, {DialogContent} from 'react-native-popup-dialog';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../../store';
 import {AppThunkDispatch} from '../../store/thunk';
 import {updateUser} from '../../store/user/actions';
 import {updateUserType} from '../../utils/types';
-import checkIcon from '../../assets/img/check.png';
 import styles from './styles';
+import dialogStyle from '../../shared/dialogStyles';
+import checkIcon from '../../assets/img/check.png';
+import failedIcon from '../../assets/img/failed.png';
+import waitingIcon from '../../assets/img/waiting.png';
 
 //connecting state and dispatch
 const mapState = (state: RootState) => ({
@@ -31,6 +35,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type State = {
   pin: string;
   isPinCreated: boolean;
+  isDialogVisible: boolean;
 };
 
 type Props = PropsFromRedux & {
@@ -41,6 +46,7 @@ class CreatePinForm extends React.Component<Props, State> {
   state: Readonly<State> = {
     pin: '',
     isPinCreated: false,
+    isDialogVisible: false,
   };
 
   pinInputRef = React.createRef<SmoothPinCodeInput>();
@@ -49,23 +55,62 @@ class CreatePinForm extends React.Component<Props, State> {
     this.pinInputRef.current?.shake();
   };
 
+  toggleDialog = () => {
+    this.setState({isDialogVisible: !this.state.isDialogVisible});
+  };
+
   onSubmit = () => {
     const {id} = this.props.user.user.credentials;
     if (!this.state.isPinCreated) {
-      this.setState({isPinCreated: true});
+      this.toggleDialog();
       let formData = new FormData();
       formData.append('pin', this.state.pin);
       this.props.updateUser(id as number, {userdata: formData});
     } else {
-      this.props.navigation.navigate('Home');
+      this.props.navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Home',
+          },
+        ],
+      });
     }
   };
 
   render() {
-    const {pin, isPinCreated} = this.state;
+    const {pin, isPinCreated, isDialogVisible} = this.state;
     const {status} = this.props.user;
     return (
       <>
+        <Dialog visible={isDialogVisible}>
+          <DialogContent style={dialogStyle.container}>
+            <FastImage
+              style={dialogStyle.checkIconStyle}
+              source={
+                status.loading
+                  ? waitingIcon
+                  : status.error
+                  ? failedIcon
+                  : checkIcon
+              }
+              {...{resizeMode: 'cover'}}
+            />
+            <Text style={dialogStyle.textDialog}>{status.msg}</Text>
+            {!status.loading ? (
+              <Button
+                onPress={() => {
+                  this.setState({isDialogVisible: false});
+                  if (!status.error) {
+                    this.setState({isPinCreated: true});
+                  }
+                }}
+                buttonStyle={dialogStyle.buttonDialog}
+                title="Confirm"
+              />
+            ) : null}
+          </DialogContent>
+        </Dialog>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headerText}>Zwallet</Text>

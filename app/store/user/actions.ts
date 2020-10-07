@@ -198,7 +198,7 @@ export const register = (body: registerType): AppThunk => (dispatch) => {
         mainAPI.setToken(token);
         const credentials = {id, username, email, pin, token};
         const details = {
-          image: IMAGE_URL + image,
+          image: image ? IMAGE_URL + image : image,
           phoneNumber,
           numOfContact,
           balance,

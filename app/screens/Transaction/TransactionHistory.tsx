@@ -143,26 +143,32 @@ const buttonStateInit: {[key: string]: any} = {
 
 const transactionSelector = (state: RootState) => state;
 
+const toggleButton = (
+  buttonKey: string,
+  currState: {[key: string]: any},
+  cb: React.Dispatch<React.SetStateAction<{[key: string]: any}>>,
+) => {
+  const newState = {...currState};
+  for (const key in currState) {
+    if (key === buttonKey) {
+      newState[key] = !currState[key];
+      if (newState.sort === buttonKey) {
+        newState.sort = '';
+      } else {
+        newState.sort = buttonKey;
+      }
+    } else if (key !== 'sort') {
+      newState[key] = false;
+    }
+  }
+  cb(newState);
+};
+
 const TransactionHistory = (props: Props) => {
   const {transaction} = useSelector(transactionSelector);
   const [buttonState, setButtonState] = useState(buttonStateInit);
   const dispatch = useDispatch();
-  const toggleButton = (buttonKey: string) => {
-    const newState = {...buttonState};
-    for (const key in buttonState) {
-      if (key === buttonKey) {
-        newState[key] = !buttonState[key];
-        if (newState.sort === buttonKey) {
-          newState.sort = '';
-        } else {
-          newState.sort = buttonKey;
-        }
-      } else if (key !== 'sort') {
-        newState[key] = false;
-      }
-    }
-    setButtonState(newState);
-  };
+
   const trigGetHistory = () => {
     if (
       transaction.pageInfo.nextPage !== '' &&
@@ -238,7 +244,7 @@ const TransactionHistory = (props: Props) => {
               buttonState.out ? styles.buttonStyleClicked : styles.buttonStyle
             }
             onPress={() => {
-              toggleButton('out');
+              toggleButton('out', buttonState, setButtonState);
             }}
           />
           <Button
@@ -254,7 +260,7 @@ const TransactionHistory = (props: Props) => {
               buttonState.in ? styles.buttonStyleClicked : styles.buttonStyle
             }
             onPress={() => {
-              toggleButton('in');
+              toggleButton('in', buttonState, setButtonState);
             }}
           />
           <Button

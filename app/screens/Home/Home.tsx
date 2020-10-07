@@ -52,7 +52,7 @@ const Home: React.FunctionComponent<Props> = (props) => {
         index: 0,
         routes: [
           {
-            name: 'Login',
+            name: 'AuthScreen',
           },
         ],
       });
@@ -95,6 +95,7 @@ const Home: React.FunctionComponent<Props> = (props) => {
     );
     return () => eventHandler();
   }, []);
+
   return (
     <>
       <View style={styles.homeContainer}>
