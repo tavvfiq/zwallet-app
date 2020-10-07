@@ -57,10 +57,9 @@ export default function ResetPassword(props: Props) {
     resolver: yupResolver(validationSchema),
   });
   const {status} = useSelector((state: RootState) => state.session);
-  const {isReset, id} = props.route.params;
+  const {isReset, email} = props.route.params;
   const [isPasswordShowed, setPasswordShowed] = useState(isPasswordShowedInit);
   const [isVisible, setDialogVisibility] = useState(false);
-  const [email, setEmail] = useState('');
   const dispatch = useDispatch();
 
   const toggleShowPassword = (what: string) => {
@@ -81,7 +80,6 @@ export default function ResetPassword(props: Props) {
       setDialogVisibility(true);
     } else {
       formData.append('email', data.email);
-      setEmail(data.email as string);
       dispatch(updateUser(Number('null'), {userdata: formData}));
       setDialogVisibility(true);
     }
