@@ -15,7 +15,7 @@ type DecodedToken = {
   email: string;
 };
 
-const idRegx = /\/([^\/]+)\/?$/;
+const emailRegx = /\/([^\/]+)\/?$/;
 const routeRegx = /.*?:\/\//g;
 
 const WelcomeScreen = (props: Props) => {
@@ -33,7 +33,7 @@ const WelcomeScreen = (props: Props) => {
         if (url) {
           if (!sessionIsValid && token === '' && pin === null) {
             const route = url?.replace(routeRegx, '');
-            const email = route?.match(idRegx)[1];
+            const email = route?.match(emailRegx)[1];
             const routeName = route?.split('/')[0];
             props.navigation.reset({
               index: 0,
