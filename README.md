@@ -20,7 +20,7 @@ Zwallet is a digital wallet application. it helps you to transaction with **cash
 - Transfer
 - Add contact
 - Edit Profile
-- Push notification (when someone transfer to your or top up)
+- Push notification (when someone transfer to you or top up)
 
 ## Requirements
 * [`npm`](https://www.npmjs.com/get-npm)
