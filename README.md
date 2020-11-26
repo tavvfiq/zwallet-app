@@ -14,7 +14,7 @@
 - [Related Project](#related-project)
 
 ## Description
-Zwallet is a digital wallet application. it helps you to transaction with **cashless** style.
+Zwallet is a digital wallet application. it helps you to do transaction with **cashless** style.
 
 ## Features
 - Transfer
