@@ -30,7 +30,7 @@ Zwallet is a digital wallet application. it helps you to do transaction with **c
 
 ## Installation
 1. Open your terminal or command prompt
-2. Type `git clone git@github.com:tavvfiq/kecafe-skuy.git`
+2. Type `git clone git@github.com:tavvfiq/zwallet-app.git`
 3. Open the folder and type `npm install` for install dependencies and `react-native link`
 4. Before run this, you must run backend first
 5. Type `react-native run-android` for run this app. ***Make sure your device is connected with debugging mode***.
