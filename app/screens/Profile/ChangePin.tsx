@@ -128,28 +128,38 @@ class ChangePin extends React.Component<Props, State> {
             />
             <Text style={styles.headerPinText}>Change PIN</Text>
           </View>
-          <View style={styles.formContainer}>
-            <Text style={styles.subTitleText}>
-              {this.state.isMatched
-                ? 'Type your new 6 digits security PIN to use in Zwallet.'
-                : 'Enter your current 6 digits Zwallet PIN below to continue to the next steps.'}
-            </Text>
-            <SmoothPinCodeInput
-              ref={this.pinInputRef}
-              value={pin}
-              onTextChange={(value: string) => this.setState({pin: value})}
-              codeLength={6}
-              containerStyle={styles.pinContainerStyle}
-              cellStyle={styles.pinCell}
-              cellStyleFocused={styles.pinCellFocused}
-              textStyle={styles.pinTextFocused}
-              onBackspace={this.backSpacePressed}
-              restrictToNumbers={true}
-            />
-            <Text style={styles.pinErrorMsg}>{this.state.msg}</Text>
+          <View
+            style={[
+              styles.formContainer,
+              {
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                flex: 1,
+              },
+            ]}>
+            <View>
+              <Text style={styles.subTitleText}>
+                {this.state.isMatched
+                  ? 'Type your new 6 digits security PIN to use in Zwallet.'
+                  : 'Enter your current 6 digits Zwallet PIN below to continue to the next steps.'}
+              </Text>
+              <SmoothPinCodeInput
+                ref={this.pinInputRef}
+                value={pin}
+                onTextChange={(value: string) => this.setState({pin: value})}
+                codeLength={6}
+                containerStyle={styles.pinContainerStyle}
+                cellStyle={styles.pinCell}
+                cellStyleFocused={styles.pinCellFocused}
+                textStyle={styles.pinTextFocused}
+                onBackspace={this.backSpacePressed}
+                restrictToNumbers={true}
+              />
+              <Text style={styles.pinErrorMsg}>{this.state.msg}</Text>
+            </View>
             <Button
               onPress={this.onSubmit}
-              buttonStyle={styles.transferButton}
+              buttonStyle={[styles.transferButton, {marginTop: 0}]}
               loading={status.loading}
               title="Continue"
               disabled={pin.length < 6}

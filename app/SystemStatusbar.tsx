@@ -26,7 +26,7 @@ const SystemStatusbar = (props: any) => {
 // const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 const styles = StyleSheet.create({
   statusBar: {
-    height: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight,
+    // height: Platform.OS === 'ios' ? 20,
   },
 });
 export default SystemStatusbar;

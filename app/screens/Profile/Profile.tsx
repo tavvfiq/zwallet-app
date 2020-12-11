@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, Switch, ActivityIndicator} from 'react-native';
+import {View, Text, Switch, ActivityIndicator, ScrollView} from 'react-native';
 import {Image} from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import Dialog, {DialogContent} from 'react-native-popup-dialog';
@@ -129,114 +129,121 @@ const Profile: React.FunctionComponent<Props> = (props) => {
           ) : null}
         </DialogContent>
       </Dialog>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Icon
-            name="arrow-left"
-            style={styles.iconBackStyle}
-            size={30}
-            color="#4D4B57"
-            onPress={() => {
-              props.navigation.goBack();
-            }}
-          />
-          <FastImage
-            style={styles.image}
-            source={user.details.image ? {uri: user.details.image} : userIcon}
-          />
-          <Button
-            onPress={handleAddPhoto}
-            icon={<Icon name="edit-2" />}
-            buttonStyle={styles.editButtonStyle}
-            type="clear"
-            title="Edit"
-            titleStyle={styles.titleStyle}
-          />
-          <BoldText style={styles.nameText}>
-            {user.credentials.username}
-          </BoldText>
-          <Text style={styles.phoneNumber}>
-            {user.details.phoneNumber
-              ? user.details.phoneNumber
-              : 'No Phone Number'}
-          </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Personal Information"
-            icon={<Icon name="arrow-right" size={30} color="#4D4B57" />}
-            iconRight={true}
-            onPress={() => {
-              props.navigation.navigate('PersonalInfo', {
-                id: user.credentials.id,
-                username: user.credentials.username,
-                email: user.credentials.email,
-                phone: user.details.phoneNumber,
-              });
-            }}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonSingleContainer}
-            titleStyle={styles.titleStyle}
-          />
-          <Button
-            title="Change Password"
-            icon={<Icon name="arrow-right" size={30} color="#4D4B57" />}
-            iconRight={true}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonSingleContainer}
-            titleStyle={styles.titleStyle}
-            onPress={() => {
-              props.navigation.navigate('ChangePassword', {
-                id: user.credentials.id,
-              });
-            }}
-          />
-          <Button
-            title="Change PIN"
-            icon={<Icon name="arrow-right" size={30} color="#4D4B57" />}
-            iconRight={true}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonSingleContainer}
-            titleStyle={styles.titleStyle}
-            onPress={() => {
-              props.navigation.navigate('ChangePin', {
-                id: user.credentials.id,
-                pin: user.credentials.pin,
-              });
-            }}
-          />
-          <Button
-            title="Notification"
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonSingleContainer}
-            titleStyle={styles.titleStyle}
-            icon={
-              <Switch
-                trackColor={{
-                  false: 'rgba(169, 169, 169, 0.4)',
-                  true: '#6379F4',
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 20, backgroundColor:'white'}}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Icon
+              name="arrow-left"
+              style={styles.iconBackStyle}
+              size={30}
+              color="#4D4B57"
+              onPress={() => {
+                props.navigation.goBack();
+              }}
+            />
+            <FastImage
+              style={styles.image}
+              source={user.details.image ? {uri: user.details.image} : userIcon}
+            />
+            <Button
+              onPress={handleAddPhoto}
+              icon={<Icon name="edit-2" />}
+              buttonStyle={styles.editButtonStyle}
+              type="clear"
+              title="Edit"
+              titleStyle={styles.titleStyle}
+            />
+            <BoldText style={styles.nameText}>
+              {user.credentials.username}
+            </BoldText>
+            <Text style={styles.phoneNumber}>
+              {user.details.phoneNumber
+                ? user.details.phoneNumber
+                : 'No Phone Number'}
+            </Text>
+          </View>
+          <View
+            style={{flexDirection: 'column', justifyContent: 'space-between'}}>
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Personal Information"
+                icon={<Icon name="arrow-right" size={30} color="#4D4B57" />}
+                iconRight={true}
+                onPress={() => {
+                  props.navigation.navigate('PersonalInfo', {
+                    id: user.credentials.id,
+                    username: user.credentials.username,
+                    email: user.credentials.email,
+                    phone: user.details.phoneNumber,
+                  });
                 }}
-                thumbColor={enableNotification ? 'white' : 'white'}
-                onValueChange={(value) => {
-                  dispatch(enableAppNotification(value));
-                }}
-                value={enableNotification}
+                buttonStyle={styles.buttonStyle}
+                containerStyle={styles.buttonSingleContainer}
+                titleStyle={styles.titleStyle}
               />
-            }
-            iconRight={true}
-          />
-          <Button
-            title="Logout"
-            buttonStyle={[styles.buttonStyle, {justifyContent: 'center'}]}
-            containerStyle={styles.buttonSingleContainer}
-            titleStyle={styles.logoutTitleStyle}
-            onPress={() => {
-              setLogOut(true);
-              setVisible(true);
-            }}
-          />
+              <Button
+                title="Change Password"
+                icon={<Icon name="arrow-right" size={30} color="#4D4B57" />}
+                iconRight={true}
+                buttonStyle={styles.buttonStyle}
+                containerStyle={styles.buttonSingleContainer}
+                titleStyle={styles.titleStyle}
+                onPress={() => {
+                  props.navigation.navigate('ChangePassword', {
+                    id: user.credentials.id,
+                  });
+                }}
+              />
+              <Button
+                title="Change PIN"
+                icon={<Icon name="arrow-right" size={30} color="#4D4B57" />}
+                iconRight={true}
+                buttonStyle={styles.buttonStyle}
+                containerStyle={styles.buttonSingleContainer}
+                titleStyle={styles.titleStyle}
+                onPress={() => {
+                  props.navigation.navigate('ChangePin', {
+                    id: user.credentials.id,
+                    pin: user.credentials.pin,
+                  });
+                }}
+              />
+              <Button
+                title="Notification"
+                buttonStyle={styles.buttonStyle}
+                containerStyle={styles.buttonSingleContainer}
+                titleStyle={styles.titleStyle}
+                icon={
+                  <Switch
+                    trackColor={{
+                      false: 'rgba(169, 169, 169, 0.4)',
+                      true: '#6379F4',
+                    }}
+                    thumbColor={enableNotification ? 'white' : 'white'}
+                    onValueChange={(value) => {
+                      dispatch(enableAppNotification(value));
+                    }}
+                    value={enableNotification}
+                  />
+                }
+                iconRight={true}
+              />
+            </View>
+            <Button
+              title="Logout"
+              buttonStyle={[styles.buttonStyle, {justifyContent: 'center'}]}
+              containerStyle={styles.buttonSingleContainer}
+              titleStyle={styles.logoutTitleStyle}
+              onPress={() => {
+                setLogOut(true);
+                setVisible(true);
+              }}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 };

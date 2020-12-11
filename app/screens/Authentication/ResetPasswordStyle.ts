@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     fontFamily: 'NunitoSans-Bold',
     color: colorTheme.primary,
     alignSelf: 'center',
-    fontFamily: 'NunitoSans-Regular.ttf',
   },
   formContainer: {
     height: 0.8 * height,

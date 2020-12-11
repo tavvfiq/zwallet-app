@@ -1,7 +1,7 @@
 import strings from './strings';
 import styles from './styles';
 import React, {Component} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, ScrollView} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import {Formik, FormikProps} from 'formik';
 import {object as yupObject, string as yupString} from 'yup';
@@ -89,79 +89,90 @@ class LoginForm extends Component<Props, State> {
       <View style={styles.header}>
         <BoldText style={styles.headerText}>Zwallet</BoldText>
       </View>
-      <View style={styles.formContainer}>
-        <BoldText style={styles.titleText}>Login</BoldText>
-        <NormalText style={styles.subTitleText}>
-          Login to your existing account to access all the features in Zwallet.
-        </NormalText>
-        <Input
-          placeholder={strings.emailAddress}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={values.email}
-          onChangeText={(value) => setFieldValue('email', value)}
-          onBlur={() => setFieldTouched('email')}
-          editable={!this.props.session.status.loading}
-          errorStyle={styles.errorMessage}
-          errorMessage={
-            touched.email && errors.email ? errors.email : undefined
-          }
-          leftIcon={<Icon name="mail" color="#6379F4" size={20} />}
-          inputContainerStyle={styles.inputContainerStyle}
-          inputStyle={styles.inputStyle}
-        />
-        <Input
-          secureTextEntry={!this.state.showPassword}
-          placeholder={strings.password}
-          autoCapitalize="none"
-          value={values.password}
-          onChangeText={(value) => setFieldValue('password', value)}
-          onBlur={() => setFieldTouched('password')}
-          editable={!this.props.session.status.loading}
-          errorStyle={styles.errorMessage}
-          errorMessage={
-            touched.password && errors.password ? errors.password : undefined
-          }
-          leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
-          rightIcon={
-            <Icon
-              onPress={this.toggleShowPassword}
-              name={this.state.showPassword ? 'eye' : 'eye-off'}
-              color="#A9A9A9"
-              size={20}
-            />
-          }
-          inputContainerStyle={styles.inputContainerStyle}
-          inputStyle={styles.inputStyle}
-        />
-        <Button
-          type="clear"
-          title="Forgot password?"
-          titleStyle={styles.forgotPassword}
-          containerStyle={styles.forgotPasswordButton}
-          onPress={() => {
-            this.props.navigation.navigate('ResetPassword', {
-              id: undefined,
-              isReset: false,
-            });
-          }}
-        />
-        <Text style={styles.errorMessageText}>
-          {this.props.session.status.error ? this.props.session.status.msg : ''}
-        </Text>
-        <Button
-          onPress={handleSubmit}
-          disabled={this.props.session.status.loading || !isValid}
-          loading={this.props.session.status.loading}
-          loadingProps={{size: 'large', color: 'white'}}
-          buttonStyle={styles.loginButton}
-          title="Login"
-        />
-        <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Don’t have an account? Let’s </Text>
-          <Pressable onPress={this.toSignUpScreen}>
-            <Text style={styles.signUpButton}>Sign Up</Text>
-          </Pressable>
+      <View
+        style={[
+          styles.formContainer,
+          {flexDirection: 'column', justifyContent: 'space-between'},
+        ]}>
+        <View>
+          <BoldText style={styles.titleText}>Login</BoldText>
+          <NormalText style={styles.subTitleText}>
+            Login to your existing account to access all the features in
+            Zwallet.
+          </NormalText>
+          <Input
+            placeholder={strings.emailAddress}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={values.email}
+            onChangeText={(value) => setFieldValue('email', value)}
+            onBlur={() => setFieldTouched('email')}
+            editable={!this.props.session.status.loading}
+            errorStyle={styles.errorMessage}
+            errorMessage={
+              touched.email && errors.email ? errors.email : undefined
+            }
+            leftIcon={<Icon name="mail" color="#6379F4" size={20} />}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+          />
+          <Input
+            secureTextEntry={!this.state.showPassword}
+            placeholder={strings.password}
+            autoCapitalize="none"
+            value={values.password}
+            onChangeText={(value) => setFieldValue('password', value)}
+            onBlur={() => setFieldTouched('password')}
+            editable={!this.props.session.status.loading}
+            errorStyle={styles.errorMessage}
+            errorMessage={
+              touched.password && errors.password ? errors.password : undefined
+            }
+            leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
+            rightIcon={
+              <Icon
+                onPress={this.toggleShowPassword}
+                name={this.state.showPassword ? 'eye' : 'eye-off'}
+                color="#A9A9A9"
+                size={20}
+              />
+            }
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+          />
+          <Button
+            type="clear"
+            title="Forgot password?"
+            titleStyle={styles.forgotPassword}
+            containerStyle={styles.forgotPasswordButton}
+            onPress={() => {
+              this.props.navigation.navigate('ResetPassword', {
+                id: undefined,
+                isReset: false,
+              });
+            }}
+          />
+          <Text style={styles.errorMessageText}>
+            {this.props.session.status.error
+              ? this.props.session.status.msg
+              : ''}
+          </Text>
+        </View>
+        <View>
+          <Button
+            onPress={handleSubmit}
+            disabled={this.props.session.status.loading || !isValid}
+            loading={this.props.session.status.loading}
+            loadingProps={{size: 'large', color: 'white'}}
+            buttonStyle={[styles.loginButton,{marginTop: 0}]}
+            title="Login"
+          />
+          <View style={styles.footerContainer}>
+            <Text style={styles.footerText}>Don’t have an account? Let’s </Text>
+            <Pressable onPress={this.toSignUpScreen}>
+              <Text style={styles.signUpButton}>Sign Up</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </View>
@@ -169,12 +180,14 @@ class LoginForm extends Component<Props, State> {
 
   render() {
     return (
-      <Formik
-        initialValues={{email: '', password: ''}}
-        validationSchema={validationSchema}
-        onSubmit={(values: FormValues) => this.handleSubmit(values)}>
-        {(formikBag: FormikProps<FormValues>) => this.renderForm(formikBag)}
-      </Formik>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Formik
+          initialValues={{email: '', password: ''}}
+          validationSchema={validationSchema}
+          onSubmit={(values: FormValues) => this.handleSubmit(values)}>
+          {(formikBag: FormikProps<FormValues>) => this.renderForm(formikBag)}
+        </Formik>
+      </ScrollView>
     );
   }
 }

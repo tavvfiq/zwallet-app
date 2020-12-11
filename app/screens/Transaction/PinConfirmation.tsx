@@ -128,27 +128,33 @@ class PinConfirmation extends React.Component<Props, State> {
             />
             <Text style={styles.headerPinText}>Enter Your PIN</Text>
           </View>
-          <View style={styles.formContainer}>
-            <Text style={styles.subTitleText}>
-              Enter your 6 digits PIN for confirmation to continue transferring
-              money.
-            </Text>
-            <SmoothPinCodeInput
-              ref={this.pinInputRef}
-              value={pin}
-              onTextChange={(value: string) => this.setState({pin: value})}
-              codeLength={6}
-              containerStyle={styles.pinContainerStyle}
-              cellStyle={styles.pinCell}
-              cellStyleFocused={styles.pinCellFocused}
-              textStyle={styles.pinTextFocused}
-              onBackspace={this.backSpacePressed}
-              restrictToNumbers={true}
-            />
-            <Text style={styles.pinErrorMsg}>{this.state.msg}</Text>
+          <View
+            style={[
+              styles.formContainer,
+              {flexDirection: 'column', justifyContent: 'space-between'},
+            ]}>
+            <View>
+              <Text style={styles.subTitleText}>
+                Enter your 6 digits PIN for confirmation to continue
+                transferring money.
+              </Text>
+              <SmoothPinCodeInput
+                ref={this.pinInputRef}
+                value={pin}
+                onTextChange={(value: string) => this.setState({pin: value})}
+                codeLength={6}
+                containerStyle={styles.pinContainerStyle}
+                cellStyle={styles.pinCell}
+                cellStyleFocused={styles.pinCellFocused}
+                textStyle={styles.pinTextFocused}
+                onBackspace={this.backSpacePressed}
+                restrictToNumbers={true}
+              />
+              <Text style={styles.pinErrorMsg}>{this.state.msg}</Text>
+            </View>
             <Button
               onPress={this.onSubmit}
-              buttonStyle={styles.transferButton}
+              buttonStyle={[styles.transferButton, {marginTop: 0}]}
               loading={status.loading}
               title="Transfer Now"
               disabled={pin.length < 6}

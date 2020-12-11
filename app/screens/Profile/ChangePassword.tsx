@@ -138,121 +138,128 @@ const ChangePassword = (props: Props) => {
           />
           <Text style={styles.headerText}>Change Password</Text>
         </View>
-        <Text style={styles.subHeaderText}>
-          You must enter your current password and then type your new password
-          twice.
-        </Text>
-        <Controller
-          control={control}
-          render={({onChange, onBlur, value}) => (
-            <Input
-              secureTextEntry={!isPasswordShowed.currentPassword}
-              placeholder="Current Password"
-              autoCapitalize="none"
-              value={value}
-              onChangeText={(values) => onChange(values)}
-              onBlur={onBlur}
-              editable={true}
-              errorStyle={styles.errorMessage}
-              errorMessage={errors.currentPassword?.message}
-              leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
-              rightIcon={
-                <Icon
-                  onPress={() => {
-                    toggleShowPassword('currentPassword');
-                  }}
-                  name={isPasswordShowed.currentPassword ? 'eye' : 'eye-off'}
-                  color="#A9A9A9"
-                  size={20}
+        <View
+          style={{flexDirection: 'column', justifyContent: 'space-between'}}>
+          <View>
+            <Text style={styles.subHeaderText}>
+              You must enter your current password and then type your new
+              password twice.
+            </Text>
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  secureTextEntry={!isPasswordShowed.currentPassword}
+                  placeholder="Current Password"
+                  autoCapitalize="none"
+                  value={value}
+                  onChangeText={(values) => onChange(values)}
+                  onBlur={onBlur}
+                  editable={true}
+                  errorStyle={styles.errorMessage}
+                  errorMessage={errors.currentPassword?.message}
+                  leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
+                  rightIcon={
+                    <Icon
+                      onPress={() => {
+                        toggleShowPassword('currentPassword');
+                      }}
+                      name={
+                        isPasswordShowed.currentPassword ? 'eye' : 'eye-off'
+                      }
+                      color="#A9A9A9"
+                      size={20}
+                    />
+                  }
+                  inputContainerStyle={[
+                    styles.inputContainerStyle,
+                    {marginTop: 54},
+                  ]}
+                  inputStyle={styles.inputStyle}
                 />
-              }
-              inputContainerStyle={[
-                styles.inputContainerStyle,
-                {marginTop: 54},
-              ]}
-              inputStyle={styles.inputStyle}
+              )}
+              name="currentPassword"
+              rules={{required: true}}
+              defaultValue=""
             />
-          )}
-          name="currentPassword"
-          rules={{required: true}}
-          defaultValue=""
-        />
-        <Controller
-          control={control}
-          render={({onChange, onBlur, value}) => (
-            <Input
-              secureTextEntry={!isPasswordShowed.newPassword}
-              placeholder="New Password"
-              autoCapitalize="none"
-              value={value}
-              onChangeText={(values) => onChange(values)}
-              onBlur={onBlur}
-              editable={true}
-              errorStyle={styles.errorMessage}
-              errorMessage={errors.newPassword?.message}
-              leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
-              rightIcon={
-                <Icon
-                  onPress={() => {
-                    toggleShowPassword('newPassword');
-                  }}
-                  name={isPasswordShowed.newPassword ? 'eye' : 'eye-off'}
-                  color="#A9A9A9"
-                  size={20}
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  secureTextEntry={!isPasswordShowed.newPassword}
+                  placeholder="New Password"
+                  autoCapitalize="none"
+                  value={value}
+                  onChangeText={(values) => onChange(values)}
+                  onBlur={onBlur}
+                  editable={true}
+                  errorStyle={styles.errorMessage}
+                  errorMessage={errors.newPassword?.message}
+                  leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
+                  rightIcon={
+                    <Icon
+                      onPress={() => {
+                        toggleShowPassword('newPassword');
+                      }}
+                      name={isPasswordShowed.newPassword ? 'eye' : 'eye-off'}
+                      color="#A9A9A9"
+                      size={20}
+                    />
+                  }
+                  inputContainerStyle={styles.inputContainerStyle}
+                  inputStyle={styles.inputStyle}
                 />
-              }
-              inputContainerStyle={styles.inputContainerStyle}
-              inputStyle={styles.inputStyle}
+              )}
+              name="newPassword"
+              rules={{required: true}}
+              defaultValue=""
             />
-          )}
-          name="newPassword"
-          rules={{required: true}}
-          defaultValue=""
-        />
-        <Controller
-          control={control}
-          render={({onChange, onBlur, value}) => (
-            <Input
-              secureTextEntry={!isPasswordShowed.repeatPassword}
-              placeholder="Repeat Password"
-              autoCapitalize="none"
-              value={value}
-              onChangeText={(values) => onChange(values)}
-              onBlur={onBlur}
-              editable={true}
-              errorStyle={styles.errorMessage}
-              errorMessage={errors.repeatPassword?.message}
-              leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
-              rightIcon={
-                <Icon
-                  onPress={() => {
-                    toggleShowPassword('repeatPassword');
-                  }}
-                  name={isPasswordShowed.repeatPassword ? 'eye' : 'eye-off'}
-                  color="#A9A9A9"
-                  size={20}
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  secureTextEntry={!isPasswordShowed.repeatPassword}
+                  placeholder="Repeat Password"
+                  autoCapitalize="none"
+                  value={value}
+                  onChangeText={(values) => onChange(values)}
+                  onBlur={onBlur}
+                  editable={true}
+                  errorStyle={styles.errorMessage}
+                  errorMessage={errors.repeatPassword?.message}
+                  leftIcon={<Icon name="lock" color="#6379F4" size={20} />}
+                  rightIcon={
+                    <Icon
+                      onPress={() => {
+                        toggleShowPassword('repeatPassword');
+                      }}
+                      name={isPasswordShowed.repeatPassword ? 'eye' : 'eye-off'}
+                      color="#A9A9A9"
+                      size={20}
+                    />
+                  }
+                  inputContainerStyle={styles.inputContainerStyle}
+                  inputStyle={styles.inputStyle}
                 />
-              }
-              inputContainerStyle={styles.inputContainerStyle}
-              inputStyle={styles.inputStyle}
+              )}
+              name="repeatPassword"
+              rules={{required: true}}
+              defaultValue=""
             />
-          )}
-          name="repeatPassword"
-          rules={{required: true}}
-          defaultValue=""
-        />
-        <Button
-          onPress={onSubmit}
-          disabled={
-            Boolean(errors.currentPassword?.message) ||
-            Boolean(errors.newPassword?.message) ||
-            Boolean(errors.repeatPassword?.message)
-          }
-          loading={status.loading}
-          loadingProps={{size: 'large', color: 'white'}}
-          buttonStyle={styles.changePasswordButton}
-          title="Change Password"
-        />
+          </View>
+          <Button
+            onPress={onSubmit}
+            disabled={
+              Boolean(errors.currentPassword?.message) ||
+              Boolean(errors.newPassword?.message) ||
+              Boolean(errors.repeatPassword?.message)
+            }
+            loading={status.loading}
+            loadingProps={{size: 'large', color: 'white'}}
+            buttonStyle={[styles.changePasswordButton, {marginTop: 0}]}
+            title="Change Password"
+          />
+        </View>
       </View>
     </>
   );

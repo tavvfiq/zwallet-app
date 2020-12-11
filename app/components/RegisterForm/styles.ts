@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: colorTheme.primary,
     marginTop: 40,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   footerContainer: {
     display: 'flex',

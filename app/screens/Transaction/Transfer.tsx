@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, TextInput, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import {Image} from 'react-native-elements';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
@@ -101,7 +107,7 @@ class Transfer extends React.Component<Props, State> {
       (currUser.details.balance as number) - Number(this.state.value);
     return (
       <>
-        <View style={styles.container}>
+        <View style={[styles.container, {flex: 1}]}>
           <View style={styles.header}>
             <View style={styles.headerSection}>
               <Icon
@@ -129,98 +135,121 @@ class Transfer extends React.Component<Props, State> {
               </View>
             </View>
           </View>
-          {!confirmed ? (
-            <>
-              <View style={styles.amountContainer}>
-                <Text style={styles.rpStyle}>
-                  {this.state.value === '' ? '' : 'Rp'}
-                </Text>
-                <TextInput
-                  placeholder={'0.00'}
-                  style={styles.textInputStyle}
-                  keyboardType="numeric"
-                  onChange={this.handleOnChange}
-                  value={this.state.value}
-                />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}>
+              <View>
+                {!confirmed ? (
+                  <>
+                    <View style={styles.amountContainer}>
+                      <Text style={styles.rpStyle}>
+                        {this.state.value === '' ? '' : 'Rp'}
+                      </Text>
+                      <TextInput
+                        placeholder={'0.00'}
+                        style={styles.textInputStyle}
+                        keyboardType="numeric"
+                        onChange={this.handleOnChange}
+                        value={this.state.value}
+                      />
+                    </View>
+                    <Text style={styles.balanceText}>
+                      Rp
+                      {Number(currUser.details.balance).toLocaleString(
+                        'id-ID',
+                      )}{' '}
+                      Available
+                    </Text>
+                    <Input
+                      leftIcon={
+                        <Icon
+                          name="edit-2"
+                          size={22}
+                          color={
+                            isBlur ? 'rgba(169, 169, 169, 0.6)' : '#6379F4'
+                          }
+                        />
+                      }
+                      placeholder="Add some notes"
+                      placeholderTextColor="rgba(169, 169, 169, 0.8)"
+                      inputContainerStyle={
+                        this.state.isBlur
+                          ? styles.notesStyleBlur
+                          : styles.notesStyle
+                      }
+                      inputStyle={styles.notesText}
+                      onChangeText={(text) => {
+                        this.setState({notes: text});
+                        if (text === '') {
+                          this.setState({isBlur: true});
+                        } else {
+                          this.setState({isBlur: false});
+                        }
+                      }}
+                      onFocus={() => {
+                        this.setState({isBlur: false});
+                      }}
+                      onBlur={() => {
+                        this.setState({isBlur: true});
+                      }}
+                      value={this.state.notes}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <View style={styles.confirmationContainer}>
+                      <View style={styles.cell}>
+                        <Text style={styles.cellTitleText}>Amount</Text>
+                        <Text style={styles.cellChildText}>
+                          Rp{Number(this.state.value).toLocaleString('id-ID')}
+                        </Text>
+                      </View>
+                      <View style={styles.cell}>
+                        <Text style={styles.cellTitleText}>Balance Left</Text>
+                        <Text style={styles.cellChildText}>
+                          Rp{Number(balanceLeft).toLocaleString('id-ID')}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.confirmationContainer}>
+                      <View style={styles.cell}>
+                        <Text style={styles.cellTitleText}>Date</Text>
+                        <Text style={styles.cellChildText}>
+                          {this.state.datetime?.toFormat('LLL dd, yyyy')}
+                        </Text>
+                      </View>
+                      <View style={styles.cell}>
+                        <Text style={styles.cellTitleText}>Time</Text>
+                        <Text style={styles.cellChildText}>
+                          {this.state.datetime?.toFormat('HH.mm')}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.longCell}>
+                      <Text style={styles.cellTitleText}>Notes</Text>
+                      <Text style={styles.cellChildText}>
+                        {this.state.notes}
+                      </Text>
+                    </View>
+                  </>
+                )}
               </View>
-              <Text style={styles.balanceText}>
-                Rp{Number(currUser.details.balance).toLocaleString('id-ID')}{' '}
-                Available
-              </Text>
-              <Input
-                leftIcon={
-                  <Icon
-                    name="edit-2"
-                    size={22}
-                    color={isBlur ? 'rgba(169, 169, 169, 0.6)' : '#6379F4'}
-                  />
-                }
-                placeholder="Add some notes"
-                placeholderTextColor="rgba(169, 169, 169, 0.8)"
-                inputContainerStyle={
-                  this.state.isBlur ? styles.notesStyleBlur : styles.notesStyle
-                }
-                inputStyle={styles.notesText}
-                onChangeText={(text) => {
-                  this.setState({notes: text});
-                  if (text === '') {
-                    this.setState({isBlur: true});
-                  } else {
-                    this.setState({isBlur: false});
-                  }
-                }}
-                onFocus={() => {
-                  this.setState({isBlur: false});
-                }}
-                onBlur={() => {
-                  this.setState({isBlur: true});
-                }}
-                value={this.state.notes}
+              <Button
+                buttonStyle={[
+                  styles.submitButton,
+                  {marginTop: 20, marginBottom: 20},
+                ]}
+                title="Continue"
+                titleStyle={styles.buttonText}
+                onPress={this.onConfirm}
+                disabled={this.state.value === ''}
               />
-            </>
-          ) : (
-            <>
-              <View style={styles.confirmationContainer}>
-                <View style={styles.cell}>
-                  <Text style={styles.cellTitleText}>Amount</Text>
-                  <Text style={styles.cellChildText}>
-                    Rp{Number(this.state.value).toLocaleString('id-ID')}
-                  </Text>
-                </View>
-                <View style={styles.cell}>
-                  <Text style={styles.cellTitleText}>Balance Left</Text>
-                  <Text style={styles.cellChildText}>
-                    Rp{Number(balanceLeft).toLocaleString('id-ID')}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.confirmationContainer}>
-                <View style={styles.cell}>
-                  <Text style={styles.cellTitleText}>Date</Text>
-                  <Text style={styles.cellChildText}>
-                    {this.state.datetime?.toFormat('LLL dd, yyyy')}
-                  </Text>
-                </View>
-                <View style={styles.cell}>
-                  <Text style={styles.cellTitleText}>Time</Text>
-                  <Text style={styles.cellChildText}>
-                    {this.state.datetime?.toFormat('HH.mm')}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.longCell}>
-                <Text style={styles.cellTitleText}>Notes</Text>
-                <Text style={styles.cellChildText}>{this.state.notes}</Text>
-              </View>
-            </>
-          )}
-          <Button
-            buttonStyle={styles.submitButton}
-            title="Continue"
-            titleStyle={styles.buttonText}
-            onPress={this.onConfirm}
-            disabled={this.state.value === ''}
-          />
+            </View>
+          </ScrollView>
         </View>
       </>
     );
