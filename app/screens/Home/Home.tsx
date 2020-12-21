@@ -106,103 +106,105 @@ const Home: React.FunctionComponent<Props> = (props) => {
   }, []);
 
   return (
-    <>
-      <View style={styles.homeContainer}>
-        <View style={styles.headerContainer}>
-          <View style={styles.textAndImage}>
+      <ScrollView
+        contentContainerStyle={styles.transactionHistoryList}
+        // contentInsetAdjustmentBehavior="automatic"
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.homeContainer}>
+          <View style={styles.headerContainer}>
+            <View style={styles.textAndImage}>
+              <Pressable
+                onPress={() => {
+                  props.navigation.navigate('ProfileScreen', {
+                    screen: 'Profile',
+                  });
+                }}>
+                <Image
+                  style={styles.profileImage}
+                  source={
+                    session.user.details.image
+                      ? {uri: session.user.details.image}
+                      : userIcon
+                  }
+                  PlaceholderContent={
+                    <ActivityIndicator size="small" color={colorTheme.white} />
+                  }
+                />
+              </Pressable>
+
+              <View style={styles.textContainer}>
+                <Text style={styles.helloText}>Hello,</Text>
+                <BoldText style={styles.nameText}>
+                  {session.user.credentials.username}
+                </BoldText>
+              </View>
+            </View>
+            <Icon name="bell" size={21} style={styles.icon} />
+          </View>
+          <View style={styles.cardBalanceContainer}>
+            <Text style={styles.childText}>Balance</Text>
+            <BoldText style={styles.balanceText}>
+              Rp{Number(session.user.details.balance).toLocaleString('id-ID')}
+            </BoldText>
+            <Text style={styles.childText}>
+              {session.user.details.phoneNumber
+                ? session.user.details.phoneNumber
+                : 'No Phone Number'}
+            </Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              icon={<Icon name="arrow-up" color="#608DE2" size={28} />}
+              title="Transfer"
+              titleStyle={styles.buttonText}
+              buttonStyle={styles.buttonStyle}
+              onPress={() => {
+                props.navigation.navigate('TransactionScreen', {
+                  screen: 'SearchReceiver',
+                });
+              }}
+            />
+            <Button
+              icon={<Icon name="plus" color="#608DE2" size={28} />}
+              title="Top Up"
+              titleStyle={styles.buttonText}
+              buttonStyle={styles.buttonStyle}
+            />
+          </View>
+          <View style={styles.subSectionContainer}>
+            <BoldText style={styles.subSectionText}>
+              Transaction History
+            </BoldText>
             <Pressable
               onPress={() => {
-                props.navigation.navigate('ProfileScreen', {screen: 'Profile'});
-              }}>
-              <Image
-                style={styles.profileImage}
-                source={
-                  session.user.details.image
-                    ? {uri: session.user.details.image}
-                    : userIcon
-                }
-                PlaceholderContent={
-                  <ActivityIndicator size="small" color={colorTheme.white} />
-                }
-              />
+                props.navigation.navigate('TransactionScreen', {
+                  screen: 'TransactionHistory',
+                  params: {id: session.user.credentials.id},
+                });
+              }}
+              style={styles.seeAllButton}>
+              <Text style={styles.seeAllButtonText}>See all</Text>
             </Pressable>
-
-            <View style={styles.textContainer}>
-              <Text style={styles.helloText}>Hello,</Text>
-              <BoldText style={styles.nameText}>
-                {session.user.credentials.username}
-              </BoldText>
-            </View>
           </View>
-          <Icon name="bell" size={21} style={styles.icon} />
-        </View>
-        <View style={styles.cardBalanceContainer}>
-          <Text style={styles.childText}>Balance</Text>
-          <BoldText style={styles.balanceText}>
-            Rp{Number(session.user.details.balance).toLocaleString('id-ID')}
-          </BoldText>
-          <Text style={styles.childText}>
-            {session.user.details.phoneNumber
-              ? session.user.details.phoneNumber
-              : 'No Phone Number'}
-          </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            icon={<Icon name="arrow-up" color="#608DE2" size={28} />}
-            title="Transfer"
-            titleStyle={styles.buttonText}
-            buttonStyle={styles.buttonStyle}
-            onPress={() => {
-              props.navigation.navigate('TransactionScreen', {
-                screen: 'SearchReceiver',
-              });
-            }}
-          />
-          <Button
-            icon={<Icon name="plus" color="#608DE2" size={28} />}
-            title="Top Up"
-            titleStyle={styles.buttonText}
-            buttonStyle={styles.buttonStyle}
-          />
-        </View>
-        <View style={styles.subSectionContainer}>
-          <BoldText style={styles.subSectionText}>Transaction History</BoldText>
-          <Pressable
-            onPress={() => {
-              props.navigation.navigate('TransactionScreen', {
-                screen: 'TransactionHistory',
-                params: {id: session.user.credentials.id},
-              });
-            }}
-            style={styles.seeAllButton}>
-            <Text style={styles.seeAllButtonText}>See all</Text>
-          </Pressable>
-        </View>
-        {isEmpty(transaction.transactions) ? (
-          <Text
-            style={[
-              styles.subSectionText,
-              {
-                alignSelf: 'center',
-                marginTop: 10,
-                color: 'rgba(169, 169, 169, 0.8)',
-              },
-            ]}>
-            No Transaction History
-          </Text>
-        ) : (
-          <ScrollView
-            contentContainerStyle={styles.transactionHistoryList}
-            contentInsetAdjustmentBehavior="automatic"
-            showsVerticalScrollIndicator={false}>
-            {transaction.transactions.slice(0, 3).map((item, index) => {
+          {isEmpty(transaction.transactions) ? (
+            <Text
+              style={[
+                styles.subSectionText,
+                {
+                  alignSelf: 'center',
+                  marginTop: 10,
+                  color: 'rgba(169, 169, 169, 0.8)',
+                },
+              ]}>
+              No Transaction History
+            </Text>
+          ) : (
+            transaction.transactions.slice(0, 3).map((item, index) => {
               return <UserCard key={index} {...item} />;
-            })}
-          </ScrollView>
-        )}
-      </View>
-    </>
+            })
+          )}
+        </View>
+      </ScrollView>
   );
 };
 

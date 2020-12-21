@@ -164,7 +164,7 @@ class LoginForm extends Component<Props, State> {
             disabled={this.props.session.status.loading || !isValid}
             loading={this.props.session.status.loading}
             loadingProps={{size: 'large', color: 'white'}}
-            buttonStyle={[styles.loginButton,{marginTop: 0}]}
+            buttonStyle={[styles.loginButton, {marginTop: 0}]}
             title="Login"
           />
           <View style={styles.footerContainer}>
@@ -180,7 +180,9 @@ class LoginForm extends Component<Props, State> {
 
   render() {
     return (
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{backgroundColor: 'white'}}>
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={validationSchema}

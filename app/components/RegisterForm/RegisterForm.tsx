@@ -1,7 +1,7 @@
 import strings from './strings';
 import styles from './styles';
 import React, {Component} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, ScrollView} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import {Formik, FormikProps} from 'formik';
 import {object as yupObject, string as yupString} from 'yup';
@@ -196,12 +196,16 @@ class RegisterForm extends Component<Props, object> {
 
   render() {
     return (
-      <Formik
-        initialValues={{username: '', email: '', password: ''}}
-        validationSchema={validationSchema}
-        onSubmit={(values: FormValues) => this.handleSubmit(values)}>
-        {(formikBag: FormikProps<FormValues>) => this.renderForm(formikBag)}
-      </Formik>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{backgroundColor: 'white'}}>
+        <Formik
+          initialValues={{username: '', email: '', password: ''}}
+          validationSchema={validationSchema}
+          onSubmit={(values: FormValues) => this.handleSubmit(values)}>
+          {(formikBag: FormikProps<FormValues>) => this.renderForm(formikBag)}
+        </Formik>
+      </ScrollView>
     );
   }
 }

@@ -35,8 +35,8 @@ class zwalletAPI {
 }
 
 class unprotectedAPI extends zwalletAPI {
-  public constructor() {
-    super(BASE_URL);
+  public constructor(url: string) {
+    super(url);
   }
 
   public login = (body: loginType) => this.instance.post('/auth/login', body);
@@ -46,8 +46,8 @@ class unprotectedAPI extends zwalletAPI {
 
 class protectedAPI extends zwalletAPI {
   token = '';
-  public constructor() {
-    super(BASE_URL);
+  public constructor(url: string) {
+    super(url);
     this._initializeRequestInterceptor();
   }
 
@@ -87,7 +87,7 @@ class protectedAPI extends zwalletAPI {
   public getUserByid = (id: number) => this.instance.get(`/user/${id}`);
 }
 
-const authAPI = new unprotectedAPI();
-const mainAPI = new protectedAPI();
+const authAPI = new unprotectedAPI(BASE_URL);
+const mainAPI = new protectedAPI(BASE_URL);
 
 export {authAPI, mainAPI};

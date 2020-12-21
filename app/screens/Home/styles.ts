@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
   homeContainer: {
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: 42,
     backgroundColor: '#FAFCFF',
     height,
   },
@@ -111,7 +110,8 @@ const styles = StyleSheet.create({
   },
   transactionHistoryList: {
     backgroundColor: '#FAFCFF',
-    paddingBottom: 20,
+    paddingTop: 30,
+    // paddingBottom: 20,
   },
 });
 
